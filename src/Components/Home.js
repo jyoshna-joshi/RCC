@@ -7,14 +7,10 @@ const Home = (props) => {
   return (
     <>
       <h1>Home Page</h1>
-      
-
-      {/* Button */}
+            {/* Button */}
       <p>
         <button onClick={() => navigate("/chooseTemplateType")}>Upload file</button>
-      </p>
-   
-      
+      </p>     
     </>
   );
 };
