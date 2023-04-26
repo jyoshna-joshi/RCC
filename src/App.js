@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
-import ChooseTemplateType from "./Components/ChooseTemplateType";
+import SelectTemplateType from "./Components/SelectTemplateType";
+
+
 
 
 const App = () => {
@@ -10,7 +12,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/chooseTemplateType" element={<ChooseTemplateType />} />
+          <Route path="/selectTemplateType" element={<SelectTemplateType />} />
         </Routes>
       </Router>
     </div>

@@ -9,7 +9,7 @@ const Home = (props) => {
       <h1>Home Page</h1>
             {/* Button */}
       <p>
-        <button onClick={() => navigate("/chooseTemplateType")}>Upload file</button>
+        <button onClick={() => navigate("/selectTemplateType")}>Upload file</button>
       </p>     
     </>
   );
