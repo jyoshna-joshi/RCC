@@ -3,11 +3,13 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 
 
 const items = ["Pdf", "cd", "Others"];
 
 const TemplateForm = () => {
+   const navigate = useNavigate();
     const [selectedItem, setSelectedItem] = useState("Select Template Type");
     return (
         <>
@@ -67,12 +69,12 @@ const TemplateForm = () => {
                 </Form.Group>
 
                 {/* for submit for approval*/}
-                <Form.Group className="mb-3" controlId="formSubmitForApproval">
-                    <Button variant="primary" type="submit">
-                        Submit for approval
-                    </Button>
+                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={() => navigate("/")}>
+                        <Button variant="primary" type="submit">
+                            Submit for approval
+                        </Button>
                 </Form.Group>
-            </Form >
+        </Form >
         </>
     );
 };
