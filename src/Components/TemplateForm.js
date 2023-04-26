@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+
 const items = ["Pdf", "cd", "Others"];
 
 const TemplateForm = () => {
@@ -54,17 +55,15 @@ const TemplateForm = () => {
                 </Form.Group>
 
                 {/* for uploading image*/}
-                <Form.Group className="mb-3" controlId="formUploadImage">
-                    <Button variant="secondary" type="button">
-                        Upload Image
-                    </Button>
+                <Form.Group className="mb-3" controlId="formUploadImageFile">
+                    <Form.Label>Select image</Form.Label>
+                    <Form.Control type="file" />
                 </Form.Group>
 
                 {/* for uploading file*/}
                 <Form.Group className="mb-3" controlId="formUploadFile">
-                    <Button variant="secondary" type="button">
-                        Upload file
-                    </Button>
+                    <Form.Label>Select file</Form.Label>
+                    <Form.Control type="file" />
                 </Form.Group>
 
                 {/* for submit for approval*/}
