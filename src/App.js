@@ -4,7 +4,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from "./components/Home";
 import TemplateForm from "./components/TemplateForm";
 import TemplateTypeForm from "./components/TemplateTypeForm";
+import AdvertisementJournal from './components/AdvertisementJournal';
+import ArticleJournal from './components/ArticleJournal';
+import ArticleNewspaper from './components/ArticleNewspaper';
+import BookHistorical from './components/BookHistorical';
+import BookTechnical from './components/BookTechnical';
+import PhotographCommercial from './components/PhotographCommercial';
+import AdvertiseNewspaper from './components/AdvertiseNewspaper';
 import './scss/style.scss'
+
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
 // const Home = React.lazy(() => import('./layout/AdminLayout'))
