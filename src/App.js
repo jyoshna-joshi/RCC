@@ -1,9 +1,9 @@
 import './App.css';
 import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from "./components/Home";
-import TemplateForm from "./components/TemplateForm";
-import TemplateTypeForm from "./components/TemplateTypeForm";
+import Home from "./Components/Home";
+import TemplateForm from "./Components/TemplateForm";
+import TemplateTypeForm from "./Components/TemplateTypeForm";
 import './scss/style.scss'
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
