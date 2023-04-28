@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from "./Components/Home";
 import TemplateForm from "./Components/TemplateForm";
 import TemplateTypeForm from "./Components/TemplateTypeForm";
+import {Login} from "./Components/Login";
 import './scss/style.scss'
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
@@ -17,6 +18,7 @@ const App = () => {
           {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/selectTemplateTypeForm" element={<TemplateTypeForm />} />
+          <Route path="/selectLoginForm" element={<Login />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
         </Routes>
       </BrowserRouter>

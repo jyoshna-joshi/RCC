@@ -28,6 +28,52 @@
   color: #61dafb;
 }
 
+.authz-form-container, .Login-form, .ChangePassword-form {
+
+  display: flex;
+  flex-direction: column  ;
+}
+
+.authz-form-container{
+  padding: 5rem;
+  border: 2px solid rgb(248, 252, 253);
+  border-radius: 10px;
+  margin: 0.5rem;
+  text-align: left;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  /*background-color: #81b6bb;*/
+  background-image: linear-gradient(79deg, #7acce7,#f0f4f6 48%, #ebf6ff);
+  
+
+}
+
+.login-lbl {
+  text-align: left;
+  padding: 0.25rem 0;
+}
+
+input {
+  margin: 0.5rem 0;
+}
+
+.login-btn {
+  border: none;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.link-btn {
+  background: none;
+  color: rgb(75, 75, 121);
+  text-decoration: underline;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
