@@ -1,18 +1,25 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Components/Home";
-import TemplateForm from "./Components/TemplateForm";
-import TemplateTypeForm from "./Components/TemplateTypeForm";
+import './App.css';
+import React, { Component, Suspense } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Home from "./components/Home";
+import TemplateForm from "./components/TemplateForm";
+import TemplateTypeForm from "./components/TemplateTypeForm";
+import './scss/style.scss'
+
+const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
+// const Home = React.lazy(() => import('./layout/AdminLayout'))
 
 const App = () => {
   return (
-    <div style={styles.app}>
-      <Router>
+    <div className="App">
+      <BrowserRouter>
         <Routes>
+          {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/selectTemplateTypeForm" element={<TemplateTypeForm />} />
+          <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 };
