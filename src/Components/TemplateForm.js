@@ -1,3 +1,6 @@
+// Ignore this file
+
+
 import { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -6,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 import { FormControl } from "react-bootstrap";
 
-const items = ["Pdf", "cd", "Others"];
+const items = ["AdvertisementJournal", "AdvertisementNewspaper", "ArticleJournal", "ArticleNewspaper", "BookHistorical", "BookTechnical", "PhotographCommercial", "PhotographPersonal", "SalesBrochure", "SalesRecord"];
 const TemplateForm = () => {
     const navigate = useNavigate();
     const [selectedTemplateType, setSelectedTemplateType] = useState("Select Template Type");
@@ -41,6 +44,7 @@ const TemplateForm = () => {
         setSelectYear(e.target.value);
     };
 
+
     // connect to api
     const submitForm = () => {
         const formdData = new FormData();
@@ -50,6 +54,8 @@ const TemplateForm = () => {
         formdData.append("year", selectedYear);
         formdData.append("image", selectedImage);
         formdData.append("file", selectedFile);
+        formdData.append("description", selectedShortDescription);
+
         // for (const pair of formdData.entries()) {
         //     alert(pair + ', ' + formdData);
         // }
@@ -62,71 +68,6 @@ const TemplateForm = () => {
     }
     return (
         <>
-            <h3>Content application form</h3>
-            <Form>
-                {/* for template type */}
-                <Form.Group className="mb-3" controlId="formTemplateType">
-                    <Form.Label>What type of content you want to upload?</Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="secondary"> {selectedTemplateType}</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {items.map((item) => (
-                                <Dropdown.Item onClick={() => setSelectedTemplateType(item)}>
-                                    {item}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                        <pre>You choose: {selectedTemplateType}</pre>
-                    </Dropdown>
-                </Form.Group>
-
-                {/* for title */}
-                <Form.Group className="mb-3" controlId="formTitle">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" placeholder="Enter title" onChange={titleChangeHandler} />
-                </Form.Group>
-
-                {/* for author*/}
-                <Form.Group className="mb-3" controlId="formAuthorName">
-                    <Form.Label>Author Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter author name" onChange={authorChangeHandler} />
-                </Form.Group>
-
-                {/* for short description */}
-                <Form.Group className="mb-3" controlId="formShortDescription">
-                    <Form.Label>Short description</Form.Label>
-                    <Form.Control type="text" placeholder="Enter short description" onChange={shortDescriptionChangeHandler} />
-                </Form.Group>
-
-                {/* for year*/}
-                <Form.Group className="mb-3" controlId="formYear">
-                    <Form.Label>Year</Form.Label>
-                    <Form.Control type="text" placeholder="Enter year" onChange={yearChangeHandler} />
-                </Form.Group>
-
-                {/* for uploading image*/}
-                <Form.Group className="mb-3" controlId="formUploadImageFile">
-                    <Form.Label>Select image</Form.Label>
-                    <Form.Control type="file"
-                        onChange={imageChangeHandler}>
-                    </Form.Control>
-                </Form.Group>
-
-                {/* for uploading file*/}
-                <Form.Group className="mb-3" controlId="formUploadFile">
-                    <Form.Label>Select file</Form.Label>
-                    <Form.Control type="file"
-                        onChange={fileChangeHandler} />
-                </Form.Group>
-
-                {/* for submit for approval*/}
-                {/* <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={() => navigate("/")}> */}
-                <Form.Group className="mb-3" controlId="formSubmitForApproval" >
-                    <Button variant="primary" type="submit" onClick={submitForm}>
-                        Submit for approval
-                    </Button>
-                </Form.Group>
-            </Form >
         </>
     );
 };

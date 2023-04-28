@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 const Home = (props) => {
   const navigate = useNavigate();
-
   return (
     <>
       <h1>Home Page</h1>
             {/* Button */}
       <p>
-        <button onClick={() => navigate("/selectTemplateForm")}>Upload file</button>
+        <button onClick={() => navigate("/selectTemplateTypeForm")}>Upload file</button>
       </p>     
     </>
   );

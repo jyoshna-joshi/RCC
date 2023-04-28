@@ -2,9 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import TemplateForm from "./Components/TemplateForm";
-
-
-
+import TemplateTypeForm from "./Components/TemplateTypeForm";
 
 const App = () => {
   return (
@@ -12,7 +10,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/selectTemplateForm" element={<TemplateForm />} />
+          <Route path="/selectTemplateTypeForm" element={<TemplateTypeForm />} />
         </Routes>
       </Router>
     </div>
