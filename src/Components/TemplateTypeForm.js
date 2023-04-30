@@ -24,41 +24,41 @@ function TemplateTypeForm() {
     return (
         <Tab.Container id="list-group-tabs" defaultActiveKey="#advertisementJournal"  >
 
-            <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Get ready to upload your content</h4>
+            <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
             <Row>
                 <Col sm={3} />
                 <Col sm={2} className='Template-text'>
                     <h6>Please choose the type of the file</h6>
                     <ListGroup>
                         <ListGroup.Item action href="#advertisementJournal">
-                            AdvertisementJournal
+                            Advertisement Journal
                         </ListGroup.Item>
                         <ListGroup.Item action href="#advertisementNewspaper">
-                            AdvertisementNewspaper
+                            Advertisement Newspaper
                         </ListGroup.Item>
                         <ListGroup.Item action href="#articleJournal">
-                            ArticleJournal
+                            Article Journal
                         </ListGroup.Item>
                         <ListGroup.Item action href="#articleNewspaper">
-                            ArticleNewspaper
+                            Article Newspaper
                         </ListGroup.Item>
                         <ListGroup.Item action href="#bookHistorical">
-                            BookHistorical
+                            Book Historical
                         </ListGroup.Item>
                         <ListGroup.Item action href="#bookTechnical">
-                            BookTechnical
+                            Book Technical
                         </ListGroup.Item>
                         <ListGroup.Item action href="#photographCommercial">
-                            PhotographCommercial
+                            Photograph Commercial
                         </ListGroup.Item>
                         <ListGroup.Item action href="#photographPersonal">
-                            PhotographPersonal
+                            Photograph Personal
                         </ListGroup.Item>
                         <ListGroup.Item action href="#salesBrochure">
-                            SalesBrochure
+                            Sales Brochure
                         </ListGroup.Item>
                         <ListGroup.Item action href="#salesRecord">
-                            SalesRecord
+                            Sales Record
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
