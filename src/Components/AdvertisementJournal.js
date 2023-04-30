@@ -2,15 +2,19 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Button from 'react-bootstrap/Button';
 
 class AdvertisementJournal extends Component {
     constructor(props) {
         super(props);
-
     }
 
     render() {
+        const submitTemplate = () => {
+            return (
+                alert("Hit api")
+            );
+        };
         return (
             <Form>
                 {/* for title*/}
@@ -49,11 +53,11 @@ class AdvertisementJournal extends Component {
                     <Form.Control type="file" />
                 </Form.Group>
                 {/* for submit */}
-                {/* <Form.Group className="mb-3" controlId="formSubmitForApproval" >
-                                    <Button variant="primary" type="submit" onClick={submitTemplate}>
-                                    Submit for approval
-                                    </Button>
-                                </Form.Group> */}
+                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={submitTemplate}>
+                    <Button variant="primary" type="submit">
+                        Submit for approval
+                    </Button>
+                </Form.Group>
             </Form>
         );
     }

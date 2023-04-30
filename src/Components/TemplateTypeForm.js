@@ -20,15 +20,15 @@ import PhotographPersonal from './PhotographPersonal';
 import SalesBrochure from './SalesBrochure';
 import SalesRecord from './SalesRecord';
 function TemplateTypeForm() {
-    const submitTemplate = () => {
-        return (
-            alert("Hit api")
-        );
-    };
+
     return (
-        <Tab.Container id="list-group-tabs-example" defaultActiveKey="#advertisementJournal">
+        <Tab.Container id="list-group-tabs" defaultActiveKey="#advertisementJournal"  >
+
+            <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Get ready to upload your content</h4>
             <Row>
-                <Col sm={4}>
+                <Col sm={3} />
+                <Col sm={2} className='Template-text'>
+                    <h6>Please choose the type of the file</h6>
                     <ListGroup>
                         <ListGroup.Item action href="#advertisementJournal">
                             AdvertisementJournal
@@ -62,7 +62,7 @@ function TemplateTypeForm() {
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
-                <Col sm={8}>
+                <Col sm={4} className='Template-text'>
                     <Tab.Content>
                         {/* advertisementJournal */}
                         <Tab.Pane eventKey="#advertisementJournal">
@@ -107,6 +107,7 @@ function TemplateTypeForm() {
 
                     </Tab.Content>
                 </Col>
+                <Col sm={3} />
             </Row>
         </Tab.Container>
     );
