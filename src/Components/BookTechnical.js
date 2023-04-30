@@ -34,7 +34,7 @@ class BookTechnical extends Component {
             {/* for description*/}
             <Form.Group className="mb-3" controlId="bookTechnicalDescription">
                 <Form.Label>Description</Form.Label>
-                <Form.Control type="text" placeholder="Enter description" />
+                <Form.Control type="text" placeholder="Enter description" as="textarea" rows={3} />
             </Form.Group>
             {/* for date*/}
             <Form.Group className="mb-3" controlId="bookTechnicalYear">
