@@ -16,7 +16,9 @@ import BookHistorical from './BookHistorical';
 import BookTechnical from './BookTechnical';
 import PhotographCommercial from './PhotographCommercial';
 import AdvertiseNewspaper from './AdvertiseNewspaper';
-
+import PhotographPersonal from './PhotographPersonal';
+import SalesBrochure from './SalesBrochure';
+import SalesRecord from './SalesRecord';
 function TemplateTypeForm() {
     const submitTemplate = () => {
         return (
@@ -90,6 +92,19 @@ function TemplateTypeForm() {
                         <Tab.Pane eventKey="#photographCommercial">
                             <PhotographCommercial />
                         </Tab.Pane>
+                        {/* photographPersonal */}
+                        <Tab.Pane eventKey="#photographPersonal">
+                            <PhotographPersonal />
+                        </Tab.Pane>
+                        {/* salesBrochure */}
+                        <Tab.Pane eventKey="#salesBrochure">
+                            <SalesBrochure />
+                        </Tab.Pane>
+                        {/* salesRecord */}
+                        <Tab.Pane eventKey="#salesRecord">
+                            <SalesRecord />
+                        </Tab.Pane>
+
                     </Tab.Content>
                 </Col>
             </Row>

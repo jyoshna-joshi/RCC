@@ -11,6 +11,9 @@ import BookHistorical from './components/BookHistorical';
 import BookTechnical from './components/BookTechnical';
 import PhotographCommercial from './components/PhotographCommercial';
 import AdvertiseNewspaper from './components/AdvertiseNewspaper';
+import PhotographPersonal from './components/PhotographPersonal';
+import SalesBrochure from './components/SalesBrochure';
+import SalesRecord from './components/SalesRecord';
 import './scss/style.scss'
 
 

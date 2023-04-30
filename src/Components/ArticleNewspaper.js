@@ -43,9 +43,14 @@ class ArticleNewspaper extends Component {
                     <Form.Control type="text" placeholder="Enter date" />
                 </Form.Group>
                 {/* for creator*/}
-                <Form.Group className="mb-3" controlId="articleJournalCreator">
+                <Form.Group className="mb-3" controlId="articleNewspaperCreator">
                     <Form.Label>Creator</Form.Label>
                     <Form.Control type="text" placeholder="Enter author name  " />
+                </Form.Group>
+                {/* for uploading file*/}
+                <Form.Group className="mb-3" controlId="articleNewspaperUpload">
+                    <Form.Label>Select file</Form.Label>
+                    <Form.Control type="file" />
                 </Form.Group>
             </Form>
         );

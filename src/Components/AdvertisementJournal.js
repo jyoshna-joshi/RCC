@@ -44,10 +44,9 @@ class AdvertisementJournal extends Component {
                     <Form.Control type="text" placeholder="Enter date" />
                 </Form.Group>
                 {/* for uploading file*/}
-                <Form.Group className="mb-3" controlId="formUploadFile">
+                <Form.Group className="mb-3" controlId="advertisementJournalUpload">
                     <Form.Label>Select file</Form.Label>
-                    <Form.Control type="file"
-                    />
+                    <Form.Control type="file" />
                 </Form.Group>
                 {/* for submit */}
                 {/* <Form.Group className="mb-3" controlId="formSubmitForApproval" >

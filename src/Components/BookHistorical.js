@@ -42,6 +42,11 @@ class BookHistorical extends Component {
                 <Form.Label>Creator</Form.Label>
                 <Form.Control type="text" placeholder="Enter author name list or organisation name  " />
             </Form.Group>
+            {/* for uploading file*/}
+            <Form.Group className="mb-3" controlId="bookHistoricalUpload">
+                <Form.Label>Select file</Form.Label>
+                <Form.Control type="file" />
+            </Form.Group>
         </Form>
         );
     }

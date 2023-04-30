@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-class AdvertiseNewspaper extends Component {
+class SalesBrochure extends Component {
     constructor(props) {
         super(props);
     }
@@ -13,37 +13,37 @@ class AdvertiseNewspaper extends Component {
         return (
             <Form>
                 {/* for title*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperTitle">
+                <Form.Group className="mb-3" controlId="salesBrochureTitle">
                     <Form.Label>Title</Form.Label>
                     <Form.Control type="text" placeholder="Enter title name" />
                 </Form.Group>
                 {/* for subject*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperSubject">
+                <Form.Group className="mb-3" controlId="salesBrochureSubject">
                     <Form.Label>Subject</Form.Label>
                     <Form.Control type="text" placeholder="Enter subject" />
                 </Form.Group>
                 {/* for publisher*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperPublisher">
+                <Form.Group className="mb-3" controlId="salesBrochurePublisher">
                     <Form.Label>Publisher</Form.Label>
-                    <Form.Control type="text" placeholder="Enter newspaper name" />
+                    <Form.Control type="text" placeholder="Enter organization name" />
                 </Form.Group>
                 {/* for identifier*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperIdentifier">
+                <Form.Group className="mb-3" controlId="salesBrochureIdentifier">
                     <Form.Label>Identifier</Form.Label>
-                    <Form.Control type="text" placeholder="Enter pagelist" />
+                    <Form.Control type="text" placeholder="Enter organization identifier" />
                 </Form.Group>
                 {/* for description*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperDescription">
+                <Form.Group className="mb-3" controlId="salesBrochureDescription">
                     <Form.Label>Description</Form.Label>
                     <Form.Control type="text" placeholder="Enter description" />
                 </Form.Group>
                 {/* for date*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperDate">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control type="text" placeholder="Enter date" />
+                <Form.Group className="mb-3" controlId="salesBrochureYear">
+                    <Form.Label>?Year</Form.Label>
+                    <Form.Control type="text" placeholder="Enter year" />
                 </Form.Group>
                 {/* for uploading file*/}
-                <Form.Group className="mb-3" controlId="advertisementNewspaperUpload">
+                <Form.Group className="mb-3" controlId="salesBrochureUpload">
                     <Form.Label>Select file</Form.Label>
                     <Form.Control type="file" />
                 </Form.Group>
@@ -52,4 +52,4 @@ class AdvertiseNewspaper extends Component {
     }
 
 }
-export default AdvertiseNewspaper;
+export default SalesBrochure;
