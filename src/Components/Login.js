@@ -26,7 +26,7 @@ export const Login = (props) => {
                 
                 <button className="login-btn" type="submit">Log In</button>
             </form>
-            <button className="link-btn" onClick={() => props.onFormSwitch('ChangePassword')}>Forgot Password</button>
+            <button className="link-btn" onClick={() => props.onFormSwitch('AdminLayout')}>Forgot Password</button>
         </div>
     )
 }
