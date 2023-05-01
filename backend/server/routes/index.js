@@ -8,6 +8,11 @@ router.get('/', (req, res) => {
 })
 
 router.post('/save-template', upload.single('uploadFile'), actions.saveTemplate)
+router.get('/fields', actions.fetchFieldsByType)
+router.get('/fetchTemplate/:id', actions.fetchTemplateById)
+router.post('/updateStatus/:id', actions.updateStatus)
+router.get('/listByStatus', actions.listByStatus)
+
 module.exports = router
 
 
