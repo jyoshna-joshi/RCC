@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppSidebar, AppContent, AppFooter, AppHeader } from '../Components/index'
+import { AppSidebar, AppContent, AppFooter, AppHeader } from '../components/index'
 
 const AdminLayout = () => {
   return (

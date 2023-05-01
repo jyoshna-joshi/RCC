@@ -13,7 +13,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import { DocsExample } from '../../Components'
+import { DocsExample } from '../../components'
 
 export default function Tables() {
 
