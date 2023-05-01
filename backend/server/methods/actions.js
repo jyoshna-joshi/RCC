@@ -22,9 +22,22 @@ var functions = {
                         } else if (data) {
                             fileName = data.Location
                             const template = new Template({
+                                contributor: req?.body?.contributor,
+                                coverage: req?.body?.coverage,
+                                creator: req?.body?.creator,
+                                date: req?.body?.date,
+                                description: req?.body?.description,
+                                format: fileName,
+                                identifier: req?.body?.identifier,
+                                language: req?.body?.language,
+                                publisher: req?.body?.publisher,
+                                relation: req?.body?.relation,
+                                rights: req?.body?.rights,
+                                source: req?.body?.source,
+                                subject: req?.body?.subject,
                                 title: req?.body?.title,
                                 publisher: req?.body?.publisher,
-                                format: fileName
+                                type: req?.body?.type,
                             })
                             await template.save()
                             return res.status(200).send("Saved after uploading file!!!")
@@ -32,9 +45,21 @@ var functions = {
                     });
                 } else {
                     const template = new Template({
+                        contributor: req?.body?.contributor,
+                        coverage: req?.body?.coverage,
+                        creator: req?.body?.creator,
+                        date: req?.body?.date,
+                        description: req?.body?.description,
+                        identifier: req?.body?.identifier,
+                        language: req?.body?.language,
+                        publisher: req?.body?.publisher,
+                        relation: req?.body?.relation,
+                        rights: req?.body?.rights,
+                        source: req?.body?.source,
+                        subject: req?.body?.subject,
                         title: req?.body?.title,
                         publisher: req?.body?.publisher,
-                        format: fileName
+                        type: req?.body?.type,
                     })
                     await template.save()
                     return res.status(200).send("Saved!!!")
@@ -91,7 +116,7 @@ var functions = {
     },
     listByStatus: async function(req, res) {
         try {
-            let status = req.query.status || "processing"
+            let status = req.query.status || "pending"
             let templates = await Template.find({ status })
             return res.status(200).send(templates)
         } catch(err) {

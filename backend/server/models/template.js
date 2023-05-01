@@ -48,7 +48,7 @@ const template = mongoose.Schema({
     },
     status: {
         type: String,
-        default: "processing"
+        default: "pending"
     }
 });
   
