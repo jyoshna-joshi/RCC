@@ -1,30 +1,21 @@
+const dotenv = require('dotenv');
 const express = require('express'); //Import the express dependency
-const app = express();              //Instantiate an express app, 
-require('dotenv').config();         //read envrionment file
-const port = 3000;                  //Save the port number where your server will be listening
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = process.env.MONGODB_URI;
+const cors = require('cors')
+const connectDB = require('./config/db')
+const routes = require('./routes/index')
+const bodyParser = require('body-parser')
 
-app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
-    
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
-  async function run() {
-    try {
-      await client.connect();
-      // Send a ping to confirm a successful connection
-      await client.db("carClub").command({ ping: 1 });
-      console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await client.close();
-    }
-  }
-  run().catch(console.dir); 
-});
+dotenv.config();
+const app = express()
+connectDB();
+
+app.use(cors())
+
+app.use(bodyParser.json());       
+app.use(bodyParser.urlencoded({extended: true})); 
+
+app.use(routes)
+
+
+const PORT = process.env.PORT || 3002
+app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`))
