@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from "./components/Home";
 import {Login} from "./components/Login";
+import AdminApproval from "./components/AdminApproval";
 import TemplateForm from "./components/TemplateForm";
 import TemplateTypeForm from "./components/TemplateTypeForm";
 import AdvertisementJournal from './components/AdvertisementJournal';
@@ -30,7 +31,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/selectTemplateTypeForm" element={<TemplateTypeForm />} />
           <Route path="/selectLoginForm" element={<Login />} />
-          <Route path="/selectAdminHomeForm" element={<AdminLayout />} />
+          <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
         </Routes>
       </BrowserRouter>

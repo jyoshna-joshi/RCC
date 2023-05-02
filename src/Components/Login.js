@@ -1,34 +1,41 @@
 import { useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 import { FormControl } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+
 
 export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
         e.preventDefault();
         console.log(email);
     }
-    
-    return(
-        <div className="authz-form-container">
-            <h2> Admin Login </h2>
-            <form className="Login-form" onSubmt = {handleSubmit}>
-                <label className="login-lbl" htmlfor="email">email</label> 
-                <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="youremail@gmail.com" id="email" name="email"/>
-                
-                <label className="login-lbl" htmlfor="password">password</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)}type="password" placeholder="*************" id="password" name="password"/>
-                
-                <button className="login-btn" type="submit" onClick={() => navigate("/selectAdminHomeForm")}>Log In</button>
-            </form>
-            <button className="link-btn" onClick={() => props.onFormSwitch('AdminLayout')}>Forgot Password</button>
-        </div>
+
+    return (
+        <Row>
+            <Form>
+                <h4 className='AdminApproval-form' style={{ color: 'blueviolet' }}>Admin Login</h4>
+                <Col sm={15}>
+                    <label className="mb-3" htmlfor="email">email:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; </label>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
+                </Col>
+                <Col sm={15}>
+                    <label className="mb-3" htmlfor="password">password:&#160;&#160;</label>
+                    <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="*************" id="password" name="password" />
+                </Col>
+                <Form.Group className="mb-3" controlId="formSubmitForApproval" >
+                    <Button variant="primary" onClick={() => navigate("/Admin Dashboard")}>Log In
+                    </Button>
+                </Form.Group>
+
+            </Form>
+        </Row>
     )
 }
