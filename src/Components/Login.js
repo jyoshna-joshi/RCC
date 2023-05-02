@@ -9,11 +9,13 @@ import { FormControl } from "react-bootstrap";
 export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) =>{
         e.preventDefault();
         console.log(email);
     }
+    
     return(
         <div className="authz-form-container">
             <h2> Admin Login </h2>
@@ -24,7 +26,7 @@ export const Login = (props) => {
                 <label className="login-lbl" htmlfor="password">password</label>
                 <input value={pass} onChange={(e) => setPass(e.target.value)}type="password" placeholder="*************" id="password" name="password"/>
                 
-                <button className="login-btn" type="submit">Log In</button>
+                <button className="login-btn" type="submit" onClick={() => navigate("/selectAdminHomeForm")}>Log In</button>
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('AdminLayout')}>Forgot Password</button>
         </div>

@@ -30,6 +30,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/selectTemplateTypeForm" element={<TemplateTypeForm />} />
           <Route path="/selectLoginForm" element={<Login />} />
+          <Route path="/selectAdminHomeForm" element={<AdminLayout />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
         </Routes>
       </BrowserRouter>
