@@ -39,6 +39,39 @@
   color: #61dafb;
 }
 
+
+.login-lbl {
+  text-align: left;
+  padding: 0.25rem 0;
+}
+
+input {
+  margin: 0.5rem 0;
+}
+
+.login-btn {
+  border: none;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.link-btn {
+  background: none;
+  color: rgb(75, 75, 121);
+  text-decoration: underline;
+}
+
+
+.AdminApproval-form {
+  text-align: center;
+  color: "white";
+    padding: "10px";
+    margin: 50px;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
