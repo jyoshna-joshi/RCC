@@ -9,6 +9,8 @@ const Home = (props) => {
             {/* Button */}
       <p>
         <button onClick={() => navigate("/selectTemplateTypeForm")}>Upload file</button>
+        <button onClick={() => navigate("/selectLoginForm")}>Admin Login</button>
+        <button onClick={() => navigate("/selectAdminApprovalForm")}>Admin Approval</button>
       </p>     
     </>
   );

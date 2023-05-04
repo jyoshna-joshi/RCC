@@ -2,38 +2,51 @@ import React, { useEffect, useState } from "react";
 import {
   CCard,
   CCardBody,
-  CCardHeader,
+  CButton,
   CCol,
   CRow,
   CTable,
   CTableBody,
-  CTableCaption,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
 import { DocsExample } from '../../components'
-
+import {
+  cilLibrary,
+  cilBellExclamation,
+  cibCcMastercard,
+  cilClock,
+  cibCcStripe,
+  cibCcVisa,
+  cibGoogle,
+  cibFacebook,
+  cibLinkedin,
+  cifBr,
+  cifEs,
+  cifFr,
+  cifIn,
+  cifPl,
+  cifUs,
+  cibTwitter,
+  cilExternalLink,
+  cilPeople,
+  cilUser,
+  cilUserFemale,
+  cilLockLocked,
+} from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 export default function Tables() {
 
   const [ countries, setCountries ] = useState([]);
  
   useEffect(() => {
-    const fetchata = async () => {
+    const fetchData = async () => {
  
       const response = await fetch(
-        'http://44.202.58.84:3000/listByStatus?status=approved');
-        const data =  [
-          { 'status': 'Approved', 'title': 'AdvertisementNewspaper', 'format': 'AdvertisementNewspaper' , 'date':'02/05/2023', 'rowColor':'success'},
-          { 'status': 'Approved', 'title': 'AdvertisementNewspaper', 'format': 'AdvertisementNewspaper' , 'date':'02/05/2023', 'rowColor':'success' },
-          { 'status': 'Approved', 'title': 'AAA', 'format': 'ArticleJournal' , 'date':'02/05/2023', 'rowColor':'success' },
-          { 'status': 'Approved', 'title': 'AAA', 'format': 'ArticleJournal' , 'date':'02/05/2023', 'rowColor':'success'},
-          { 'status': 'Approved', 'title': 'AAA', 'format': 'BookTechnical' , 'date':'02/05/2023', 'rowColor':'success' },
-          { 'status': 'Approved', 'title': 'AAA', 'format': 'BookTechnical' , 'date':'02/05/2023', 'rowColor':'success' },
-          { 'status': 'Approved', 'title': 'AAA', 'format': 'AdvertisementJournal' , 'date':'02/05/2023', 'rowColor':'success'},
-          { 'status': 'Rejected', 'title': 'AAA', 'format': 'AdvertisementJournal' , 'date':'02/05/2023', 'rowColor':'danger' },
-          { 'status': 'Rejected', 'title': 'AAA', 'format': 'ArticleJournal' , 'date':'02/05/2023', 'rowColor':'danger' },
+        'http://44.202.58.84:3000/listByStatus?status=pending');
+        const data = [
           { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementNewspaper', 'rowColor':'warning' },
           { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementJournal', 'rowColor':'warning'  },
           { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementJournal', 'rowColor':'warning'  },
@@ -43,11 +56,11 @@ export default function Tables() {
         ];
 
         //use only 3 sample data
-        setCountries( data.slice( 0,100) )      
+        setCountries( data.slice( 0,3) )      
     }
  
     // Call the function
-    fetchata();
+    fetchData();
   }, []);
 
   return (
@@ -61,19 +74,25 @@ export default function Tables() {
                   <CTableHeaderCell scope="col">Date Uploaded</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Title</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Approved/Rejected Date</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">View</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {
                   countries.map( (country,key) =>
-                  <CTableRow key={key} color={country.rowColor}>
-                      <CTableDataCell className='table-data'>{'01/05/2023'}</CTableDataCell>
+                  <CTableRow key={key}>
+                      <CTableDataCell className='table-data'>{'01/05/2023' }</CTableDataCell>
                       <CTableDataCell className='table-data'>{country.format }</CTableDataCell>
                       <CTableDataCell className='table-data'>{country.format }</CTableDataCell>
-                      <CTableDataCell className='table-data'>{country.date }</CTableDataCell>
-                      <CTableDataCell className='table-data'>{country.status }</CTableDataCell>
+                      <CTableDataCell className='table-data'>
+                      <CButton
+                        key={key}
+                        color={"#FFFFFF"}
+                        href="#"
+                      >
+                        <CIcon icon={cilExternalLink} className="me-2" />
+                      </CButton>
+                      </CTableDataCell>
                   </CTableRow>
                   )
                 }
