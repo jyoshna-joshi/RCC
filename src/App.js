@@ -17,6 +17,7 @@ import PhotographPersonal from './components/PhotographPersonal';
 import SalesBrochure from './components/SalesBrochure';
 import SalesRecord from './components/SalesRecord';
 import './scss/style.scss'
+import UploadTemplateForm from './components/UploadTemplateForm';
 
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
@@ -29,7 +30,7 @@ const App = () => {
         <Routes>
           {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
-          <Route path="/selectTemplateTypeForm" element={<TemplateTypeForm />} />
+          <Route path="/selectTemplateTypeForm" element={<UploadTemplateForm />} />
           <Route path="/selectLoginForm" element={<Login />} />
           <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
