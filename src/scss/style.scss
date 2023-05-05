@@ -15,3 +15,13 @@ $enable-rtl: true;
 
 // If you want to add custom CSS you can put it here.
 @import "custom";
+
+//theme
+@import "primereact/resources/themes/lara-light-indigo/theme.css";     
+    
+//core
+@import "primereact/resources/primereact.min.css";   
+
+.box {
+    cursor: pointer;
+}

@@ -47,6 +47,11 @@ const _nav = [
         name: 'Upload Content',
         to: '/content/upload',
       },
+      {
+        component: CNavItem,
+        name: 'Test All Content',
+        to: '/content/allTest',
+      },
     ]
   },
 ]
