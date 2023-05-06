@@ -1,6 +1,6 @@
-const Template = require('../models/template')
+const Content = require('../models/content')
+const TemplateType = require('../models/templateType')
 const aws = require('../config/awsconfig')
-const templateFieldsByType = require('../config/templateFieldsByType.json')
 
 var functions = {
     saveTemplate: async function (req, res) {
@@ -21,7 +21,7 @@ var functions = {
                             return res.status(500).json({ error: 'Error while uploading file'+ err })
                         } else if (data) {
                             fileName = data.Location
-                            const template = new Template({
+                            const content = new Content({
                                 contributor: req?.body?.contributor,
                                 coverage: req?.body?.coverage,
                                 creator: req?.body?.creator,
@@ -38,13 +38,14 @@ var functions = {
                                 title: req?.body?.title,
                                 publisher: req?.body?.publisher,
                                 type: req?.body?.type,
+                                status: req?.body?.creator === 'admin' ? 'approved' : 'pending'
                             })
-                            await template.save()
+                            await content.save()
                             return res.status(200).send("Saved after uploading file!!!")
                         }
                     });
                 } else {
-                    const template = new Template({
+                    const content = new Content({
                         contributor: req?.body?.contributor,
                         coverage: req?.body?.coverage,
                         creator: req?.body?.creator,
@@ -60,8 +61,9 @@ var functions = {
                         title: req?.body?.title,
                         publisher: req?.body?.publisher,
                         type: req?.body?.type,
+                        status: req?.body?.creator === 'admin' ? 'approved' : 'pending'
                     })
-                    await template.save()
+                    await content.save()
                     return res.status(200).send("Saved!!!")
                 }
             }
@@ -70,15 +72,13 @@ var functions = {
             return res.status(500).send(err)
         }
     },
-    fetchFieldsByType: function (req, res) {
+    fetchFieldsByType: async function (req, res) {
         try {
             let type = req.query.type
             if (type) {
-                if (templateFieldsByType[type]) {
-                    return res.status(200).send(templateFieldsByType[type])
-                } else {
-                    return res.status(500).send('Wrong template type')
-                }
+                let templateType = await TemplateType.findOne({ type })
+                if (templateType) return res.status(200).send(templateType)
+                else return res.status(500).send('Could not find fields by given type')
             } else {
                 return res.status(500).send('Could not find type')
             }
@@ -87,14 +87,14 @@ var functions = {
             return res.status(500).send(err)
         }
     },
-    fetchTemplateById: async function(req, res) {
+    fetchContentById: async function(req, res) {
         try {
             if (!req.params.id) {
-                return res.status(500).send('Could not find id')
+                return res.status(500).send('Could not find id')    
             } else {
-                let template = await Template.findById(req.params.id)
-                if (template) return res.status(200).json(template)
-                else return res.status(500).send('Could not find template')
+                let content = await Content.findById(req.params.id)
+                if (content) return res.status(200).json(content)
+                else return res.status(500).send('Could not find content')
             }
         } catch(err) {
             console.error(err)
@@ -106,7 +106,7 @@ var functions = {
             if (!req.params.id) {
                 return res.status(500).send('Could not find id')
             } else {
-                await Template.updateOne({ _id: req.params.id }, { status: req.body.status })
+                await Content.updateOne({ _id: req.params.id }, { status: req.body.status })
                 return res.status(200).send('Status updated')
             }
         } catch(err) {
@@ -117,8 +117,65 @@ var functions = {
     listByStatus: async function(req, res) {
         try {
             let status = req.query.status || "pending"
-            let templates = await Template.find({ status })
-            return res.status(200).send(templates)
+            let contents = await Content.find({ status })
+            return res.status(200).send(contents)
+        } catch(err) {
+            console.error(err)
+            return res.status(500).send(err)
+        }
+    },
+    addUpdateTemplateType: async function (req, res) {
+        try {
+            if (req.body.type && req.body.fields) {
+                await TemplateType.updateOne(
+                    { type: req?.body?.type },
+                    {
+                        type: req?.body?.type,
+                        fields: req?.body?.fields
+                    },
+                    {
+                        upsert: true
+                    }
+                )
+                return res.status(200).send('Updated!!!')
+            } else {
+                return res.status(500).send('Couldn\'t find data to add / update')
+            }
+        } catch(err) {
+            console.error(err)
+            return res.status(500).send(err)
+        }
+    },
+    fetchContentUploadedByCreator: async function (req, res) {
+        try {
+            const contents = await Content.find({ creator: req.query.creator })
+            return res.status(200).json(contents)
+        } catch(err) {
+            console.error(err)
+            return res.status(500).send(err)
+        }
+    },
+    fetchTemplateTypes: async function (req, res) {
+        try {
+            let templateTypes = await TemplateType.find({}, { type: 1, _id: 0 })
+            return res.status(200).json(templateTypes.map(templateType => templateType.type))
+        } catch(err) {
+            console.error(err)
+            return res.status(500).send(err)
+        }
+    },
+    removeTemplate: async function (req, res) {
+        try {
+            if (!req.query.type) {
+                return res.status(500).send('Could not find type to remove')
+            } else {
+                const result = await TemplateType.deleteOne({ type: req.query.type })
+                if (!result.deletedCount) {
+                    return res.status(500).send('Could not find template type to remove')
+                } else {
+                    return res.status(200).send('Removed!!!')
+                }
+            }
         } catch(err) {
             console.error(err)
             return res.status(500).send(err)
