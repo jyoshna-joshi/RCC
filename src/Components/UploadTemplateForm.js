@@ -10,7 +10,7 @@ import axios from 'axios';
 export default function UploadTemplateForm() {
     const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
     const URL_FIELD_TYPE = "http://44.202.58.84:3000/template/fields?type=";
-
+    const URL_SAVE_TEMPLATE = "h:p://44.202.58.84:3000/template/add-update";
     //for dynamic fields
     const [fields, setFields] = useState([]);
     //for dynamic templatetypes
@@ -38,23 +38,19 @@ export default function UploadTemplateForm() {
                 return response.json()
             })
             .then(data => {
-                setFields(data)
+                setFields(data.fields)
             })
         setSelectedTemplateType(templateType);
     }
 
     /**
-     * onchange values
-     * @param  event 
-     * @param index 
+     * @param {event} event 
+     * @param {position} index 
      */
     const handleInputChange = (event, index) => {
-        const { name, value } = event.target;
-        const updatedFields = [...fields];
-        updatedFields[index] = { ...updatedFields[index], [name]: value };
-        alert(updatedFields);
-        console.log(updatedFields);
-        // setFields(updatedFields);
+        fields[index]["value"] = event.target.value;
+        setFields(fields);
+        console.log(fields);
     };
 
     /**
@@ -64,7 +60,7 @@ export default function UploadTemplateForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         //hit url
-        // alert(JSON.stringify(fields));
+        alert(JSON.stringify(fields));
     };
 
     return (
@@ -94,8 +90,7 @@ export default function UploadTemplateForm() {
                                         <Form.Label>{field.title}</Form.Label>
                                         <Form.Control required type={field.type}
                                             placeholder={field.placeholder}
-                                            value={field.title}
-                                            onChange={handleInputChange}
+                                            onChange={(e) => handleInputChange(e, index)}
                                         />
                                     </Form.Group>
                                 )}
