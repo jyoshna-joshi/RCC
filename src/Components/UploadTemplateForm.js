@@ -6,6 +6,7 @@ import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import { clear } from '@testing-library/user-event/dist/clear';
 
 export default function UploadTemplateForm() {
     const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
@@ -18,6 +19,9 @@ export default function UploadTemplateForm() {
     //for selected template type
     const [selectedTemplateType, setSelectedTemplateType] = useState("Select Template Type");
 
+    /**
+     * api integration for template type
+     */
     useEffect(() => {
         axios.get(URL_TEMPLATE_TYPES)
             .then(response => {
@@ -33,11 +37,14 @@ export default function UploadTemplateForm() {
      * @param {type of template} templateType 
      */
     function fetchUserData(templateType) {
+       
+
         fetch(URL_FIELD_TYPE + templateType)
             .then(response => {
                 return response.json()
             })
             .then(data => {
+                fields.data = "";
                 setFields(data.fields)
             })
         setSelectedTemplateType(templateType);
@@ -61,6 +68,8 @@ export default function UploadTemplateForm() {
         event.preventDefault();
         //hit url
         alert(JSON.stringify(fields));
+        // window.location.reload()
+
     };
 
     return (
@@ -85,15 +94,17 @@ export default function UploadTemplateForm() {
                         <Tab.Content>
                             {/* for forms */}
                             <Tab.Pane eventKey={selectedTemplateType}>
-                                {fields.map((field, index) =>
-                                    <Form.Group className="mb-3" controlId="title" key={index}>
+                                {fields.map((field, index) => {
+                                    if (field.field == "format") { field.type = "file" } else { field.type = "text" };
+                                    return <Form.Group className="mb-3" controlId="title" key={index} >
                                         <Form.Label>{field.title}</Form.Label>
                                         <Form.Control required type={field.type}
                                             placeholder={field.placeholder}
                                             onChange={(e) => handleInputChange(e, index)}
                                         />
                                     </Form.Group>
-                                )}
+
+                                })}
                             </Tab.Pane>
                             <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
                                 <Button variant="primary" type="submit">
