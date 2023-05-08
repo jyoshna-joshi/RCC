@@ -48,60 +48,74 @@ function ApprovalPDF() {
         }
     }
     const newplugin = defaultLayoutPlugin()
-        return (
+    return (
 
-            <Form onSubmit={handleSubmit}>
-                {/* for Choosing file for approval*/}
-                <Form.Group className="Template-text" controlId="JournalViewforApproval" >
-
-                    <Form.Label>Select Article</Form.Label>
-                    <Form.Control required type="file" onChange={handleChange} />
-                    <Button variant="primary" type="submit" className="btn btn-success" >
-                        View PDF
-                    </Button>
-                    <h1>_</h1>
-                    
-                    <div className="pdf-container">
-                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                            {viewPdf && <>
-                                <Viewer fileUrl={viewPdf} plugins={[newplugin]}></Viewer>
-                            </>}
-                            {!viewPdf && <>No PDF to View</>}
-                        </Worker>
-                    </div>
+        <Form onSubmit={handleSubmit}>
+            {/* for Choosing file for approval*/}
+            <Form.Group className="Template-text" controlId="JournalViewforApproval" >
+                {/* for title*/}
+                <Form.Group className="mb-3" controlId="advertisementJournalTitle">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control required type="text" placeholder="Title name" />
                 </Form.Group>
+                {/* for subject*/}
+                <Form.Group className="mb-3" controlId="advertisementJournalSubject">
+                    <Form.Label>Subject</Form.Label>
+                    <Form.Control required type="text" placeholder="Subject" />
+                </Form.Group>
+                {/* for publisher*/}
+                <Form.Group className="mb-3" controlId="advertisementJournalPublisher">
+                    <Form.Label>Publisher</Form.Label>
+                    <Form.Control required type="text" placeholder="Journal name" />
+                </Form.Group>
+                <Form.Label>Pending Article</Form.Label>
+                <Form.Control required type="file" onChange={handleChange} />
+                <Button variant="primary" type="submit" className="btn btn-success" >
+                    View Article
+                </Button>
+                <h1>_</h1>
 
-                <Row>
+                <div className="pdf-container">
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                        {viewPdf && <>
+                            <Viewer fileUrl={viewPdf} plugins={[newplugin]}></Viewer>
+                        </>}
+                        {!viewPdf && <>No PDF to View</>}
+                    </Worker>
+                </div>
+            </Form.Group>
 
-                    <Col sm={3} className='Template-text'>
+            <Row>
 
-                        {/* for Approval */}
-                        <Form.Group className="mb-3" controlId="formApproveJournal" >
+                <Col sm={3} className='Template-text'>
 
-
-                            <Button variant="primary" type="submit">
-                                Approve
-                            </Button>
-                        </Form.Group>
-                    </Col>
-
-                    <Col sm={7} />
-                    <Col sm={2} className='Template-text'>
-                        {/* for Decline */}
-                        <Form.Group className="mb-3" controlId="formDeclineJournal" >
+                    {/* for Approval */}
+                    <Form.Group className="mb-3" controlId="formApproveJournal" >
 
 
-                            <Button variant="primary" type="submit">
-                                Reject
-                            </Button>
-                        </Form.Group>
-                    </Col>
-                    <Col sm={3} />
-                </Row>
-            </Form >
+                        <Button variant="primary" type="submit">
+                            Approve
+                        </Button>
+                    </Form.Group>
+                </Col>
 
-        );
-    }
+                <Col sm={7} />
+                <Col sm={2} className='Template-text'>
+                    {/* for Decline */}
+                    <Form.Group className="mb-3" controlId="formDeclineJournal" >
+
+
+                        <Button variant="primary" type="submit">
+                            Reject
+                        </Button>
+                    </Form.Group>
+                </Col>
+                <Col sm={3} />
+            </Row>
+        </Form >
+
+    );
+}
 
 //}
 //}

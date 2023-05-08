@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import ApprovalImage from './ApprovalImage';
 import ApprovalPDF from './ApprovalPDF';
+import ApprovalVideo from './ApprovalVideo';
 
 
 
@@ -33,10 +34,13 @@ class AdminApproval extends Component {
                         <h6>Please choose type of article to approve</h6>
                         <ListGroup>
                             <ListGroup.Item action href="#approvalPDF">
-                                Approve Document article
+                                Approve Document articles
                             </ListGroup.Item>
                             <ListGroup.Item action href="#approvalImage">
-                                Approve Image article
+                                Approve Image articles
+                            </ListGroup.Item>
+                            <ListGroup.Item action href="#approvalVideo">
+                                Approve Video articles
                             </ListGroup.Item>
                         </ListGroup>
                     </Col>
@@ -47,10 +51,13 @@ class AdminApproval extends Component {
                                 <ApprovalPDF />
                             </Tab.Pane>
                             {/* ApprovalImage */}
-                        <Tab.Pane eventKey="#approvalImage">
-                            <ApprovalImage />
-                        </Tab.Pane>
-    
+                            <Tab.Pane eventKey="#approvalImage">
+                                <ApprovalImage />
+                            </Tab.Pane>
+                            {/* ApprovalVideo */}
+                            <Tab.Pane eventKey="#approvalVideo">
+                                <ApprovalVideo />
+                            </Tab.Pane>
                         </Tab.Content>
 
                     </Col>

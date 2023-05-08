@@ -7,8 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Col from 'react-bootstrap/Col';
 
-
-class ApprovalImage extends Component {
+class ApprovalVideo extends Component {
     constructor(props) {
         super(props);
     }
@@ -37,6 +36,7 @@ class ApprovalImage extends Component {
                     <Form.Label>Publisher</Form.Label>
                     <Form.Control required type="text" placeholder="Journal name" />
                 </Form.Group>
+
                 {/* for Choosing file for approval*/}
                 <Form.Group className="Template-text" controlId="JournalViewforApproval">
                     <Form.Label>Pending Article</Form.Label>
@@ -62,11 +62,10 @@ class ApprovalImage extends Component {
                     </Col>
                     <Col sm={3} />
                 </Row>
-
             </Form >
 
         );
     }
 
 }
-export default ApprovalImage;
+export default ApprovalVideo;
