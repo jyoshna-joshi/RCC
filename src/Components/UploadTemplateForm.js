@@ -6,14 +6,18 @@ import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 import { clear } from '@testing-library/user-event/dist/clear';
 
 export default function UploadTemplateForm() {
+    const navigate = useNavigate();
     const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
     const URL_FIELD_TYPE = "http://44.202.58.84:3000/template/fields?type=";
-    const URL_SAVE_TEMPLATE = "h:p://44.202.58.84:3000/template/add-update";
+    const URL_SAVE_CONTENT = "http://44.202.58.84:3000/content/save";
     //for dynamic fields
     const [fields, setFields] = useState([]);
+    const [content, setContent] = useState([]);
     //for dynamic templatetypes
     const [types, setTypes] = useState([]);
     //for selected template type
@@ -26,25 +30,25 @@ export default function UploadTemplateForm() {
         axios.get(URL_TEMPLATE_TYPES)
             .then(response => {
                 setTypes(response.data);
+                fetchUserData(response.data[0]);
             })
             .catch(error => {
                 console.error(error);
             });
     }, []);
 
+
     /**
      * fetch forms data from api
      * @param {type of template} templateType 
      */
     function fetchUserData(templateType) {
-       
-
+        setFields([]);
         fetch(URL_FIELD_TYPE + templateType)
             .then(response => {
                 return response.json()
             })
             .then(data => {
-                fields.data = "";
                 setFields(data.fields)
             })
         setSelectedTemplateType(templateType);
@@ -54,10 +58,10 @@ export default function UploadTemplateForm() {
      * @param {event} event 
      * @param {position} index 
      */
+
     const handleInputChange = (event, index) => {
         fields[index]["value"] = event.target.value;
         setFields(fields);
-        console.log(fields);
     };
 
     /**
@@ -66,10 +70,18 @@ export default function UploadTemplateForm() {
      */
     const handleSubmit = (event) => {
         event.preventDefault();
-        //hit url
-        alert(JSON.stringify(fields));
-        // window.location.reload()
-
+        const formdData = new FormData();
+        fields.map((field, index) => {
+            formdData.append(field.field, field.value);
+        })
+        axios
+            .post(URL_SAVE_CONTENT, formdData)
+            .then((res) => {
+                alert("File Upload success");
+                navigate(-1);
+            })
+            .catch((err) =>
+                alert("File Upload Error"));
     };
 
     return (
@@ -95,7 +107,14 @@ export default function UploadTemplateForm() {
                             {/* for forms */}
                             <Tab.Pane eventKey={selectedTemplateType}>
                                 {fields.map((field, index) => {
-                                    if (field.field == "format") { field.type = "file" } else { field.type = "text" };
+                                    if (field.field == "format") {
+                                        field.type = "file";
+                                    } else if (field.field == "date") {
+                                        field.type = "date";
+                                    }
+                                    else {
+                                        field.type = "text";
+                                    }
                                     return <Form.Group className="mb-3" controlId="title" key={index} >
                                         <Form.Label>{field.title}</Form.Label>
                                         <Form.Control required type={field.type}
@@ -103,7 +122,6 @@ export default function UploadTemplateForm() {
                                             onChange={(e) => handleInputChange(e, index)}
                                         />
                                     </Form.Group>
-
                                 })}
                             </Tab.Pane>
                             <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
