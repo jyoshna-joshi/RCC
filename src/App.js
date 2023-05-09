@@ -6,6 +6,12 @@ import {Login} from "./components/Login";
 import AdminApproval from "./components/AdminApproval";
 import './scss/style.scss'
 import SaveTempleteContent from './components/SaveTempleteContent';
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import Find from './components/Find'
+import Driver from './components/Driver'
+import Luxury from './components/Luxury'
+import Footer from './components/Footer'
 
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
@@ -14,15 +20,17 @@ const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
 const App = () => {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
+          <BrowserRouter>
+          <Navbar />
+          
+          <Routes>
           {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/selectTemplateContent" element={<SaveTempleteContent />} />
           <Route path="/selectLoginForm" element={<Login />} />
           <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
-        </Routes>
+          </Routes>
       </BrowserRouter>
     </div>
   );
@@ -30,8 +38,4 @@ const App = () => {
 
 export default App;
 
-const styles = {
-  app: {
-    padding: 50,
-  },
-};
+
