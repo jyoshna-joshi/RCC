@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 
 import {
   CWidgetStatsF,
@@ -106,52 +107,79 @@ const Dashboard = () => {
     },
   ]
 
-  function sayHello() {
-    alert('Hello!');
+  let navigate = useNavigate();
+
+  function showDetails(source) {
+    switch (source) {
+      case 'all':
+        navigate("/content/all");
+        return;
+      case 'pending':
+        navigate("/content/pending");
+        return;
+      case 'user':
+        navigate("/content/all?user=user");
+        return;
+      case 'admin':
+        navigate("/content/all?user=admin");
+        return;
+      default:
+        navigate('/admin/dashboard');
+        return;
+    };
   }
 
   return (
     <>
       <CRow>
         <CCol xs={12} sm={6} lg={3}>
-          <CWidgetStatsF
-            className="mb-3"
-            icon={<CIcon width={24} icon={cilLibrary} size="xl" />}
-            padding={false}
-            title="All Content"
-            value="25"
-            color="primary"
-          />
+          <div class="box" onClick={() => { showDetails('all'); }}>
+            <CWidgetStatsF
+              className="mb-3"
+              icon={<CIcon width={24} icon={cilLibrary} size="xl" onClick={console.log('dd')} />}
+              padding={false}
+              title="All Content"
+              value="25"
+              color="primary"
+            >
+            </CWidgetStatsF>
+          </div>
         </CCol>
         <CCol xs={12} sm={6} lg={3}>
-          <CWidgetStatsF
-            className="mb-3"
-            icon={<CIcon width={24} icon={cilBellExclamation} size="xl" />}
-            padding={false}
-            title="Pending Approvals"
-            value="12"
-            color="warning"
-          />
+          <div class="box" onClick={() => { showDetails("pending"); }}>
+            <CWidgetStatsF
+              className="mb-3"
+              icon={<CIcon width={24} icon={cilBellExclamation} size="xl" />}
+              padding={false}
+              title="Pending Approvals"
+              value="12"
+              color="warning"
+            />
+          </div>
         </CCol>
         <CCol xs={12} sm={6} lg={3}>
-          <CWidgetStatsF
-            className="mb-3"
-            icon={<CIcon width={24} icon={cilUser} size="xl" />}
-            padding={false}
-            title="User Content"
-            value="15"
-            color="success"
-          />
+          <div class="box" onClick={() => { showDetails("user"); }}>
+            <CWidgetStatsF
+              className="mb-3"
+              icon={<CIcon width={24} icon={cilUser} size="xl" />}
+              padding={false}
+              title="User Content"
+              value="15"
+              color="success"
+            />
+          </div>
         </CCol>
         <CCol xs={12} sm={6} lg={3} >
-          <CWidgetStatsF
-            className="mb-3"
-            icon={<CIcon width={24} icon={cilUser} size="xl" />}
-            padding={false}
-            title="Admin Content"
-            value="10"
-            color="secondary"
-          />
+          <div class="box" onClick={() => { showDetails("admin"); }}>
+            <CWidgetStatsF
+              className="mb-3"
+              icon={<CIcon width={24} icon={cilUser} size="xl" />}
+              padding={false}
+              title="Admin Content"
+              value="10"
+              color="secondary"
+            />
+          </div>
         </CCol>
       </CRow>
       <CRow>
@@ -161,7 +189,7 @@ const Dashboard = () => {
             <CCardBody>
               <CChartPie
                 data={{
-                  labels: ['AdvertisementJournal','AdvertisementNewspaper','ArticleJournal','ArticleNewspaper','BookHistorical'
+                  labels: ['AdvertisementJournal', 'AdvertisementNewspaper', 'ArticleJournal', 'ArticleNewspaper', 'BookHistorical'
                   ],
                   datasets: [
                     {
