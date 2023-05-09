@@ -49,11 +49,6 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Test All Content',
-        to: '/content/allTest',
-      },
-      {
-        component: CNavItem,
         name: 'Approve/Reject',
         to: '/content/approve',
       },
