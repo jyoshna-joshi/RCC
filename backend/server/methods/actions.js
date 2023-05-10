@@ -158,7 +158,9 @@ var functions = {
     fetchTemplateTypes: async function (req, res) {
         try {
             let templateTypes = await TemplateType.find({}, { type: 1, _id: 0 })
-            return res.status(200).json(templateTypes.map(templateType => templateType.type))
+            return res.status(200).json(templateTypes.map(templateType => {
+                return { type: templateType.type }
+            }))
         } catch(err) {
             console.error(err)
             return res.status(500).send(err)
