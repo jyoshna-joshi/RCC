@@ -6,6 +6,8 @@ import {Login} from "./components/Login";
 import AdminApproval from "./components/AdminApproval";
 import './scss/style.scss'
 import SaveTempleteContent from './components/SaveTempleteContent';
+import Test from './components/Test';
+import ViewAllContent from './components/ViewAllContent';
 
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
@@ -18,6 +20,8 @@ const App = () => {
         <Routes>
           {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Test />} /> */}
+
           <Route path="/selectSaveTemplateContent" element={<SaveTempleteContent />} />
           <Route path="/selectLoginForm" element={<Login />} />
           <Route path="/selectLoginForm" element={<selectViewAllContent />} />
