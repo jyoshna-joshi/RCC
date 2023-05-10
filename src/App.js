@@ -20,6 +20,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/selectSaveTemplateContent" element={<SaveTempleteContent />} />
           <Route path="/selectLoginForm" element={<Login />} />
+          <Route path="/selectLoginForm" element={<selectViewAllContent />} />
+
           <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
         </Routes>
