@@ -38,7 +38,7 @@ var functions = {
                                 title: req?.body?.title,
                                 publisher: req?.body?.publisher,
                                 type: req?.body?.type,
-                                status: req?.body?.creator === 'admin' ? 'approved' : 'pending'
+                                status: req?.body?.creator === 'admin' ? 'Approved' : 'Pending'
                             })
                             await content.save()
                             return res.status(200).send("Saved after uploading file!!!")
@@ -61,7 +61,7 @@ var functions = {
                         title: req?.body?.title,
                         publisher: req?.body?.publisher,
                         type: req?.body?.type,
-                        status: req?.body?.creator === 'admin' ? 'approved' : 'pending'
+                        status: req?.body?.creator === 'admin' ? 'Approved' : 'Pending'
                     })
                     await content.save()
                     return res.status(200).send("Saved!!!")
@@ -116,7 +116,7 @@ var functions = {
     },
     listByStatus: async function(req, res) {
         try {
-            let status = req.query.status || "pending"
+            let status = req.query.status || "Pending"
             let contents = await Content.find({ status })
             return res.status(200).send(contents)
         } catch(err) {
@@ -177,6 +177,23 @@ var functions = {
                 } else {
                     return res.status(200).send('Removed!!!')
                 }
+            }
+        } catch(err) {
+            console.error(err)
+            return res.status(500).send(err)
+        }
+    },
+    searchContent: async function(req, res){
+        try {
+            if (!req.query.templateType) {
+                return res.status(500).send('Could not find template type')
+            } else {
+                let query = { type: req.query.templateType }
+                if (req.query.year) query['date'] = req.query.year
+                if (req.query.publisher) query['publisher'] = req.query.publisher
+                if (req.query.searchText) query['title'] = new RegExp(req.query.searchText.toLowerCase(), 'i')
+                let contents = await Content.find(query)
+                return res.status(200).json(contents)
             }
         } catch(err) {
             console.error(err)
