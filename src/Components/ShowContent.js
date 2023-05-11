@@ -21,7 +21,7 @@ function ShowContent() {
         <h1>Articles</h1>
         <div className={styles.text_bg}>
           <p>
-            <span>Watch what others are sharing</span>
+            <span>Read what others are sharing</span>
           </p>
         </div>
 
