@@ -7,11 +7,6 @@ import AdminApproval from "./components/AdminApproval";
 import './scss/style.scss'
 import SaveTempleteContent from './components/SaveTempleteContent';
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Find from './components/Find'
-import Driver from './components/Driver'
-import Luxury from './components/Luxury'
-import Footer from './components/Footer'
 
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))

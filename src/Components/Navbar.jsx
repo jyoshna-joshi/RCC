@@ -21,9 +21,7 @@ const Navbar = () => {
       <nav>
       <ul className={nav ? [styles.menu, styles.active].join(' ') : [styles.menu]} >
         <li><Link to= '/'>Home</Link></li>
-        <li><Link to= '/'>Rover History</Link></li>
-        <li><Link to= '/'>About Us</Link></li>
-        <li><Link to= '/'>View All Contents</Link></li>
+        
         <li><Link to= '/selectTemplateContent'>Upload</Link></li>
         <li><Link to= '/selectLoginForm'>Admin Login</Link></li>
         </ul>

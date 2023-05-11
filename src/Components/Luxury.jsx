@@ -45,3 +45,4 @@ const Luxury = () => {
 }
 
 export default Luxury
+
