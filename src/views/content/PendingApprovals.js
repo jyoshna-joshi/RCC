@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { classNames } from 'primereact/utils';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
-import { ProgressBar } from 'primereact/progressbar';
 import { Calendar } from 'primereact/calendar';
 import { MultiSelect } from 'primereact/multiselect';
-import { Slider } from 'primereact/slider';
 import { Tag } from 'primereact/tag';
-import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 
-export default function AdvancedFilterDemo() {
+export default function PendingApproval() {
     const [content, setContent] = useState(null);
     const [filters, setFilters] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [formats, setFormats] = useState();
 
     const [statuses] = useState(['Pending']);
@@ -141,7 +135,7 @@ export default function AdvancedFilterDemo() {
 
     return (
         <div className="card">
-            <DataTable value={content} paginator rows={10} loading={loading} dataKey="_id"
+            <DataTable value={content} paginator rows={10} dataKey="_id"
                 filters={filters} header={header}
                 emptyMessage="No content found.">
                 <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />

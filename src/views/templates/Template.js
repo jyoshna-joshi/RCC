@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useRef } from 'react'
+import React,{ useState, useEffect, useRef } from 'react';
 import {
     CFormSelect,
     CCard,
@@ -11,9 +11,9 @@ import {
     CButton,
     CRow,
     CAlert
-} from '@coreui/react'
+} from '@coreui/react';
 import { cilTrash, cilPencil } from '@coreui/icons';
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 

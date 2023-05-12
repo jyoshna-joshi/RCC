@@ -6,8 +6,8 @@ const PendingApprovals = React.lazy(() => import('./views/content/PendingApprova
 const SaveTempleteContent = React.lazy(() => import('./components/SaveTempleteContent'))
 const ApproveContent = React.lazy(() => import('./components/AdminApproval'))
 const AllTemplates = React.lazy(() => import('./views/templates/AllTemplates'))
-const NewTemplate = React.lazy(() => import('./views/templates/Template'))
-
+const Template = React.lazy(() => import('./views/templates/Template'))
+const ViewAll = React.lazy(() => import('./components/ViewAllContent'))
 
 const routes = [
   { path: '/', name: 'Dashboard', element: Dashboard },
@@ -18,9 +18,9 @@ const routes = [
   { path: '/content/approve', name: 'Approve Content', element: ApproveContent },
   { path: '/content/list-by-creator*', name: 'Public Content', element: AllUploads},
   { path: '/template/all', name: "All Templates", element: AllTemplates},
-  { path: '/template/new', name: "New Template", element: NewTemplate},
-  { path: '/template/edit', name: "New Template", element: NewTemplate},
-  { path: '/template/view', name: "New Template", element: NewTemplate}
+  { path: '/template/new', name: "New Template", element: Template},
+  { path: '/template/edit', name: "New Template", element: Template},
+  { path: '/template/view', name: "New Template", element: Template}
 
 
 ]
