@@ -116,9 +116,14 @@ var functions = {
     },
     listByStatus: async function(req, res) {
         try {
-            let status = req.query.status || "Pending"
-            let contents = await Content.find({ status })
-            return res.status(200).send(contents)
+            if(!req.query.status){
+                let contents = await Content.find()
+                return res.status(200).send(contents)
+            }else{
+                let status = req.query.status
+                let contents = await Content.find({ status })
+                return res.status(200).send(contents)
+            }    
         } catch(err) {
             console.error(err)
             return res.status(500).send(err)
