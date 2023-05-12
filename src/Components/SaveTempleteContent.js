@@ -27,6 +27,17 @@ export default function UploadTemplateForm() {
     //for spinner
     const [isLoading, setIsLoading] = useState(false);
 
+    /**
+     * load spinner
+     * @returns spinner
+     */
+    function loadSpinner() {
+        if (isLoading) {
+            return <Spinner animation="grow" variant="success" >
+            </Spinner>
+        }
+
+    }
 
 
     /**
@@ -35,13 +46,14 @@ export default function UploadTemplateForm() {
     useEffect(() => {
         axios(URL_TEMPLATE_TYPES)
             .then(response => {
-                console.log(response.data);
+                setIsLoading(true);
                 return (response.data).map((item) => {
                     return item.type;
                 });
             })
             .then(data => {
                 setTypes(data)
+                setIsLoading(false)
             })
             .catch(error => {
                 console.error(error);
@@ -62,6 +74,7 @@ export default function UploadTemplateForm() {
             })
             .then(data => {
                 setFields(data.fields)
+                setIsLoading(false)
             })
         setSelectedTemplateType(templateType);
     }
@@ -76,6 +89,8 @@ export default function UploadTemplateForm() {
         setFields(fields);
     };
 
+
+
     /**
      * when submit button is clicked
      * @param  event 
@@ -85,6 +100,8 @@ export default function UploadTemplateForm() {
         event.preventDefault();
         const formdData = new FormData();
         fields.map((field, index) => {
+            console.log(field.value);
+
             formdData.append(field.field, field.value);
         })
         console.log(formdData.json);
@@ -111,7 +128,6 @@ export default function UploadTemplateForm() {
                         <ListGroup>
                             {types.map((templateType) => (
                                 <ListGroupItem eventKey={templateType} onClick={() => fetchUserData(templateType)}>
-
                                     {templateType}
                                 </ListGroupItem>
 
@@ -121,6 +137,7 @@ export default function UploadTemplateForm() {
                     </Col>
                     <Col sm={10} className='Template-text'>
                         <Tab.Content>
+                            {loadSpinner()}
                             <Tab.Pane eventKey={selectedTemplateType}>
                                 {/* for forms */}
                                 {fields.map((field, index) => {
@@ -147,8 +164,6 @@ export default function UploadTemplateForm() {
                                     </Button>
                                 </Form.Group>
                             </Tab.Pane>
-
-
                         </Tab.Content>
                     </Col>
                     <Col sm={1} />
