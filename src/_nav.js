@@ -30,18 +30,27 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'All Uploads',
+        name: 'All Content',
         to: '/content/all',
       },
       {
         component: CNavItem,
-        name: 'Pending Approval',
+        name: 'Pending Approvals',
         to: '/content/pending',
+        badge: {
+          color: 'warning',
+          text: '3',
+        },
       },
       {
         component: CNavItem,
         name: 'Upload Content',
         to: '/content/upload',
+      },
+      {
+        component: CNavItem,
+        name: 'Approve/Reject',
+        to: '/content/approve',
       },
     ]
   },
