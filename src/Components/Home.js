@@ -16,6 +16,7 @@ const Home = (props) => {
   const [nav, setNav] = useState(false);
   return (
     <>
+<<<<<<< HEAD
  
           <Hero />
           <ShowContent />
@@ -25,6 +26,17 @@ const Home = (props) => {
           <Footer />
           
               
+=======
+      <h1>Home Page</h1>
+            {/* Button */}
+      <p>
+        <button onClick={() => navigate("/selectSaveTemplateContent")}>Upload file</button>
+        <button onClick={() => navigate("/selectLoginForm")}>Admin Login</button>
+        <button onClick={() => navigate("/selectAdminApprovalForm")}>Admin Approval</button>
+        <button onClick={() => navigate("/selectViewAllContent")}>View All</button>
+
+      </p>     
+>>>>>>> 6283f020cf89a872be1dc735a03e32808507426d
     </>
   );
 };

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Spinner } from 'react-bootstrap';
 import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert';
+
 
 import { clear } from '@testing-library/user-event/dist/clear';
 
@@ -22,6 +24,10 @@ export default function UploadTemplateForm() {
     const [types, setTypes] = useState([]);
     //for selected template type
     const [selectedTemplateType, setSelectedTemplateType] = useState("Select Template Type");
+    //for spinner
+    const [isLoading, setIsLoading] = useState(false);
+
+
 
     /**
      * api integration for template type
@@ -44,6 +50,7 @@ export default function UploadTemplateForm() {
      */
     function fetchUserData(templateType) {
         setFields([]);
+    
         fetch(URL_FIELD_TYPE + templateType)
             .then(response => {
                 return response.json()
@@ -69,6 +76,7 @@ export default function UploadTemplateForm() {
      * @param  event 
      */
     const handleSubmit = (event) => {
+        
         event.preventDefault();
         const formdData = new FormData();
         fields.map((field, index) => {
@@ -97,7 +105,8 @@ export default function UploadTemplateForm() {
                         {/* for types */}
                         <ListGroup >
                             {types.map((templateType) => (
-                                <ListGroupItem eventKey={templateType} onClick={() => fetchUserData(templateType)}>
+                                <ListGroupItem eventKey={templateType} onClick={() => fetchUserData(templateType) }>
+                                  
                                     {templateType}
                                 </ListGroupItem>
                             ))}

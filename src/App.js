@@ -21,8 +21,10 @@ const App = () => {
           <Routes>
           {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
-          <Route path="/selectTemplateContent" element={<SaveTempleteContent />} />
+          <Route path="/selectSaveTemplateContent" element={<SaveTempleteContent />} />
           <Route path="/selectLoginForm" element={<Login />} />
+          <Route path="/selectLoginForm" element={<selectViewAllContent />} />
+
           <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
           </Routes>
