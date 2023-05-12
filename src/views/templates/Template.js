@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useRef } from 'react';
+import React,{ useState, useEffect } from 'react';
 import {
     CFormSelect,
     CCard,
@@ -22,8 +22,7 @@ export default function FormControl() {
 
     const [templateName, setTemplateName] = useState(null);
     const [action, setAction] = useState(null);
-    const [toast, addToast] = useState(0)
-    const toaster = useRef()
+    const [toast, addToast] = useState()
 
     const path = window.location.pathname;
     const searchPath = new URLSearchParams(window.location.search);

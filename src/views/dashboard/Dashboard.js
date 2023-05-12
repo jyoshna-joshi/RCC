@@ -13,12 +13,6 @@ import CIcon from '@coreui/icons-react'
 import {
   cilLibrary,
   cilBellExclamation,
-  cibCcMastercard,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifUs,
-  cibTwitter,
   cilUser,
   cilUserFemale,
 } from '@coreui/icons'
