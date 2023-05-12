@@ -93,12 +93,14 @@ export default function UploadTemplateForm() {
     };
 
     return (
-        <Form >
+        
+        <Form>
+            
             <Tab.Container id="list-group-tabs" defaultActiveKey="#advertisementJournal"  >
                 <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
                 <Row>
-                    <Col sm={3} />
-                    <Col sm={3} className='Template-text'>
+                    <Col sm={1} />
+                    <Col sm={10} className='Template-text'>
                         <h6>Please choose the type of the file</h6>
                         {/* for types */}
                         <ListGroup >
@@ -111,7 +113,7 @@ export default function UploadTemplateForm() {
                             <pre>You choose: {selectedTemplateType}</pre>
                         </ListGroup>
                     </Col>
-                    <Col sm={4} className='Template-text'>
+                    <Col sm={10} className='Template-text'>
                         <Tab.Content>
                             {/* for forms */}
                             <Tab.Pane eventKey={selectedTemplateType}>
@@ -140,9 +142,10 @@ export default function UploadTemplateForm() {
                             </Form.Group>
                         </Tab.Content>
                     </Col>
-                    <Col sm={3} />
+                    <Col sm={1} />
                 </Row>
             </Tab.Container>
         </Form>
+    
     );
 }

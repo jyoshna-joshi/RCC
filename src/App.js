@@ -7,6 +7,7 @@ import AdminApproval from "./components/AdminApproval";
 import ViewAll from "./components/ViewAllContent";
 import './scss/style.scss';
 import SaveTempleteContent from './components/SaveTempleteContent';
+import Navbar from './components/Navbar'
 
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
@@ -15,8 +16,10 @@ const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
 const App = () => {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
+          <BrowserRouter>
+          <Navbar />
+          
+          <Routes>
           {/* <Route exact path="/" name="Home" element={<Home />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/selectSaveTemplateContent" element={<SaveTempleteContent />} />
@@ -26,7 +29,7 @@ const App = () => {
 
           <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
-        </Routes>
+          </Routes>
       </BrowserRouter>
     </div>
   );
@@ -34,8 +37,4 @@ const App = () => {
 
 export default App;
 
-const styles = {
-  app: {
-    padding: 50,
-  },
-};
+
