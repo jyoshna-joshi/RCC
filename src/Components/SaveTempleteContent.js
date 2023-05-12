@@ -12,7 +12,7 @@ import Card from 'react-bootstrap/Card';
 
 import { clear } from '@testing-library/user-event/dist/clear';
 
-export default function UploadTemplateForm() {
+export default function SaveTempleteContent() {
     const navigate = useNavigate();
     const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
     const URL_FIELD_TYPE = "http://44.202.58.84:3000/template/fields?type=";
