@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
-
+import Card from 'react-bootstrap/Card';
 
 import { clear } from '@testing-library/user-event/dist/clear';
 
@@ -120,12 +120,12 @@ export default function UploadTemplateForm() {
     };
 
     return (
-        <Form >
+        <Card >
             <Tab.Container id="list-group-tabs" >
                 <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
                 <Row>
-                    <Col sm={1} />
-                    <Col sm={10} className='Template-text'>
+                    <Col sm={3} />
+                    <Col sm={3} className='Template-text'>
                         <h6>Please choose the type of the file</h6>
                         {/* for types */}
                         <ListGroup>
@@ -138,7 +138,7 @@ export default function UploadTemplateForm() {
                             <pre>You choose: {selectedTemplateType}</pre>
                         </ListGroup>
                     </Col>
-                    <Col sm={10} className='Template-text'>
+                    <Col sm={4} className='Template-text'>
                         <Tab.Content>
                             {loadSpinner()}
                             <Tab.Pane eventKey={selectedTemplateType}>
@@ -169,10 +169,10 @@ export default function UploadTemplateForm() {
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>
-                    <Col sm={1} />
+                    <Col sm={3} />
                 </Row>
             </Tab.Container>
-        </Form>
+        </Card>
     
     );
 }
