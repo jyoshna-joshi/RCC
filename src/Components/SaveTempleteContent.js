@@ -83,9 +83,12 @@ export default function UploadTemplateForm() {
      * @param {event} event 
      * @param {position} index 
      */
-
     const handleInputChange = (event, index) => {
-        fields[index]["value"] = event.target.value;
+        if(fields[index].field == "format"){
+            fields[index]["value"] = event.target.files[0];
+        }else{
+            fields[index]["value"] = event.target.value;
+        }
         setFields(fields);
     };
 
