@@ -21,7 +21,20 @@ $enable-rtl: true;
     
 //core
 @import "primereact/resources/primereact.min.css";   
+@import "primeicons/primeicons.css";
 
 .box {
     cursor: pointer;
+}
+
+.column {
+    float: left;
+    width: 25%;
+  }
+  
+/* Clear floats after the columns */
+.row:after {
+content: "";
+display: table;
+clear: both;
 }

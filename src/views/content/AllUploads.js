@@ -14,15 +14,9 @@ import { Tag } from 'primereact/tag';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 
 export default function AdvancedFilterDemo() {
-    const [customers, setCustomers] = useState(null);
+    const [content, setContent] = useState(null);
     const [filters, setFilters] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [formats] = useState([
-        'AdvertisementNewspaper',
-        'ArticleJournal',
-        'BookTechnical',
-        'AdvertisementJournal'
-    ]);
+    const [formats, setFormats] = useState();
     const [statuses] = useState(['Approved', 'Rejected', 'Pending']);
 
     const getSeverity = (status) => {
@@ -39,38 +33,40 @@ export default function AdvancedFilterDemo() {
     };
 
     useEffect(() => {
-        const fetchata = async () => {
+        const fetchData = async () => {
+            
+            const params = new URLSearchParams(window.location.search);
+            const creator = params.get("creator");
+            const status = params.get("status");
+            var url = 'http://44.202.58.84:3000/content/list-by-status';
 
-            const response = await fetch(
-                'http://44.202.58.84:3000/listByStatus?status=approved');
-            const data = [
-                { 'status': 'Approved', 'title': 'AdvertisementNewspaper', 'format': 'AdvertisementNewspaper', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Approved', 'title': 'AdvertisementNewspaper', 'format': 'AdvertisementNewspaper', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Approved', 'title': 'AAA', 'format': 'ArticleJournal', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Approved', 'title': 'AAA', 'format': 'ArticleJournal', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Approved', 'title': 'AAA', 'format': 'BookTechnical', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Approved', 'title': 'AAA', 'format': 'BookTechnical', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Approved', 'title': 'AAA', 'format': 'AdvertisementJournal', 'date': '2023-01-01', 'rowColor': 'success' },
-                { 'status': 'Rejected', 'title': 'AAA', 'format': 'AdvertisementJournal', 'date': '2023-01-01', 'rowColor': 'danger' },
-                { 'status': 'Rejected', 'title': 'AAA', 'format': 'ArticleJournal', 'date': '2023-01-01', 'rowColor': 'danger' },
-                { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementNewspaper', 'rowColor': 'warning', 'date': '2023-01-01'},
-                { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementJournal', 'rowColor': 'warning', 'date': '2023-01-01' },
-                { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementJournal', 'rowColor': 'warning', 'date': '2023-01-01' },
-                { 'status': 'Pending', 'title': 'AAA', 'format': 'AdvertisementJournal', 'rowColor': 'warning', 'date': '2023-01-01' },
-                { 'status': 'Pending', 'title': 'AAA', 'format': 'BookTechnical', 'rowColor': 'warning', 'date': '2023-01-01' },
-                { 'status': 'Pending', 'title': 'AAA', 'format': 'ArticleJournal', 'rowColor': 'warning', 'date': '2023-01-01' },
-            ];
+            if (creator == 'admin') {
+                url = 'http://44.202.58.84:3000/content/list-by-creator?creator=admin';
+            }
+            else if (creator == 'public') {
+                url = 'http://44.202.58.84:3000/content/list-by-creator?creator=public'
+            }
 
-            //use only 3 sample data
-            setCustomers(getCustomers(data));
+            if (status != null ) {
+                url = 'http://44.202.58.84:3000/content/list-by-status?status=' + status;
+            }            
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            const formatResponse = await fetch('http://44.202.58.84:3000/template/types');
+            const formatData = await formatResponse.json();
+            
+            setContent(getContent(data));            
+            setFormats(formatData);
             initFilters();
         }
 
         // Call the function
-        fetchata();
+        fetchData();
     }, []);
 
-    const getCustomers = (data) => {
+    const getContent = (data) => {
         return [...(data || [])].map((d) => {
             d.date = new Date(d.date) || null;
 
@@ -87,10 +83,6 @@ export default function AdvancedFilterDemo() {
         });
     };
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    };
-
     const clearFilter = () => {
         initFilters();
     };
@@ -99,7 +91,7 @@ export default function AdvancedFilterDemo() {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             title: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-            format: { value: null, matchMode: FilterMatchMode.IN },
+            type: { value: null, matchMode: FilterMatchMode.IN },
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             status: { value: null, matchMode: FilterMatchMode.IN },
         });
@@ -113,24 +105,22 @@ export default function AdvancedFilterDemo() {
         );
     };    
 
-    const representativeBodyTemplate = (rowData) => {
-        const representative = rowData.format;
+    const typeBodyTemplate = (rowData) => {
+        const type = rowData.type;
 
         return (
-            // <div className="flex align-items-center gap-2">
-                <span>{representative}</span>
-            // </div>
+            <span>{type}</span>
         );
     };
 
-    const representativeFilterTemplate = (options) => {
-        return <MultiSelect value={options.value} options={formats} itemTemplate={representativesItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />;
+    const typeFilterTemplate = (options) => {
+        return <MultiSelect value={options.value} options={formats} itemTemplate={typesItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" optionLabel="type"/>;
     };
 
-    const representativesItemTemplate = (option) => {
+    const typesItemTemplate = (option) => {
         return (
             <div className="flex align-items-center gap-2">
-                <span>{option}</span>
+                <span>{option.type}</span>
             </div>
         );
     };
@@ -143,14 +133,6 @@ export default function AdvancedFilterDemo() {
         return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     };
 
-    const balanceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.balance);
-    };
-
-    const balanceFilterTemplate = (options) => {
-        return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="USD" locale="en-US" />;
-    };
-
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
     };
@@ -158,7 +140,7 @@ export default function AdvancedFilterDemo() {
     const statusFilterTemplate = (options) => {
         return <MultiSelect value={options.value} 
         options={statuses} 
-        itemTemplate={representativesItemTemplate} 
+        itemTemplate={statusItemTemplate} 
         onChange={(e) => options.filterCallback(e.value)} 
         placeholder="Any" 
         className="p-column-filter" />;
@@ -172,65 +154,18 @@ export default function AdvancedFilterDemo() {
         );
     };
 
-    const activityBodyTemplate = (rowData) => {
-        return <ProgressBar value={rowData.activity} showValue={false} style={{ height: '6px' }}></ProgressBar>;
-    };
-
-    const activityFilterTemplate = (options) => {
-        return (
-            <React.Fragment>
-                <Slider value={options.value} onChange={(e) => options.filterCallback(e.value)} range className="m-3"></Slider>
-                <div className="flex align-items-center justify-content-between px-2">
-                    <span>{options.value ? options.value[0] : 0}</span>
-                    <span>{options.value ? options.value[1] : 100}</span>
-                </div>
-            </React.Fragment>
-        );
-    };
-
-    const verifiedBodyTemplate = (rowData) => {
-        return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.verified, 'text-red-500 pi-times-circle': !rowData.verified })}></i>;
-    };
-
-    const verifiedFilterTemplate = (options) => {
-        return (
-            <div className="flex align-items-center gap-2">
-                <label htmlFor="verified-filter" className="font-bold">
-                    Verified
-                </label>
-                <TriStateCheckbox inputId="verified-filter" value={options.value} onChange={(e) => options.filterCallback(e.value)} />
-            </div>
-        );
-    };
-
     const header = renderHeader();
 
     return (
         <div className="card">
-            <DataTable value={customers} paginator rows={10} loading={loading} dataKey="id"
+            <DataTable value={content} paginator rows={10} dataKey="_id"
                 filters={filters} header={header}
-                emptyMessage="No customers found.">
+                emptyMessage="No content found.">
                 <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
                 <Column field="title" header="Title" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
                 <Column filterField="status" header="Status" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                <Column header="Type" filterField="format" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} />
-                {/* <Column header="Country" filterField="country.name" style={{ minWidth: '12rem' }} body={countryBodyTemplate}
-                    filter filterPlaceholder="Search by country" filterClear={filterClearTemplate}
-                    filterApply={filterApplyTemplate} filterFooter={filterFooterTemplate} />
-                    filterApply={filterApplyTemplate} filterFooter={filterFooterTemplate} />
-                
-                
-                    filterApply={filterApplyTemplate} filterFooter={filterFooterTemplate} />                
-                
-                
-                <Column header="Balance" filterField="balance" dataType="numeric" style={{ minWidth: '10rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
-                <Column header="Balance" filterField="balance" dataType="numeric" style={{ minWidth: '10rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
-                
-                <Column header="Balance" filterField="balance" dataType="numeric" style={{ minWidth: '10rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />                
-                
-                <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
-                <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} /> */}
+                <Column header="Type" filterField="type" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />                
             </DataTable>
         </div>
     );

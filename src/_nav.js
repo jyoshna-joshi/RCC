@@ -36,11 +36,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Pending Approvals',
-        to: '/content/pending',
-        badge: {
-          color: 'warning',
-          text: '3',
-        },
+        to: '/content/pending'
       },
       {
         component: CNavItem,
@@ -52,6 +48,24 @@ const _nav = [
         name: 'Approve/Reject',
         to: '/content/approve',
       },
+    ]
+  },
+  {
+    component: CNavGroup,
+    name: 'Template Management',
+    to: '/template',
+    icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'All Templates',
+        to: '/template/all',
+      },
+      {
+        component: CNavItem,
+        name: 'New Template',
+        to: '/template/new',
+      }
     ]
   },
 ]

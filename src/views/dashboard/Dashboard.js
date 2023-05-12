@@ -1,111 +1,75 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 
 import {
   CWidgetStatsF,
-  CButton,
-  CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
-  CProgress,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
-import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
 import {
   cilLibrary,
   cilBellExclamation,
   cibCcMastercard,
-  cilClock,
-  cibCcStripe,
-  cibCcVisa,
   cibGoogle,
   cibFacebook,
   cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
   cifUs,
   cibTwitter,
-  cilExternalLink,
-  cilPeople,
   cilUser,
   cilUserFemale,
-  cilLockLocked,
 } from '@coreui/icons'
 import {
-  CChartBar,
-  CChartDoughnut,
-  CChartLine,
   CChartPie,
-  CChartPolarArea,
-  CChartRadar,
 } from '@coreui/react-chartjs'
 
 import avatar1 from '../../assets/images/avatars/1.jpg'
 
 const Dashboard = () => {
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  const [widgetData, setData] = useState([
+    { all: 0, pending: 0, admin: 0, user: 0}
+  ])
+  const [chartData, setChartData] = useState()
 
-  const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
-  ]
+  useEffect(() => {
+    const fetchata = async () => { 
 
-  const progressGroupExample1 = [
-    { title: 'Monday', value1: 34, value2: 78 },
-    { title: 'Tuesday', value1: 56, value2: 94 },
-    { title: 'Wednesday', value1: 12, value2: 67 },
-    { title: 'Thursday', value1: 43, value2: 91 },
-    { title: 'Friday', value1: 22, value2: 73 },
-    { title: 'Saturday', value1: 53, value2: 82 },
-    { title: 'Sunday', value1: 9, value2: 69 },
-  ]
+        const response = await fetch('http://44.202.58.84:3000/content/list-by-status');
+        const data = await response.json();
+        var allCount = 0, pendingCount = 0, adminCount = 0, userCount = 0
+        var typeMap = new Map();
 
-  const progressGroupExample2 = [
-    { title: 'Male', icon: cilUser, value: 53 },
-    { title: 'Female', icon: cilUserFemale, value: 43 },
-  ]
+        allCount = data.length;
 
-  const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
-    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
-    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
-    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
-  ]
+        for (var i in data) {
+          if (data[i].creator === 'admin') {
+            adminCount++;
+          }
+          if (data[i].creator === 'public') {
+            userCount++;
+          }
+          if (data[i].status === 'Pending') {
+            pendingCount++;
+          }
+          typeMap.set(data[i].type, (typeMap.get(data[i].type) ?? 0) + 1);
+        }
+        let sortedTypeMap = new Map([...typeMap.entries()].sort((a, b) => b[1] - a[1]));
 
-  const tableExample = [
-    {
-      avatar: { src: avatar1, status: 'success' },
-      user: {
-        name: 'Yiorgos Avraamu',
-        new: true,
-        registered: 'Jan 1, 2021',
-      },
-      country: { name: 'USA', flag: cifUs },
-      usage: {
-        value: 50,
-        period: 'Jun 11, 2021 - Jul 10, 2021',
-        color: 'success',
-      },
-      payment: { name: 'Mastercard', icon: cibCcMastercard },
-      activity: '10 sec ago',
-    },
-  ]
+        var arrayTmp = Array.from(sortedTypeMap).slice(0, 5);
+        
+        setData({ all: allCount, pending: pendingCount, admin: adminCount, user: userCount });
+        console.log(data);
+        setChartData(arrayTmp);
+
+        console.log(arrayTmp);
+    }
+
+    // Call the function
+    fetchata();
+  }, []);
 
   let navigate = useNavigate();
 
@@ -118,10 +82,10 @@ const Dashboard = () => {
         navigate("/content/pending");
         return;
       case 'user':
-        navigate("/content/all?user=user");
+        navigate("/content/list-by-creator?creator=public");
         return;
       case 'admin':
-        navigate("/content/all?user=admin");
+        navigate("/content/list-by-creator?creator=admin");
         return;
       default:
         navigate('/admin/dashboard');
@@ -136,10 +100,10 @@ const Dashboard = () => {
           <div class="box" onClick={() => { showDetails('all'); }}>
             <CWidgetStatsF
               className="mb-3"
-              icon={<CIcon width={24} icon={cilLibrary} size="xl" onClick={console.log('dd')} />}
+              icon={<CIcon width={24} icon={cilLibrary} size="xl"/>}
               padding={false}
               title="All Content"
-              value="25"
+              value={widgetData.all}
               color="primary"
             >
             </CWidgetStatsF>
@@ -152,7 +116,7 @@ const Dashboard = () => {
               icon={<CIcon width={24} icon={cilBellExclamation} size="xl" />}
               padding={false}
               title="Pending Approvals"
-              value="12"
+              value={widgetData.pending}
               color="warning"
             />
           </div>
@@ -164,7 +128,7 @@ const Dashboard = () => {
               icon={<CIcon width={24} icon={cilUser} size="xl" />}
               padding={false}
               title="User Content"
-              value="15"
+              value={widgetData.user}
               color="success"
             />
           </div>
@@ -176,7 +140,7 @@ const Dashboard = () => {
               icon={<CIcon width={24} icon={cilUser} size="xl" />}
               padding={false}
               title="Admin Content"
-              value="10"
+              value={widgetData.admin}
               color="secondary"
             />
           </div>
@@ -189,13 +153,12 @@ const Dashboard = () => {
             <CCardBody>
               <CChartPie
                 data={{
-                  labels: ['AdvertisementJournal', 'AdvertisementNewspaper', 'ArticleJournal', 'ArticleNewspaper', 'BookHistorical'
-                  ],
+                  //labels: [chartData[0][0], chartData[1][0], chartData[2][0], chartData[3][0], chartData[4][0]],
                   datasets: [
                     {
-                      data: [1, 2, 5, 9, 8],
-                      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#008000', '#800080'],
-                      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#008000', '#800080'],
+                      //data: [chartData[0][1], chartData[1][1], chartData[2][1], chartData[3][1], chartData[4][1]],
+                      backgroundColor: ['#072F5F', '#1261A0', '#3895D3', '#58CCED', '#DFE9F3'],
+                      hoverBackgroundColor: ['#072F5F', '#1261A0', '#3895D3', '#58CCED', '#DFE9F3'],
                     },
                   ],
                 }}
@@ -212,9 +175,9 @@ const Dashboard = () => {
                   labels: ['General User', 'Admin'],
                   datasets: [
                     {
-                      data: [15, 10],
-                      backgroundColor: ['#FF6384', '#36A2EB'],
-                      hoverBackgroundColor: ['#FF6384', '#36A2EB'],
+                      data: [widgetData.user, widgetData.admin],
+                      backgroundColor: ['#750F37', '#EA5F89'],
+                      hoverBackgroundColor: ['#750F37', '#EA5F89'],
                     },
                   ],
                 }}
