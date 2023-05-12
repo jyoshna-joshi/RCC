@@ -33,10 +33,15 @@ export default function UploadTemplateForm() {
      * api integration for template type
      */
     useEffect(() => {
-        axios.get(URL_TEMPLATE_TYPES)
+        axios(URL_TEMPLATE_TYPES)
             .then(response => {
-                setTypes(response.data);
-                fetchUserData(response.data[0]);
+                console.log(response.data);
+                return (response.data).map((item) => {
+                    return item.type;
+                });
+            })
+            .then(data => {
+                setTypes(data)
             })
             .catch(error => {
                 console.error(error);
@@ -50,10 +55,10 @@ export default function UploadTemplateForm() {
      */
     function fetchUserData(templateType) {
         setFields([]);
-    
+        setIsLoading(true);
         fetch(URL_FIELD_TYPE + templateType)
             .then(response => {
-                return response.json()
+                return response.json();
             })
             .then(data => {
                 setFields(data.fields)
@@ -76,15 +81,17 @@ export default function UploadTemplateForm() {
      * @param  event 
      */
     const handleSubmit = (event) => {
-        
+
         event.preventDefault();
         const formdData = new FormData();
         fields.map((field, index) => {
             formdData.append(field.field, field.value);
         })
+        console.log(formdData.json);
         axios
             .post(URL_SAVE_CONTENT, formdData)
             .then((res) => {
+
                 alert("File Upload success");
                 navigate(-1);
             })
@@ -94,28 +101,30 @@ export default function UploadTemplateForm() {
 
     return (
         <Form >
-            <Tab.Container id="list-group-tabs" defaultActiveKey="#advertisementJournal"  >
+            <Tab.Container id="list-group-tabs" >
                 <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
                 <Row>
                     <Col sm={3} />
                     <Col sm={3} className='Template-text'>
                         <h6>Please choose the type of the file</h6>
                         {/* for types */}
-                        <ListGroup >
+                        <ListGroup>
                             {types.map((templateType) => (
-                                <ListGroupItem eventKey={templateType} onClick={() => fetchUserData(templateType) }>
-                                  
+                                <ListGroupItem eventKey={templateType} onClick={() => fetchUserData(templateType)}>
+
                                     {templateType}
                                 </ListGroupItem>
+
                             ))}
                             <pre>You choose: {selectedTemplateType}</pre>
                         </ListGroup>
                     </Col>
                     <Col sm={4} className='Template-text'>
                         <Tab.Content>
-                            {/* for forms */}
                             <Tab.Pane eventKey={selectedTemplateType}>
+                                {/* for forms */}
                                 {fields.map((field, index) => {
+
                                     if (field.field == "format") {
                                         field.type = "file";
                                     } else if (field.field == "date") {
@@ -132,12 +141,14 @@ export default function UploadTemplateForm() {
                                         />
                                     </Form.Group>
                                 })}
+                                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit} disabled={isLoading}>
+                                    <Button variant="primary" type="submit">
+                                        Submit for approval
+                                    </Button>
+                                </Form.Group>
                             </Tab.Pane>
-                            <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
-                                <Button variant="primary" type="submit">
-                                    Submit for approval
-                                </Button>
-                            </Form.Group>
+
+
                         </Tab.Content>
                     </Col>
                     <Col sm={3} />
