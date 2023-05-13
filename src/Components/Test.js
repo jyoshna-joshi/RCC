@@ -1,7 +1,7 @@
 import React from 'react'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import UploadTemplateForm from './SaveTempleteContent';
+import SaveTempleteContent from './SaveTempleteContent';
 import { Login } from './Login';
 import ViewAllContent from './ViewAllContent';
 import Test2 from './Test2';
@@ -23,7 +23,7 @@ function Test() {
        <ViewAllContent/>
       </Tab>
       <Tab eventKey="uploadfile" title="Upload file">
-        <UploadTemplateForm/>
+        <SaveTempleteContent/>
       </Tab>
       <Tab eventKey="adminLogin" title="Admin login">
         <Login/>

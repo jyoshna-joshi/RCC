@@ -8,11 +8,11 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
-
+import Card from 'react-bootstrap/Card';
 
 import { clear } from '@testing-library/user-event/dist/clear';
 
-export default function UploadTemplateForm() {
+export default function SaveTempleteContent() {
     const navigate = useNavigate();
     const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
     const URL_FIELD_TYPE = "http://44.202.58.84:3000/template/fields?type=";
@@ -27,6 +27,17 @@ export default function UploadTemplateForm() {
     //for spinner
     const [isLoading, setIsLoading] = useState(false);
 
+    /**
+     * load spinner
+     * @returns spinner
+     */
+    function loadSpinner() {
+        if (isLoading) {
+            return <Spinner animation="grow" variant="success" >
+            </Spinner>
+        }
+
+    }
 
 
     /**
@@ -35,13 +46,14 @@ export default function UploadTemplateForm() {
     useEffect(() => {
         axios(URL_TEMPLATE_TYPES)
             .then(response => {
-                console.log(response.data);
+                setIsLoading(true);
                 return (response.data).map((item) => {
                     return item.type;
                 });
             })
             .then(data => {
                 setTypes(data)
+                setIsLoading(false)
             })
             .catch(error => {
                 console.error(error);
@@ -62,6 +74,7 @@ export default function UploadTemplateForm() {
             })
             .then(data => {
                 setFields(data.fields)
+                setIsLoading(false)
             })
         setSelectedTemplateType(templateType);
     }
@@ -70,11 +83,16 @@ export default function UploadTemplateForm() {
      * @param {event} event 
      * @param {position} index 
      */
-
     const handleInputChange = (event, index) => {
-        fields[index]["value"] = event.target.value;
+        if(fields[index].field == "format"){
+            fields[index]["value"] = event.target.files[0];
+        }else{
+            fields[index]["value"] = event.target.value;
+        }
         setFields(fields);
     };
+
+
 
     /**
      * when submit button is clicked
@@ -85,6 +103,8 @@ export default function UploadTemplateForm() {
         event.preventDefault();
         const formdData = new FormData();
         fields.map((field, index) => {
+            console.log(field.value);
+
             formdData.append(field.field, field.value);
         })
         console.log(formdData.json);
@@ -100,18 +120,17 @@ export default function UploadTemplateForm() {
     };
 
     return (
-        <Form >
+        <Card >
             <Tab.Container id="list-group-tabs" >
                 <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
                 <Row>
-                    <Col sm={1} />
-                    <Col sm={10} className='Template-text'>
+                    <Col sm={3} />
+                    <Col sm={3} className='Template-text'>
                         <h6>Please choose the type of the file</h6>
                         {/* for types */}
                         <ListGroup>
                             {types.map((templateType) => (
                                 <ListGroupItem eventKey={templateType} onClick={() => fetchUserData(templateType)}>
-
                                     {templateType}
                                 </ListGroupItem>
 
@@ -119,8 +138,9 @@ export default function UploadTemplateForm() {
                             <pre>You choose: {selectedTemplateType}</pre>
                         </ListGroup>
                     </Col>
-                    <Col sm={10} className='Template-text'>
+                    <Col sm={4} className='Template-text'>
                         <Tab.Content>
+                            {loadSpinner()}
                             <Tab.Pane eventKey={selectedTemplateType}>
                                 {/* for forms */}
                                 {fields.map((field, index) => {
@@ -147,14 +167,12 @@ export default function UploadTemplateForm() {
                                     </Button>
                                 </Form.Group>
                             </Tab.Pane>
-
-
                         </Tab.Content>
                     </Col>
-                    <Col sm={1} />
+                    <Col sm={3} />
                 </Row>
             </Tab.Container>
-        </Form>
+        </Card>
     
     );
 }
