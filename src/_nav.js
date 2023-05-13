@@ -3,6 +3,7 @@ import CIcon from '@coreui/icons-react';
 import {
   cilLibrary,
   cilSpeedometer,
+  cilFlipToFront
 } from '@coreui/icons';
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react';
 
@@ -45,7 +46,7 @@ const _nav = [
     component: CNavGroup,
     name: 'Template Management',
     to: '/template',
-    icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilFlipToFront} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
