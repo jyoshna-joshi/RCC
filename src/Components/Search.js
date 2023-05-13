@@ -48,7 +48,10 @@ function Search() {
                 });
             })
             .then(data => {
-                setTypes(data)
+                console.log(data);
+                data.unshift("AllCategories");
+                setTypes(data);
+                console.log(data);
             })
             .catch(error => {
                 console.error(error);

@@ -44,7 +44,7 @@ export default function SaveTempleteContent() {
      */
         function loadSpinnerForSubmit() {
             if (isLoading) {
-                return <Spinner animation="grow" variant="secondary" >
+                return <Spinner animation="grow" variant="success" >
                 </Spinner>
             }
         }
@@ -62,8 +62,8 @@ export default function SaveTempleteContent() {
                 });
             })
             .then(data => {
-                setTypes(data)
-                setIsLoading(false)
+                setTypes(data);
+                setIsLoading(false);
             })
             .catch(error => {
                 console.error(error);
@@ -94,6 +94,7 @@ export default function SaveTempleteContent() {
      * @param {position} index 
      */
     const handleInputChange = (event, index) => {
+        console.log(event.target.value);
         if(fields[index].field == "format"){
             fields[index]["value"] = event.target.files[0];
         }else{
@@ -117,7 +118,7 @@ export default function SaveTempleteContent() {
 
             formdData.append(field.field, field.value);
         })
-        console.log(formdData.json);
+        console.log(formdData.get("date"));
         axios
             .post(URL_SAVE_CONTENT, formdData)
             .then((res) => {
