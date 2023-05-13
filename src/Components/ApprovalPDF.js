@@ -11,11 +11,11 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import { useState, useEffect } from "react";
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import { ListGroup, ListGroupItem, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import { clear } from '@testing-library/user-event/dist/clear';
+
 
 function ApprovalPDF() {
     const [pdfFile, setPDFFile] = useState(null)
@@ -24,16 +24,27 @@ function ApprovalPDF() {
     const navigate = useNavigate();
     const URL_GetTemplateTypes = "http://44.202.58.84:3000/template/types";
     const URL_FIELD_TYPE = "http://44.202.58.84:3000/template/fields?type=";
-    const URL_UpdateContentStatus = "http://44.202.58.84:3000/content/update-status/:id";
+    const URL_UpdateContentStatus = "http://44.202.58.84:3000/content/update-status/";
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
     //for dynamic fields
     const [fields, setFields] = useState([]);
+    const [identifier, setIdentifier] = useState([]);
+    const [data, setData] = useState([]);
+    const [status, setStatus] = useState(['Approved', 'Rejected']);
     const [content, setContent] = useState([]);
     //for dynamic templatetypes
     const [types, setTypes] = useState([]);
     //for selected template type
     const [selectedTemplateType, setSelectedTemplateType] = useState("Select Template Type");
 
+    /**
+       * Fetch pending list
+       */
+    useEffect(() => {
+        fetch('http://44.202.58.84:3000/content/list-by-status?status=Pending')
+            .then(response => response.json())
+            .then(data => setData(data));
+    }, []);
     /**
         * api integration for template type
         */
@@ -53,17 +64,17 @@ function ApprovalPDF() {
      * fetch forms data from api
      * @param {type of template} templateType 
      */
-    function fetchUserData(templateType) {
+    function fetchUserData(identifier) {
         setFields([]);
 
-        fetch(URL_FIELD_TYPE + templateType)
+        fetch(URL_UpdateContentStatus + identifier + "?status= " + status)
             .then(response => {
                 return response.json()
             })
             .then(data => {
                 setFields(data.fields)
             })
-        setSelectedTemplateType(templateType);
+        setSelectedTemplateType(identifier);
     }
 
     /**
@@ -107,80 +118,92 @@ function ApprovalPDF() {
             setViewPdf(null)
         }
     }
+
+
+
     const newplugin = defaultLayoutPlugin()
     return (
 
+
         <Form onSubmit={handleSubmit}>
-            {/* for Choosing file for approval*/}
-            <Form.Group className="Template-text" controlId="JournalViewforApproval" >
-                {/* for title*/}
-                <Form.Group className="mb-3" controlId="advertisementJournalTitle">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Label >  </Form.Label>
-                    {
-                        //<Form.Control required type="text" placeholder="Title name" />
-                    }
-                </Form.Group>
-                {/* for subject*/}
-                <Form.Group className="mb-3" controlId="advertisementJournalSubject">
-                    <Form.Label>Subject</Form.Label>
-                    <Form.Label >  </Form.Label>
-                    {
-                        //<Form.Control required type="text" placeholder="Subject" />
-                    }
-                </Form.Group>
-                {/* for publisher*/}
-                <Form.Group className="mb-3" controlId="advertisementJournalPublisher">
-                    <Form.Label>Publisher</Form.Label>
-                    <Form.Label >  </Form.Label>
-                    {
-                        //<Form.Control required type="text" placeholder="Journal name" />
-                    }
-                </Form.Group>
-                <Form.Label>Pending Article</Form.Label>
-                <Form.Control required type="file" onChange={handleChange} />
-                <Button variant="primary" type="submit" className="btn btn-success" >
-                    View Article
-                </Button>
-                <h1>_</h1>
 
-                <div className="pdf-container">
-                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                        {viewPdf && <>
-                            <Viewer fileUrl={viewPdf} plugins={[newplugin]}></Viewer>
-                        </>}
-                        {!viewPdf && <>No PDF to View</>}
-                    </Worker>
-                </div>
-            </Form.Group>
-
-            <Row>
-
-                <Col sm={3} className='Template-text'>
-
-                    {/* for Approval */}
-                    <Form.Group className="mb-3" controlId="formApproveJournal" >
-
-
-                        <Button variant="primary" type="submit">
-                            Approve
+            {data.map(item => (
+                <div key={item.id}>
+                    {/* for Choosing file for approval*/}
+                    <Form.Group className="Template-text" controlId="JournalViewforApproval" >
+                        {/* for title*/}
+                        <Form.Group className="mb-3" controlId="advertisementJournalTitle">
+                            <Form.Label>Title</Form.Label>
+                            <Form.Label >{item.title}</Form.Label>
+                            {
+                                //<Form.Control required type="text" placeholder="Title name" />
+                            }
+                        </Form.Group>
+                        {/* for subject*/}
+                        <Form.Group className="mb-3" controlId="advertisementJournalSubject">
+                            <Form.Label>Subject</Form.Label>
+                            <Form.Label >{item.subject} </Form.Label>
+                            {
+                                //<Form.Control required type="text" placeholder="Subject" />
+                            }
+                        </Form.Group>
+                        {/* for publisher*/}
+                        <Form.Group className="mb-3" controlId="advertisementJournalPublisher">
+                            <Form.Label>Publisher</Form.Label>
+                            <Form.Label >{item.publisher}  </Form.Label>
+                            {
+                                //<Form.Control required type="text" placeholder="Journal name" />
+                            }
+                        </Form.Group>
+                        <Form.Label>Pending Article</Form.Label>
+                        <Form.Control required type="file" onChange={handleChange} />
+                        <Button variant="primary" type="submit" className="btn btn-success" >
+                            View Article
                         </Button>
+                        <h1>_</h1>
+
+                        <div className="pdf-container">
+                            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                                {viewPdf && <>
+                                   {/* <Viewer fileUrl={viewPdf} plugins={[newplugin]}></Viewer>*/}
+                                   <Viewer fileUrl={item.format} plugins={[newplugin]}></Viewer>
+                                </>}
+                                {!viewPdf && <>No PDF to View</>}
+                            </Worker>
+                        </div>
+
                     </Form.Group>
-                </Col>
 
-                <Col sm={7} />
-                <Col sm={2} className='Template-text'>
-                    {/* for Decline */}
-                    <Form.Group className="mb-3" controlId="formDeclineJournal" >
+                    <Row>
+
+                        <Col sm={3} className='Template-text'>
+
+                            {/* for Approval */}
+                            <Form.Group className="mb-3" controlId="formApproveJournal" >
 
 
-                        <Button variant="primary" type="submit">
-                            Reject
-                        </Button>
-                    </Form.Group>
-                </Col>
-                <Col sm={3} />
-            </Row>
+                                <Button variant="primary" type="submit" >
+                                    {setStatus('Approved')}
+                                    Approve
+                                </Button>
+                            </Form.Group>
+                        </Col>
+
+                        <Col sm={7} />
+                        <Col sm={2} className='Template-text'>
+                            {/* for Decline */}
+                            <Form.Group className="mb-3" controlId="formDeclineJournal" >
+
+
+                                <Button variant="primary" type="submit">
+                                    {setStatus('Rejected')}
+                                    Reject
+                                </Button>
+                            </Form.Group>
+                        </Col>
+                        <Col sm={3} />
+                    </Row>
+                </div>))}
         </Form >
 
     );
