@@ -36,8 +36,18 @@ export default function SaveTempleteContent() {
             return <Spinner animation="grow" variant="success" >
             </Spinner>
         }
-
     }
+
+        /**
+     * load spinner
+     * @returns spinner
+     */
+        function loadSpinnerForSubmit() {
+            if (isLoading) {
+                return <Spinner animation="grow" variant="secondary" >
+                </Spinner>
+            }
+        }
 
 
     /**
@@ -99,7 +109,7 @@ export default function SaveTempleteContent() {
      * @param  event 
      */
     const handleSubmit = (event) => {
-
+        setIsLoading(true);
         event.preventDefault();
         const formdData = new FormData();
         fields.map((field, index) => {
