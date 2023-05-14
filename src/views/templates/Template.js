@@ -16,6 +16,8 @@ import { cilTrash, cilPencil } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Card from 'react-bootstrap/Card';
+
 
 export default function FormControl() {
     const URL_SAVE_TEMPLATE = "http://44.202.58.84:3000/template/add-update";
@@ -146,7 +148,7 @@ export default function FormControl() {
                         }
                     </CCardHeader> 
                     <CCardBody>
-                        <CForm>
+                        <Card>
                             <div className="mb-3">
                                 <CFormLabel htmlFor="templateName">Template Name</CFormLabel>
                                 {action === 'new' 
@@ -237,7 +239,7 @@ export default function FormControl() {
                                 </CAlert>
                               </CCol>
                             }
-                        </CForm>
+                        </Card>
 
                     </CCardBody>
                 </CCard>
