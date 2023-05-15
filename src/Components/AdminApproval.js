@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import ApprovalImage from './ApprovalImage';
 import ApprovalPDF from './ApprovalPDF';
 import ApprovalVideo from './ApprovalVideo';
+import Card from 'react-bootstrap/Card';
 
 
 
@@ -26,6 +27,7 @@ class AdminApproval extends Component {
 
 
         return (
+            <Card>
             <Tab.Container id="list-group-tabs" defaultActiveKey="#approvalPDF"  >
                 <h4 className='AdminApproval-form' style={{ color: 'blueviolet' }}>Approve or reject uploaded content</h4>
                 <Row>
@@ -61,10 +63,11 @@ class AdminApproval extends Component {
                         </Tab.Content>
 
                     </Col>
-                    <Col sm={3} />
+                    <Col sm={1} />
 
                 </Row>
             </Tab.Container>
+            </Card>
         );
     }
 }

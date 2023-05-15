@@ -11,6 +11,7 @@ import Test from './components/Test';
 import ViewAllContent from './components/ViewAllContent';
 import Navbar from './components/Navbar'
 import Search from './components/Search';
+import ApproveReject from './components/ApproveReject';
 
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
@@ -31,7 +32,7 @@ const App = () => {
           <Route path="/selectLoginForm" element={<Login />} />
           <Route path="/selectLoginForm" element={<selectViewAllContent />} />
           <Route path="/selectViewAllContent" element={<Search />} />
-
+          <Route path="/selectApproveReject" element={<ApproveReject />} />
           <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
           </Routes>

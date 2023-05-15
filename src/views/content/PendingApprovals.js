@@ -6,6 +6,8 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { MultiSelect } from 'primereact/multiselect';
 import { Tag } from 'primereact/tag';
+import ApprovalPDF from '../../components/ApprovalPDF';
+import { useNavigate } from "react-router-dom";
 
 export default function PendingApproval() {
     const [content, setContent] = useState(null);
@@ -13,6 +15,7 @@ export default function PendingApproval() {
     const [formats, setFormats] = useState();
 
     const [statuses] = useState(['Pending']);
+    const navigate = useNavigate();
 
     const getSeverity = (status) => {
         switch (status) {
@@ -128,7 +131,10 @@ export default function PendingApproval() {
     };
 
     const viewDetailsTemplate = (rowData) => {
-      return <Button type="button" icon="pi pi-external-link" link onClick={() => {alert("Hello");}} />
+        console.log(rowData.date);
+      return <Button type="button"
+       icon="pi pi-external-link" 
+      link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id, date: rowData.date,title: rowData.title} })} />
     };
 
     const header = renderHeader();

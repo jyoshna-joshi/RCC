@@ -82,6 +82,13 @@
   text-decoration: underline;
 }
 
+.form-label{
+  text-align: justify;
+  font-size: 16px;
+  margin: 10px;   
+  border-color: black;
+}
+
 
 .AdminApproval-form {
   text-align: center;
