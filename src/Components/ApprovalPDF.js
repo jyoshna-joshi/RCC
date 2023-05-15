@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useLocation } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,6 +22,7 @@ import { Calendar } from 'primereact/calendar';
 import { MultiSelect } from 'primereact/multiselect';
 import { Tag } from 'primereact/tag';
 import Card from 'react-bootstrap/Card';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 
 function ApprovalPDF() {
@@ -30,19 +32,26 @@ function ApprovalPDF() {
     const navigate = useNavigate();
     const URL_UpdateContentStatus = "http://44.202.58.84:3000/content/update-status/6455fdcec77562dfb4e62808?status=Rejected";
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
-
+    pdfjs.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf_viewer.js.map";
+    //for dynamic fields
+    const { state } = useLocation();
+    const { id, date, title } = state;    
+ 
     //for dynamic fields
     const [data, setData] = useState([]);
-    const [id, setID] = useState();
-    /**
-     * Fetch pending list by status
-     */
+    const [pages, setPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    function onDocumentLoadSuccess({ numPages }) {
+        console.log("object:", numPages, pages);
+        setPages(numPages);
+        setPageNumber(1);
+    }
     useEffect(() => {
         const fetchData = async () => {
-            var url = 'http://44.202.58.84:3000/content/645e4ed6f97604e432a9168e'
-
-            const idTemp = "645e4ed6f97604e432a9168e";
-            setID(idTemp);
+            var url = 'http://44.202.58.84:3000/content/' + id;
+                     
             const res = await fetch(url);
             const resdata = await res.json();
             console.log(resdata.creator);
@@ -51,7 +60,6 @@ function ApprovalPDF() {
         fetchData();
     }, []
     );
-                                                           
     const handleApprove = async (stat) => {
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
         const res = await fetch(url, {
@@ -62,28 +70,57 @@ function ApprovalPDF() {
         console.log(resdata);
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        let reader = new FileReader()        
-        reader.readAsDataURL(data.format)
-        reader.onload = (e) => {
-        setPDFFile(data.format)
-        }                                       
-       
-        if (pdfFile !== null) {
-            setViewPdf(pdfFile)
-        }
-        else {
-            setViewPdf(null)
-            console.log("No Pending file")
-        }
-    }
-    
+    /**
+     * Fetch pending list by status
+     */
+    // useEffect(() => {
+        // const fetchData = async () => {
+            // var url = 'http://44.202.58.84:3000/content/645e4ed6f97604e432a9168e'
+
+            // const idTemp = "645e4ed6f97604e432a9168e";
+            // setID(idTemp);
+            // const res = await fetch(url);
+            // const resdata = await res.json();
+            // console.log(resdata.creator);
+            // setData(resdata);
+        // }
+        // fetchData();
+    // }, []
+    // );
+
+    // const handleApprove = async (stat) => {
+        // var url = 'http://44.202.58.84:3000/content/update-status/' + id;
+        // const res = await fetch(url, {
+            // method: 'POST',
+            // body: JSON.stringify({ status: stat })
+        // })
+        // const resdata = await res;
+        // console.log(resdata);
+    // }
+
+    // const handleSubmit = (e) => {
+    // e.preventDefault()
+    // let reader = new FileReader()        
+    // reader.readAsDataURL(data.format)
+    // reader.onload = (e) => {
+    // setPDFFile(data.format)
+    // }                                       
+    //    
+    // if (pdfFile !== null) {
+    // setViewPdf(pdfFile)
+    // }
+    // else {
+    // setViewPdf(null)
+    // console.log("No Pending file")
+    // }
+    // }
+
     const newplugin = defaultLayoutPlugin()
 
     return (
 
-        <Card onSubmit={handleSubmit}>
+        // <Card onSubmit={handleSubmit}>
+        <Card >
             {/* for Choosing file for approval*/}
             <Form.Group className="Template-text" controlId="JournalViewforApproval" >
                 {/* for title*/}
@@ -113,13 +150,27 @@ function ApprovalPDF() {
                 {/* </Button> */}
                 <h1>_</h1>
 
-                <div className="pdf-container">
-                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                        {viewPdf && <>
-                            <Viewer fileUrl= {data.format}  plugins={[newplugin]}></Viewer>
-                        </>}
-                        {!viewPdf && <>No PDF to View</>}
-                    </Worker>
+                {/* <div className="pdf-container"> */}
+                {/* <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js"> */}
+                {/* {viewPdf && <> */}
+                {/* <Viewer fileUrl={data.format} plugins={[newplugin]}></Viewer> */}
+                {/* </>} */}
+                {/* {!viewPdf && <>No PDF to View</>} */}
+                {/* </Worker> */}
+                {/* </div> */}
+                <div className="property-overview-container property-flex-half">
+                    <div className="description-overview">
+                        <Document
+                            
+                            file={data.format}
+
+                            // link={link}
+                            onLoadSuccess={onDocumentLoadSuccess}
+                            onLoadError={(error) => console.log("Inside Error", error)}
+                        >
+                            <Page pageNumber={pageNumber} style={{ display: "none" }} />
+                        </Document>
+                    </div>
                 </div>
             </Form.Group>
 

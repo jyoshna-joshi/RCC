@@ -28,45 +28,46 @@ class AdminApproval extends Component {
 
         return (
             <Card>
-            <Tab.Container id="list-group-tabs" defaultActiveKey="#approvalPDF"  >
-                <h4 className='AdminApproval-form' style={{ color: 'blueviolet' }}>Approve or reject uploaded content</h4>
-                <Row>
-                    <Col sm={3} />
-                    <Col sm={2} className='Template-text'>
-                        <h6>Please choose type of article to approve</h6>
-                        <ListGroup>
-                            <ListGroup.Item action href="#approvalPDF">
-                                Approve Document articles
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#approvalImage">
-                                Approve Image articles
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#approvalVideo">
-                                Approve Video articles
-                            </ListGroup.Item>
-                        </ListGroup>
-                    </Col>
-                    <Col sm={6} className='Template-text'>
-                        <Tab.Content>
-                            {/* ApprovalPDF */}
-                            <Tab.Pane eventKey="#approvalPDF">
-                                <ApprovalPDF />
-                            </Tab.Pane>
-                            {/* ApprovalImage */}
-                            <Tab.Pane eventKey="#approvalImage">
-                                <ApprovalImage />
-                            </Tab.Pane>
-                            {/* ApprovalVideo */}
-                            <Tab.Pane eventKey="#approvalVideo">
-                                <ApprovalVideo />
-                            </Tab.Pane>
-                        </Tab.Content>
+                <Tab.Container id="list-group-tabs" defaultActiveKey="#approvalPDF"  >
+                    <h4 className='AdminApproval-form' style={{ color: 'blueviolet' }}>Approve or reject uploaded content</h4>
+                    <Row>
+                        <Col sm={3} />
+                        <Col sm={2} className='Template-text'>
+                            <h6>Please choose type of article to approve</h6>
+                            <ListGroup>
 
-                    </Col>
-                    <Col sm={1} />
+                                <ListGroup.Item action href="#approvalImage">
+                                    Approve Image articles
+                                </ListGroup.Item>
+                                <ListGroup.Item action href="#approvalPDF">
+                                    Approve Document articles
+                                </ListGroup.Item>
+                                <ListGroup.Item action href="#approvalVideo">
+                                    Approve Video articles
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </Col>
+                        <Col sm={6} className='Template-text'>
+                            <Tab.Content>
+                                {/* ApprovalImage */}
+                                <Tab.Pane eventKey="#approvalImage">
+                                    <ApprovalImage />
+                                </Tab.Pane>
+                                {/* ApprovalPDF */}
+                                <Tab.Pane eventKey="#approvalPDF">
+                                    <ApprovalPDF />
+                                </Tab.Pane>
+                                {/* ApprovalVideo */}
+                                <Tab.Pane eventKey="#approvalVideo">
+                                    <ApprovalVideo />
+                                </Tab.Pane>
+                            </Tab.Content>
 
-                </Row>
-            </Tab.Container>
+                        </Col>
+                        <Col sm={1} />
+
+                    </Row>
+                </Tab.Container>
             </Card>
         );
     }
