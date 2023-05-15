@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const template = mongoose.Schema({
+const content = mongoose.Schema({
     contributor: {
         type: String
     },
@@ -8,7 +8,8 @@ const template = mongoose.Schema({
         type: String
     },
     creator: {
-        type: Number
+        type: String,
+        default: "public"
     },
     date: {
         type: Date
@@ -47,10 +48,12 @@ const template = mongoose.Schema({
         type: String
     },
     status: {
-        type: String,
-        default: "processing"
+        type: String
+    },
+    timestamp: {
+        type: String
     }
 });
   
-const Template = mongoose.model('Template', template);
-module.exports = Template;
+const Content = mongoose.model('Content', content);
+module.exports = Content;
