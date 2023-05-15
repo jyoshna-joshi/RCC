@@ -25,14 +25,12 @@ export default function FormControl() {
     const [templateName, setTemplateName] = useState(null);
     const [action, setAction] = useState(null);
     const [toast, addToast] = useState()
-
     const path = window.location.pathname;
     const searchPath = new URLSearchParams(window.location.search);
     const templateType = searchPath.get("type");
     const urlAction = path.substring(path.lastIndexOf('/') + 1);
     const [visibleModal, setVisibleModal] = useState(false)
     const [colorAlert, setColorAlert] = useState()
-
     const [inputFields, setInputFields] = useState([
         { title: '', field: '', placeholder: '', type: '' }
     ])
@@ -105,7 +103,7 @@ export default function FormControl() {
                     '"field": "' + inputFields[i].field + '",' +
                     '"title": "' + inputFields[i].title + '",' +
                     '"placeholder": "' + inputFields[i].placeholder + '",' +
-                    '"type": "' + inputFields[i].type + '"' +
+                    '"type": "' + inputFields[i].type === "Text" ? "String" : inputFields[i].type + '"' +
                     '}';
                 data = data + field;
             }
