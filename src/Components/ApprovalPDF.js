@@ -39,9 +39,9 @@ function ApprovalPDF() {
      */
     useEffect(() => {
         const fetchData = async () => {
-            var url = 'http://44.202.58.84:3000/content/645e4e75f97604e432a91688'
+            var url = 'http://44.202.58.84:3000/content/645e4ed6f97604e432a9168e'
 
-            const idTemp = "645e4e75f97604e432a91688";
+            const idTemp = "645e4ed6f97604e432a9168e";
             setID(idTemp);
             const res = await fetch(url);
             const resdata = await res.json();
@@ -51,7 +51,7 @@ function ApprovalPDF() {
         fetchData();
     }, []
     );
-
+                                                           
     const handleApprove = async (stat) => {
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
         const res = await fetch(url, {
@@ -64,14 +64,23 @@ function ApprovalPDF() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        let reader = new FileReader()        
+        reader.readAsDataURL(data.format)
+        reader.onload = (e) => {
+        setPDFFile(data.format)
+        }                                       
+       
         if (pdfFile !== null) {
             setViewPdf(pdfFile)
         }
         else {
             setViewPdf(null)
+            console.log("No Pending file")
         }
     }
+    
     const newplugin = defaultLayoutPlugin()
+
     return (
 
         <Card onSubmit={handleSubmit}>
@@ -107,7 +116,7 @@ function ApprovalPDF() {
                 <div className="pdf-container">
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                         {viewPdf && <>
-                            <Viewer fileUrl={data.format} plugins={[newplugin]}></Viewer>
+                            <Viewer fileUrl= {data.format}  plugins={[newplugin]}></Viewer>
                         </>}
                         {!viewPdf && <>No PDF to View</>}
                     </Worker>
