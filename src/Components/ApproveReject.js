@@ -10,15 +10,10 @@ import Col from 'react-bootstrap/Col';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
-import { clear } from '@testing-library/user-event/dist/clear';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
-import { Calendar } from 'primereact/calendar';
-import { MultiSelect } from 'primereact/multiselect';
+
 import Card from 'react-bootstrap/Card';
 
-
-function ApprovalImage() {
+function ApproveReject() {
     const { state } = useLocation();
     const { id, date, title } = state;  
       
@@ -42,44 +37,34 @@ function ApprovalImage() {
         fetchData();
     }, []
     );
-
     const handleApprove = async (stat) => {
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
+        var resdatajson = JSON.stringify({ status: stat });
+        console.log(resdatajson);
         const res = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ status: stat })
+            body: JSON.stringify({ status: stat }),
+            headers: {
+                'Content-Type': 'application/json'
+              },
         })
         const resdata = await res;
         console.log(resdata);
     }
-
-    const handleSubmit = (e) => {
-        // e.preventDefault()
-        // if (pdfFile !== null) {
-        // setViewPdf(pdfFile)
-        // }
-        // else {
-        // setViewPdf(null)
-        // }
-    }
-    const newplugin = defaultLayoutPlugin()
+   const newplugin = defaultLayoutPlugin()
     return (
-
-        <Card onSubmit={handleSubmit}>
+        <Card >
             {/* for Choosing file for approval*/}
             <Form.Group className="Template-text" controlId="ImageViewforApproval" >
                 {/* for title*/}
                 <Form.Group className="mb-3" controlId="advertisementJournalTitle">
                     <Form.Label>Title: </Form.Label>
                     <Form.Control required type="text" placeholder={data.title} readOnly />
-
-
                 </Form.Group>
                 {/* for subject*/}
                 <Form.Group className="mb-3" controlId="advertisementJournalSubject">
                     <Form.Label>Subject: </Form.Label>
                     <Form.Control required type="text" placeholder={data.subject} readOnly />
-
                 </Form.Group>
                 {/* for publisher*/}
                 <Form.Group className="mb-3" controlId="advertisementJournalPublisher">
@@ -89,7 +74,6 @@ function ApprovalImage() {
                 <Form.Label>Pending Article</Form.Label>
                 {/* <Form.Control required type="file" onChange={handleChange} /> */}
                 <Form.Control required type="label" placeholder={data.format} readOnly />
-
                 {/* <Button variant="primary" type="submit" className="btn btn-success" > */}
                 {/* View Article */}
                 {/* </Button> */}
@@ -101,32 +85,21 @@ function ApprovalImage() {
                         objectFit='contain'
                     />
                 </div>
-
             </Form.Group>
-
             <Row>
-
                 <Col sm={3} className='Template-text'>
-
                     {/* for Approval */}
                     <Form.Group className="mb-3" controlId="formApproveJournal" >
-
-
                         <Button variant="primary" type="submit" onClick={() => handleApprove('Approved')}>
-
                             Approve
                         </Button>
                     </Form.Group>
                 </Col>
-
                 <Col sm={7} />
                 <Col sm={2} className='Template-text'>
                     {/* for Decline */}
                     <Form.Group className="mb-3" controlId="formDeclineJournal" >
-
-
                         <Button variant="primary" type="submit" onClick={() => handleApprove('Rejected')}>
-
                             Reject
                         </Button>
                     </Form.Group>
@@ -134,9 +107,8 @@ function ApprovalImage() {
                 <Col sm={3} />
             </Row>
         </Card >
-
-
     );
+
 }
 
-export default ApprovalImage;
+export default ApproveReject

@@ -103,7 +103,6 @@ export default function SaveTempleteContent() {
      * @param {position} index 
      */
     const handleInputChange = (event, index) => {
-        console.log(event.target.value);
         if (fields[index].field == "format") {
             fields[index]["value"] = event.target.files[0];
         } else {
@@ -126,6 +125,7 @@ export default function SaveTempleteContent() {
             console.log(field.value);
             formdData.append(field.field, field.value);
         })
+        formdData.append("type", selectedTemplateType);
         console.log(formdData.get("date"));
         axios
             .post(URL_SAVE_CONTENT, formdData)
@@ -153,9 +153,9 @@ export default function SaveTempleteContent() {
                     <Col sm={3} className='Template-text'>
                         <h6>Please choose content type to upload </h6>
                         {/* for types */}
-                        <ListGroup > 
+                        <ListGroup >
                             {types.map((templateType) => (
-                                <ListGroupItem className='Hover-box' eventKey={templateType}  onClick={() => fetchUserData(templateType)}>
+                                <ListGroupItem className='Hover-box' eventKey={templateType} onClick={() => fetchUserData(templateType)}>
                                     {templateType}
                                 </ListGroupItem>
 
