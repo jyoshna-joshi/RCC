@@ -90,6 +90,12 @@ var functions = {
       let type = req.query.type;
       if (type) {
         let templateType = await TemplateType.findOne({ type });
+        for(var i = 0; i < templateType.fields.length; i++)
+        {
+            if(templateType.fields[i].type === "string"){
+                templateType.fields[i].type = "Text";
+            }
+        }
         if (templateType) return res.status(200).send(templateType);
         else return res.status(500).send("Could not find fields by given type");
       } else {
@@ -181,7 +187,7 @@ var functions = {
       let templateTypes = await TemplateType.find({}, { type: 1, _id: 0 });
       return res.status(200).json(
         templateTypes.map((templateType) => {
-          return { type: templateType.type === "String" ? "Text" : templateTypes.type };
+          return { type: templateType.type };
         })
       );
     } catch (err) {
@@ -208,8 +214,13 @@ var functions = {
   },
   searchContent: async function (req, res) {
     try {
-      if (!req.query.templateType) {
-        return res.status(500).send("Could not find template type");
+      if (req.query.templateType === "AllCategories") {
+        if (req.query.year) query["date"] = req.query.year;
+        if (req.query.publisher) query["publisher"] = req.query.publisher;
+        if (req.query.searchText)
+          query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
+        let contents = await Content.find(query);
+        return res.status(200).json(contents);
       } else {
         let query = { type: req.query.templateType };
         if (req.query.year) query["date"] = req.query.year;
