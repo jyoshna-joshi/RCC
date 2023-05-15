@@ -7,7 +7,10 @@ const content = mongoose.Schema({
     coverage: {
         type: String
     },
-    creator: {
+    creator:{
+        type: String
+    },
+    uploadby: {
         type: String,
         default: "public"
     },

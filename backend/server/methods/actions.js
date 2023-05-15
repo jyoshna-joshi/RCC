@@ -35,6 +35,7 @@ var functions = {
               const content = new Content({
                 contributor: req?.body?.contributor,
                 coverage: req?.body?.coverage,
+                uploadby: req?.body?.uploadby,
                 creator: req?.body?.creator,
                 date: req?.body?.date,
                 description: req?.body?.description,
@@ -49,7 +50,8 @@ var functions = {
                 title: req?.body?.title,
                 publisher: req?.body?.publisher,
                 type: req?.body?.type,
-                status: req?.body?.creator === "admin" ? "Approved" : "Pending",
+                
+                status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
                 timestamp: `${year}-${month}-${date}`,
               });
               console.log(content);
@@ -74,7 +76,8 @@ var functions = {
             title: req?.body?.title,
             publisher: req?.body?.publisher,
             type: req?.body?.type,
-            status: req?.body?.creator === "admin" ? "Approved" : "Pending",
+            uploadby: req?.body?.uploadby,
+            status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
           });
           await content.save();
           return res.status(200).send("Saved!!!");
@@ -173,9 +176,9 @@ var functions = {
       return res.status(500).send(err);
     }
   },
-  fetchContentUploadedByCreator: async function (req, res) {
+  fetchContentUploadedByUplod: async function (req, res) {
     try {
-      const contents = await Content.find({ creator: req.query.creator });
+      const contents = await Content.find({ uploadby: req.query.uploadby });
       return res.status(200).json(contents);
     } catch (err) {
       console.error(err);
@@ -216,7 +219,7 @@ var functions = {
     try {
       if (req.query.templateType === "AllCategories") {
         let query = null;
-        if (req.query.year) query["date"] = req.query.year;
+        if (req.query.subject) query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
         if (req.query.publisher) query["publisher"] = req.query.publisher;
         if (req.query.searchText)
           query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
@@ -224,8 +227,8 @@ var functions = {
         return res.status(200).json(contents);
       } else {
         let query = { type: req.query.templateType };
-        if (req.query.year) query["date"] = req.query.year;
         if (req.query.publisher) query["publisher"] = req.query.publisher;
+        if (req.query.subject) query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
         if (req.query.searchText)
           query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
         let contents = await Content.find(query);
