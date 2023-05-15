@@ -23,6 +23,9 @@ const content = mongoose.Schema({
     format: {
         type: String
     },
+    formatType: {
+        type: String
+    },
     identifier: {
         type: String
     },

@@ -14,6 +14,7 @@ router.delete('/template', actions.removeTemplate) // removing form
 
 router.post('/content/save', upload.single('format'), actions.saveTemplate) // save content
 router.post('/content/update-status/:id', actions.updateStatus) // update status of content by id
+router.get('/content/home', actions.home) // fetch list of content for home page
 router.get('/content/list-by-status', actions.listByStatus) // list contents by status
 router.get('/content/list-by-uploadby', actions.fetchContentUploadedByUplod) // list contents uploaded by crerator
 router.get('/content/search', actions.searchContent) // search content
