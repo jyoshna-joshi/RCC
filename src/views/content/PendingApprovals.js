@@ -25,14 +25,14 @@ export default function PendingApproval() {
     };
 
     useEffect(() => {
-        const fetchata = async () => {     
+        const fetchata = async () => {
             const response = await fetch('http://44.202.58.84:3000/content/list-by-status?status=Pending');
             const data = await response.json();
-            
+
             const formatResponse = await fetch('http://44.202.58.84:3000/template/types');
             const formatData = await formatResponse.json();
-            
-            setContent(getContent(data));            
+
+            setContent(getContent(data));
             setFormats(formatData);
 
             initFilters();
@@ -79,7 +79,7 @@ export default function PendingApproval() {
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
             </div>
         );
-    };    
+    };
 
     const typeBodyTemplate = (rowData) => {
         const type = rowData.type;
@@ -90,7 +90,7 @@ export default function PendingApproval() {
     };
 
     const typeFilterTemplate = (options) => {
-        return <MultiSelect value={options.value} options={formats} itemTemplate={typesItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" optionLabel="type"/>;
+        return <MultiSelect value={options.value} options={formats} itemTemplate={typesItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" optionLabel="type" />;
     };
 
     const typesItemTemplate = (option) => {
@@ -114,12 +114,12 @@ export default function PendingApproval() {
     };
 
     const statusFilterTemplate = (options) => {
-        return <MultiSelect value={options.value} 
-        options={statuses} 
-        itemTemplate={statusItemTemplate} 
-        onChange={(e) => options.filterCallback(e.value)} 
-        placeholder="Any" 
-        className="p-column-filter" />;
+        return <MultiSelect value={options.value}
+            options={statuses}
+            itemTemplate={statusItemTemplate}
+            onChange={(e) => options.filterCallback(e.value)}
+            placeholder="Any"
+            className="p-column-filter" />;
     };
 
     const statusItemTemplate = (option) => {
@@ -132,9 +132,10 @@ export default function PendingApproval() {
 
     const viewDetailsTemplate = (rowData) => {
         console.log(rowData.date);
-      return <Button type="button"
-       icon="pi pi-external-link" 
-      link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id, date: rowData.date,title: rowData.title} })} />
+        return <Button type="button"
+            icon="pi pi-external-link"
+             link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id, date: rowData.date,title: rowData.title} })} />
+            //link onClick={() => navigate("/selectAdminApprovalForm", { state: { id: rowData._id, date: rowData.date, title: rowData.title } })} />
     };
 
     const header = renderHeader();
