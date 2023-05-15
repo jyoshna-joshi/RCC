@@ -23,6 +23,8 @@ const Navbar = () => {
         <li><Link to= '/'>Home</Link></li>
         
         <li><Link to= '/selectSaveTemplateContent'>Upload</Link></li>
+        <li><Link to= '/selectViewAllContent'>All content</Link></li>
+
         <li><Link to= '/selectLoginForm'>Admin Login</Link></li>
         </ul>
       </nav>
