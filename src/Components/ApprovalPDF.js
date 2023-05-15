@@ -39,9 +39,9 @@ function ApprovalPDF() {
      */
     useEffect(() => {
         const fetchData = async () => {
-            var url = 'http://44.202.58.84:3000/content/645e3d78f97604e432a915c9'
+            var url = 'http://44.202.58.84:3000/content/645e4e75f97604e432a91688'
 
-            const idTemp = "645e3d78f97604e432a915c9";
+            const idTemp = "645e4e75f97604e432a91688";
             setID(idTemp);
             const res = await fetch(url);
             const resdata = await res.json();
@@ -51,31 +51,12 @@ function ApprovalPDF() {
         fetchData();
     }, []
     );
-    const handleChange = (e) => {
-        let selectedFile = e.target.files[0]
-        if (selectedFile) {
-
-            if (selectedFile && fileType.includes(selectedFile.type)) {
-                let reader = new FileReader()
-                reader.readAsDataURL(selectedFile)
-                reader.onload = (e) => {
-                    setPDFFile(e.target.result)
-                }
-            }
-            else {
-                setPDFFile(null)
-            }
-        }
-        else {
-            console.log("Please select")
-        }
-    }
 
     const handleApprove = async (stat) => {
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
         const res = await fetch(url, {
             method: 'POST',
-            body : JSON.stringify({status:stat})
+            body: JSON.stringify({ status: stat })
         })
         const resdata = await res;
         console.log(resdata);
@@ -93,36 +74,40 @@ function ApprovalPDF() {
     const newplugin = defaultLayoutPlugin()
     return (
 
-        <Card >
+        <Card onSubmit={handleSubmit}>
             {/* for Choosing file for approval*/}
             <Form.Group className="Template-text" controlId="JournalViewforApproval" >
                 {/* for title*/}
                 <Form.Group className="mb-3" controlId="advertisementJournalTitle">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Label>{data.title}</Form.Label>
+                    <Form.Label>Title: </Form.Label>
+                    <Form.Control required type="text" placeholder={data.title} readOnly />
+
 
                 </Form.Group>
                 {/* for subject*/}
                 <Form.Group className="mb-3" controlId="advertisementJournalSubject">
-                    <Form.Label>Subject</Form.Label>
-                    <Form.Label>{data.subject}</Form.Label>
+                    <Form.Label>Subject: </Form.Label>
+                    <Form.Control required type="text" placeholder={data.subject} readOnly />
+
                 </Form.Group>
                 {/* for publisher*/}
                 <Form.Group className="mb-3" controlId="advertisementJournalPublisher">
-                    <Form.Label>Publisher</Form.Label>
-                    <Form.Control required type="text" placeholder="Journal name" />
+                    <Form.Label>Publisher: </Form.Label>
+                    <Form.Control required type="text" placeholder={data.publisher} readOnly />
                 </Form.Group>
                 <Form.Label>Pending Article</Form.Label>
-                <Form.Control required type="file" onChange={handleChange} />
-                <Button variant="primary" type="submit" className="btn btn-success" >
-                    View Article
-                </Button>
+                {/* <Form.Control required type="file" onChange={handleChange} /> */}
+                <Form.Control required type="label" placeholder={data.format} readOnly />
+
+                {/* <Button variant="primary" type="submit" className="btn btn-success" > */}
+                {/* View Article */}
+                {/* </Button> */}
                 <h1>_</h1>
 
                 <div className="pdf-container">
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                         {viewPdf && <>
-                            <Viewer fileUrl={viewPdf} plugins={[newplugin]}></Viewer>
+                            <Viewer fileUrl={data.format} plugins={[newplugin]}></Viewer>
                         </>}
                         {!viewPdf && <>No PDF to View</>}
                     </Worker>
