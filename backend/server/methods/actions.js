@@ -51,6 +51,29 @@ var functions = {
               return res.status(200).send("Saved after uploading file!!!");
             }
           });
+        } else {
+          const content = new Content({
+            contributor: req?.body?.contributor,
+            coverage: req?.body?.coverage,
+            creator: req?.body?.creator,
+            date: req?.body?.date,
+            description: req?.body?.description,
+            identifier: req?.body?.identifier,
+            language: req?.body?.language,
+            publisher: req?.body?.publisher,
+            relation: req?.body?.relation,
+            rights: req?.body?.rights,
+            source: req?.body?.source,
+            subject: req?.body?.subject,
+            title: req?.body?.title,
+            publisher: req?.body?.publisher,
+            type: req?.body?.type,
+            uploadby: req?.body?.uploadby,
+            status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
+            timestamp: Date.now()
+          });
+          await content.save();
+          return res.status(200).send("Saved!!!");
         }
       }
     } catch (err) {
@@ -210,8 +233,8 @@ var functions = {
   },
   home: async function (req, res) {
     try {
-        // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
-        let imageContents = await Content.aggregate([
+         // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
+         let imageContents = await Content.aggregate([
             { $match: { formatType: { $regex: 'image', $options: 'i' } } },
             { $sort: { timestamp: -1 } },
             { $limit: 5 },
