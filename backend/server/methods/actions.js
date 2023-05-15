@@ -215,6 +215,7 @@ var functions = {
   searchContent: async function (req, res) {
     try {
       if (req.query.templateType === "AllCategories") {
+        let query = null;
         if (req.query.year) query["date"] = req.query.year;
         if (req.query.publisher) query["publisher"] = req.query.publisher;
         if (req.query.searchText)
