@@ -49,6 +49,9 @@ const content = mongoose.Schema({
     },
     status: {
         type: String
+    },
+    timestamp: {
+        type: String
     }
 });
   
