@@ -12,7 +12,6 @@ import ApprovalVideo from './ApprovalVideo';
 import Card from 'react-bootstrap/Card';
 
 
-
 class AdminApproval extends Component {
     constructor(props) {
         super(props);
