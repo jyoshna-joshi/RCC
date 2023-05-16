@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import Alert from 'react-bootstrap/Alert';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,14 +11,13 @@ import Col from 'react-bootstrap/Col';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import DocViewer, { DocViewerRenderers, PDFRenderer, PNGRenderer , JPGRenderer  } from "@cyntler/react-doc-viewer";
+
 
 import Card from 'react-bootstrap/Card';
 
 function ApproveReject() {
     const { state } = useLocation();
     const { id} = state;
-
     const navigate = useNavigate();
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
     //for dynamic fields
@@ -63,10 +62,12 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
+        alert("Admin review Success")
+        navigate("/content/pending")
     }
 
     return (
-        <Card >
+        <Card  >
             <Row>
                 <Col sm={3} />
                 <Col sm={6} className='Template-text'>
@@ -108,7 +109,7 @@ function ApproveReject() {
                         <Col sm={11} className='Template-text'>
                             {/* for Approval */}
                             <Form.Group className="mb-3" controlId="formApproveJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Approved')}>
+                                <Button variant="primary" type="submit" onClick={() => handleApprove('Approved') } >
                                     Approve
                                 </Button>
                             </Form.Group>
