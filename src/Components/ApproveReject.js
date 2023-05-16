@@ -12,7 +12,6 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 import Card from 'react-bootstrap/Card';
 
 function ApproveReject() {
