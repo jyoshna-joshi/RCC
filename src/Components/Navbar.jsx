@@ -2,6 +2,7 @@ import { React, useState } from 'react';
 import {Link} from "react-router-dom";
 import styles from './Navbar.module.css';
 import Logo from '../images/logo.png';
+import rovercarclub from '../images/rovercarclub.png';
 import { useNavigate } from "react-router-dom";
 import {
   AiOutlineUser,
@@ -17,7 +18,7 @@ const Navbar = () => {
   return (
     <header className={styles.navbar}>
       <img src={Logo} alt='Logo' />
-      <h1>Rover Car Club of Australia</h1>
+      <img src={rovercarclub} alt='rovercarclub'style={{ width: '1100px', paddingLeft : '6rem', alignContent: 'center'}} />
       <nav>
       <ul className={nav ? [styles.menu, styles.active].join(' ') : [styles.menu]} >
         <li><Link to= '/'>Home</Link></li>
