@@ -133,8 +133,7 @@ export default function PendingApproval() {
         console.log(rowData.date);
         return <Button type="button"
             icon="pi pi-external-link"
-             link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id, date: rowData.date,title: rowData.title} })} />
-            //link onClick={() => navigate("/selectAdminApprovalForm", { state: { id: rowData._id, date: rowData.date, title: rowData.title } })} />
+             link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id} })} />
     };
 
     const header = renderHeader();

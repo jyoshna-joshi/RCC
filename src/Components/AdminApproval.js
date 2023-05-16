@@ -9,7 +9,6 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 
-
 class AdminApproval extends Component {
     constructor(props) {
         super(props);

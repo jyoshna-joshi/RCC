@@ -1,7 +1,6 @@
 const Content = require("../models/content");
 const TemplateType = require("../models/templateType");
 const aws = require("../config/awsconfig");
-const dateObject = new Date(Date.now());
 
 var functions = {
   saveTemplate: async function (req, res) {
@@ -16,14 +15,7 @@ var functions = {
             Body: req.file.buffer,
             ACL: "public-read",
           };
-          const date = `0 ${dateObject.getDate()}`.slice(-2);
 
-          // current month
-          const month = `0 ${dateObject.getMonth() + 1}`.slice(-2);
-
-          // current year
-          const year = dateObject.getFullYear();
-          console.log(console.log(`${year}-${month}-${date}`));
           await aws.client.upload(params, async (err, data) => {
             if (err) {
               console.log(err);
@@ -35,10 +27,12 @@ var functions = {
               const content = new Content({
                 contributor: req?.body?.contributor,
                 coverage: req?.body?.coverage,
+                uploadby: req?.body?.uploadby,
                 creator: req?.body?.creator,
                 date: req?.body?.date,
                 description: req?.body?.description,
                 format: fileName,
+                formatType: req.file.mimetype,
                 identifier: req?.body?.identifier,
                 language: req?.body?.language,
                 publisher: req?.body?.publisher,
@@ -49,35 +43,14 @@ var functions = {
                 title: req?.body?.title,
                 publisher: req?.body?.publisher,
                 type: req?.body?.type,
-                status: req?.body?.creator === "admin" ? "Approved" : "Pending",
-                timestamp: `${year}-${month}-${date}`,
+                status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
+                timestamp: Date.now(),
               });
               console.log(content);
               await content.save();
               return res.status(200).send("Saved after uploading file!!!");
             }
           });
-        } else {
-          const content = new Content({
-            contributor: req?.body?.contributor,
-            coverage: req?.body?.coverage,
-            creator: req?.body?.creator,
-            date: req?.body?.date,
-            description: req?.body?.description,
-            identifier: req?.body?.identifier,
-            language: req?.body?.language,
-            publisher: req?.body?.publisher,
-            relation: req?.body?.relation,
-            rights: req?.body?.rights,
-            source: req?.body?.source,
-            subject: req?.body?.subject,
-            title: req?.body?.title,
-            publisher: req?.body?.publisher,
-            type: req?.body?.type,
-            status: req?.body?.creator === "admin" ? "Approved" : "Pending",
-          });
-          await content.save();
-          return res.status(200).send("Saved!!!");
         }
       }
     } catch (err) {
@@ -90,11 +63,10 @@ var functions = {
       let type = req.query.type;
       if (type) {
         let templateType = await TemplateType.findOne({ type });
-        for(var i = 0; i < templateType.fields.length; i++)
-        {
-            if(templateType.fields[i].type === "string"){
-                templateType.fields[i].type = "Text";
-            }
+        for (var i = 0; i < templateType.fields.length; i++) {
+          if (templateType.fields[i].type === "string") {
+            templateType.fields[i].type = "Text";
+          }
         }
         if (templateType) return res.status(200).send(templateType);
         else return res.status(500).send("Could not find fields by given type");
@@ -125,10 +97,8 @@ var functions = {
       if (!req.params.id) {
         return res.status(500).send("Could not find id");
       } else {
-        await Content.updateOne(
-          { _id: req.params.id },
-          { status: req.body.status }
-        );
+        const log =await Content.updateOne({ _id: req.params.id },{ status: req.body.status })
+        console.log(log);
         return res.status(200).send("Status updated");
       }
     } catch (err) {
@@ -173,9 +143,9 @@ var functions = {
       return res.status(500).send(err);
     }
   },
-  fetchContentUploadedByCreator: async function (req, res) {
+  fetchContentUploadedByUplod: async function (req, res) {
     try {
-      const contents = await Content.find({ creator: req.query.creator });
+      const contents = await Content.find({ uploadby: req.query.uploadby });
       return res.status(200).json(contents);
     } catch (err) {
       console.error(err);
@@ -215,7 +185,9 @@ var functions = {
   searchContent: async function (req, res) {
     try {
       if (req.query.templateType === "AllCategories") {
-        if (req.query.year) query["date"] = req.query.year;
+        let query = null;
+        if (req.query.subject)
+          query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
         if (req.query.publisher) query["publisher"] = req.query.publisher;
         if (req.query.searchText)
           query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
@@ -223,8 +195,9 @@ var functions = {
         return res.status(200).json(contents);
       } else {
         let query = { type: req.query.templateType };
-        if (req.query.year) query["date"] = req.query.year;
         if (req.query.publisher) query["publisher"] = req.query.publisher;
+        if (req.query.subject)
+          query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
         if (req.query.searchText)
           query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
         let contents = await Content.find(query);
@@ -235,6 +208,25 @@ var functions = {
       return res.status(500).send(err);
     }
   },
+  home: async function (req, res) {
+    try {
+        // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
+        let imageContents = await Content.aggregate([
+            { $match: { formatType: { $regex: 'image', $options: 'i' } } },
+            { $sort: { timestamp: -1 } },
+            { $limit: 5 },
+        ]);
+        let pdfContents = await Content.aggregate([
+            { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
+            { $sort: { timestamp: -1 } },
+            { $limit: 5 },
+        ])
+        return res.status(200).json(imageContents.concat(pdfContents));
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send(err);
+      }
+  }
 };
 
 module.exports = functions;

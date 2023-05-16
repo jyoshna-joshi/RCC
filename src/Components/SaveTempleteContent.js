@@ -122,11 +122,12 @@ export default function SaveTempleteContent() {
         event.preventDefault();
         const formdData = new FormData();
         fields.map((field, index) => {
-            console.log(field.value);
             formdData.append(field.field, field.value);
+            console.log(field.value);
+
         })
         formdData.append("type", selectedTemplateType);
-        console.log(formdData.get("date"));
+
         axios
             .post(URL_SAVE_CONTENT, formdData)
             .then((res) => {
