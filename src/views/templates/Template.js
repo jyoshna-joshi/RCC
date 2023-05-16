@@ -137,9 +137,9 @@ export default function FormControl() {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <CButton onClick={() => {navigate('/template/all')}} variant="outline">All Templates</CButton>
+                        <CButton onClick={() => {navigate('/admin/template/all')}} variant="outline">All Templates</CButton>
                         {action === 'view' 
-                        ? <CButton onClick={() => {navigate('/template/edit?type='+ templateName); window.location.reload(false);}} variant="outline">
+                        ? <CButton onClick={() => {navigate('/admin/template/edit?type='+ templateName); window.location.reload(false);}} variant="outline">
                             <CIcon icon={cilPencil} className="me-2" />
                           </CButton>
                         : null
@@ -155,6 +155,7 @@ export default function FormControl() {
                                         id="templateName"
                                         placeholder="Sample Template"
                                         onChange={event => handleTemplateChange(event)}
+                                        required
                                     /> 
                                     : <CFormInput
                                         type="text"

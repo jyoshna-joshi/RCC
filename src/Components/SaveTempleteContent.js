@@ -12,6 +12,7 @@ import Card from 'react-bootstrap/Card';
 import { CAlert } from '@coreui/react';
 import { clear } from '@testing-library/user-event/dist/clear';
 import { styles } from 'dom7';
+import Footer from "./Footer";
 
 export default function SaveTempleteContent() {
     const navigate = useNavigate();
@@ -32,8 +33,8 @@ export default function SaveTempleteContent() {
     //for alert
     const [visibleModal, setVisibleModal] = useState(false)
     const [toast, addToast] = useState(0)
-    const toaster = useRef();
     const [colorAlert, setColorAlert] = useState()
+    const [uploadby, setUploadBy] = useState()
 
     /**
      * load spinner
@@ -62,6 +63,16 @@ export default function SaveTempleteContent() {
      * api integration for template type
      */
     useEffect(() => {
+        var path = window.location.pathname;
+        path = path.substring(path.lastIndexOf('/') + 1);
+
+        if (path === "upload") {
+            setUploadBy("admin");
+        }
+        else {
+            setUploadBy("public");
+        }
+
         axios(URL_TEMPLATE_TYPES)
             .then(response => {
                 setIsLoading(true);
@@ -127,6 +138,8 @@ export default function SaveTempleteContent() {
 
         })
         formdData.append("type", selectedTemplateType);
+        formdData.append("uploadby", uploadby);
+        console.log(formdData.get("date"));
 
         axios
             .post(URL_SAVE_CONTENT, formdData)
@@ -146,15 +159,15 @@ export default function SaveTempleteContent() {
     };
 
     return (
-        <Card >
-            <Tab.Container id="list-group-tabs" >
+        <><Card>
+            <Tab.Container id="list-group-tabs">
                 <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
                 <Row>
                     <Col sm={3} />
                     <Col sm={3} className='Template-text'>
                         <h6>Please choose content type to upload </h6>
                         {/* for types */}
-                        <ListGroup >
+                        <ListGroup>
                             {types.map((templateType) => (
                                 <ListGroupItem className='Hover-box' eventKey={templateType} onClick={() => fetchUserData(templateType)}>
                                     {templateType}
@@ -178,15 +191,14 @@ export default function SaveTempleteContent() {
                                     else {
                                         field.type = "text";
                                     }
-                                    return <Form.Group className="mb-3" controlId="title" key={index} >
+                                    return <Form.Group className="mb-3" controlId="title" key={index}>
                                         <Form.Label>{field.title}</Form.Label>
                                         <Form.Control required type={field.type}
                                             placeholder={field.placeholder}
-                                            onChange={(e) => handleInputChange(e, index)}
-                                        />
-                                    </Form.Group>
+                                            onChange={(e) => handleInputChange(e, index)} />
+                                    </Form.Group>;
                                 })}
-                                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit} >
+                                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
                                     <Button variant="primary" type="submit">
                                         Submit for approval
                                     </Button>
@@ -204,5 +216,7 @@ export default function SaveTempleteContent() {
                 </Row>
             </Tab.Container>
         </Card>
+        <br/>
+        <Footer /></>
     );
 }
