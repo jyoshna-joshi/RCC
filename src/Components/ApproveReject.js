@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DocViewer, { DocViewerRenderers, PDFRenderer, PNGRenderer , JPGRenderer  } from "@cyntler/react-doc-viewer";
 
 import Card from 'react-bootstrap/Card';
 

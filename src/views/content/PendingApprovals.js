@@ -6,7 +6,6 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { MultiSelect } from 'primereact/multiselect';
 import { Tag } from 'primereact/tag';
-import ApprovalPDF from '../../components/ApprovalPDF';
 import { useNavigate } from "react-router-dom";
 
 export default function PendingApproval() {

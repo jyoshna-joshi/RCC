@@ -3,7 +3,7 @@ import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from "./components/Home";
 import {Login} from "./components/Login";
-import AdminApproval from "./components/AdminApproval";
+
 import ViewAll from "./components/ViewAllContent";
 import './scss/style.scss';
 import SaveTempleteContent from './components/SaveTempleteContent';
@@ -33,8 +33,7 @@ const App = () => {
           <Route path="/selectLoginForm" element={<Login />} />
           <Route path="/selectLoginForm" element={<selectViewAllContent />} />
           <Route path="/selectViewAllContent" element={<Search />} />
-          <Route path="/selectApproveReject" element={<ApproveReject />} />
-          <Route path="/selectAdminApprovalForm" element={<AdminApproval />} />
+          <Route path="/selectApproveReject" element={<ApproveReject />} />         
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
           </Routes>
       </BrowserRouter>
