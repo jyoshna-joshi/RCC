@@ -14,9 +14,9 @@ import { useNavigate } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 
-function ApproveReject() {
+function ViewDetails() {
     const { state } = useLocation();
-    const { id} = state;
+    const { id } = state;
 
     const navigate = useNavigate();
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
@@ -53,15 +53,8 @@ function ApproveReject() {
     );
 
 
-    const handleApprove = async (stat) => {
-        var url = 'http://44.202.58.84:3000/content/update-status/' + id;
-        const res = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({ status: stat }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
+    const handleCancel = async (stat) => {
+        // navigate(-1);
     }
 
     return (
@@ -89,9 +82,6 @@ function ApproveReject() {
                         <Form.Label>Pending Article</Form.Label>
                         {/* <Form.Control required type="file" onChange={handleChange} /> */}
                         <Form.Control required type="label" placeholder={data.format} as="textarea" rows="3" readOnly />
-                        {/* <Button variant="primary" type="submit" className="btn btn-success" > */}
-                        {/* View Article */}
-                        {/* </Button> */}
                         <h1>_</h1>
                         <div className="mb-3">
                             {IsJpg ? (<img
@@ -106,17 +96,9 @@ function ApproveReject() {
                     <Row>
                         <Col sm={11} className='Template-text'>
                             {/* for Approval */}
-                            <Form.Group className="mb-3" controlId="formApproveJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Approved')}>
+                            <Form.Group className="mb-3" controlId="cancel" >
+                                <Button variant="primary" type="submit" onClick={() => handleCancel('Cancel')}>
                                     Approve
-                                </Button>
-                            </Form.Group>
-                        </Col>
-                        <Col sm={1} className='Template-text'>
-                            {/* for Decline */}
-                            <Form.Group className="mb-3" controlId="formDeclineJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Rejected')}>
-                                    Reject
                                 </Button>
                             </Form.Group>
                         </Col>
@@ -131,4 +113,4 @@ function ApproveReject() {
 
 }
 
-export default ApproveReject
+export default ViewDetails
