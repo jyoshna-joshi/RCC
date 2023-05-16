@@ -10,13 +10,14 @@ import Col from 'react-bootstrap/Col';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DocViewer, { DocViewerRenderers, PDFRenderer, PNGRenderer , JPGRenderer  } from "@cyntler/react-doc-viewer";
 
 import Card from 'react-bootstrap/Card';
 
 function ApproveReject() {
     const { state } = useLocation();
-    const { id, date, title } = state;  
-      
+    const { id, date, title } = state;
+
     const navigate = useNavigate();
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
     //for dynamic fields
@@ -28,7 +29,7 @@ function ApproveReject() {
     useEffect(() => {
         const fetchData = async () => {
             var url = 'http://44.202.58.84:3000/content/' + id;
-                     
+
             const res = await fetch(url);
             const resdata = await res.json();
             console.log(resdata.creator);
@@ -46,12 +47,25 @@ function ApproveReject() {
             body: JSON.stringify({ status: stat }),
             headers: {
                 'Content-Type': 'application/json'
-              },
+            },
         })
+
         const resdata = await res;
         console.log(resdata);
     }
-   const newplugin = defaultLayoutPlugin()
+
+    const docs = [
+        {
+
+            uri: " " + data.format,
+            
+            fileType:"docx",
+              
+
+
+        },
+    ];
+    const newplugin = defaultLayoutPlugin()
     return (
         <Card >
             {/* for Choosing file for approval*/}
@@ -78,13 +92,17 @@ function ApproveReject() {
                 {/* View Article */}
                 {/* </Button> */}
                 <h1>_</h1>
-                <div>
-                    <img
-                        src={data.format}
-                        alt="car"
-                        objectFit='contain'
-                    />
-                </div>
+                <DocViewer documents={docs} pluginRenderers={DocViewerRenderers}
+                    style={{ width: 1000, height: 1200 }}
+                    initialActiveDocument={docs[1]}
+                />
+                {/* <div> */}
+                {/* <img 
+                        // src={data.format}
+                        // alt="car"
+                        // objectFit='contain'
+                    // />
+                {/* </div> */}
             </Form.Group>
             <Row>
                 <Col sm={3} className='Template-text'>

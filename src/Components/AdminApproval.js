@@ -42,9 +42,6 @@ class AdminApproval extends Component {
                                 <ListGroup.Item action href="#approvalPDF">
                                     Approve Document articles
                                 </ListGroup.Item>
-                                <ListGroup.Item action href="#approvalVideo">
-                                    Approve Video articles
-                                </ListGroup.Item>
                             </ListGroup>
                         </Col>
                         <Col sm={6} className='Template-text'>
@@ -58,9 +55,9 @@ class AdminApproval extends Component {
                                     <ApprovalPDF />
                                 </Tab.Pane>
                                 {/* ApprovalVideo */}
-                                <Tab.Pane eventKey="#approvalVideo">
-                                    <ApprovalVideo />
-                                </Tab.Pane>
+
+
+
                             </Tab.Content>
 
                         </Col>
