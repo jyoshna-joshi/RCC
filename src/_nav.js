@@ -35,11 +35,10 @@ const _nav = [
         name: 'Upload Content',
         to: '/content/upload',
       },
-      {
-        component: CNavItem,
-        name: 'Approve/Reject',
-        to: '/content/approve',
-      },
+          
+     
+     
+     
     ]
   },
   {
