@@ -1,14 +1,13 @@
 .luxury {
-  max-width: 1040px;
+  max-width: 1200px;
   margin: auto;
   padding: 2rem 1rem;
 }
 
 .luxury .container {
+  width: 100%;
   display: flex;
- 
-  
-  gap: 1rem;
+
   padding: 4rem 0;
 }
 
@@ -40,7 +39,6 @@
 
 .card {
   width: 100%;
-  
   flex-direction: row;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -66,6 +64,7 @@
 @media screen and (max-width: 768px) {
   .luxury .container {
     grid-template-columns: repeat(2, 1fr);
+    background-color: darkcyan;
   }
 
   .heading h1 {
@@ -80,5 +79,6 @@
 @media screen and (max-width: 500px) {
   .luxury .container {
     grid-template-columns: 1fr;
+    background-color: darkcyan;
   }
 }

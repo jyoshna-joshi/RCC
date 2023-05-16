@@ -17,7 +17,7 @@ const Home = (props) => {
       <Hero />
       <ShowContent />
       <Find />
-      <Driver />
+      
       <Luxury />
       <Footer />
     </>
