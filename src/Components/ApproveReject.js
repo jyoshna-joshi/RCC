@@ -64,14 +64,10 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-<<<<<<< HEAD
-        alert("Content " + stat + "Successfully.");
-        navigate("/admin/content/pending")
-=======
+
         setShow(true)
         //  alert("Admin review Success")
         
->>>>>>> origin
     }
 
     return (
