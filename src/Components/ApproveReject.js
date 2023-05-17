@@ -61,11 +61,7 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-        if(stat == "Approve"){
-            alert("Content approved successfully");
-        }else{
-            alert("Content rejected successfully");
-        }
+        alert("Content " + stat + " Successfully.");
         navigate("/admin/content/pending")
     }
 

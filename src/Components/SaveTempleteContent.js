@@ -35,6 +35,8 @@ export default function SaveTempleteContent() {
     const [toast, addToast] = useState(0)
     const [colorAlert, setColorAlert] = useState()
     const [uploadby, setUploadBy] = useState()
+    const [submit, setSubmit] = useState()
+
 
     /**
      * load spinner
@@ -68,9 +70,11 @@ export default function SaveTempleteContent() {
 
         if (path === "upload") {
             setUploadBy("admin");
+            setSubmit("Upload Content");
         }
         else {
             setUploadBy("public");
+            setSubmit("Submit for approval");
         }
 
         axios(URL_TEMPLATE_TYPES)
@@ -208,7 +212,7 @@ export default function SaveTempleteContent() {
                                     })}
                                     <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
                                         <Button variant="secondary" type="submit">
-                                            Submit for approval
+                                            {submit}
                                         </Button>
                                         <Col>
                                             {loadSpinnerForSubmit()}
