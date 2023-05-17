@@ -35,6 +35,8 @@ export default function SaveTempleteContent() {
     const [toast, addToast] = useState(0)
     const [colorAlert, setColorAlert] = useState()
     const [uploadby, setUploadBy] = useState()
+    const [submit, setSubmit] = useState()
+
 
     /**
      * load spinner
@@ -42,7 +44,7 @@ export default function SaveTempleteContent() {
      */
     function loadSpinner() {
         if (isLoading) {
-            return <Spinner animation="grow" variant="primary" >
+            return <Spinner animation="grow" variant="secondary" >
             </Spinner>
         }
     }
@@ -53,7 +55,7 @@ export default function SaveTempleteContent() {
  */
     function loadSpinnerForSubmit() {
         if (isFileLoading) {
-            return <Spinner animation="grow" variant="primary" >
+            return <Spinner animation="grow" variant="secondary" >
             </Spinner>
         }
     }
@@ -68,16 +70,19 @@ export default function SaveTempleteContent() {
 
         if (path === "upload") {
             setUploadBy("admin");
+            setSubmit("Upload Content");
         }
         else {
             setUploadBy("public");
+            setSubmit("Submit for approval");
         }
 
         axios(URL_TEMPLATE_TYPES)
             .then(response => {
                 setIsLoading(true);
                 return (response.data).map((item) => {
-                    return item.type;
+                    item = item.type.replace(/([A-Z])/g, ' $1').trim();
+                    return item;
                 });
             })
             .then(data => {
@@ -98,7 +103,7 @@ export default function SaveTempleteContent() {
         setVisibleModal(false);
         setFields([]);
         setIsLoading(true);
-        fetch(URL_FIELD_TYPE + templateType)
+        fetch(URL_FIELD_TYPE + templateType.replace(/ +/g, ""))
             .then(response => {
                 return response.json();
             })
@@ -132,7 +137,11 @@ export default function SaveTempleteContent() {
         setIsFileLoading(true);
         event.preventDefault();
         const formdData = new FormData();
-        fields.map((field, index) => {
+    
+        fields.map((field) => {
+            if(field.value == null){
+                field.value = "";
+            }
             formdData.append(field.field, field.value);
             console.log(field.value);
 
@@ -159,64 +168,67 @@ export default function SaveTempleteContent() {
     };
 
     return (
-        <><Card>
-            <Tab.Container id="list-group-tabs">
-                <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
-                <Row>
-                    <Col sm={3} />
-                    <Col sm={3} className='Template-text'>
-                        <h6>Please choose content type to upload </h6>
-                        {/* for types */}
-                        <ListGroup>
-                            {types.map((templateType) => (
-                                <ListGroupItem className='Hover-box' eventKey={templateType} onClick={() => fetchUserData(templateType)}>
-                                    {templateType}
-                                </ListGroupItem>
+        <>
+            <div class="searchContainer">
+            <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content ?</h5>
 
-                            ))}
-                            <pre>You choose: {selectedTemplateType}</pre>
-                        </ListGroup>
-                    </Col>
-                    <Col sm={4} className='Template-text'>
-                        <Tab.Content>
-                            {loadSpinner()}
-                            <Tab.Pane eventKey={selectedTemplateType}>
-                                {/* for forms */}
-                                {fields.map((field, index) => {
-                                    if (field.field == "format") {
-                                        field.type = "file";
-                                    } else if (field.field == "date") {
-                                        field.type = "date";
-                                    }
-                                    else {
-                                        field.type = "text";
-                                    }
-                                    return <Form.Group className="mb-3" controlId="title" key={index}>
-                                        <Form.Label>{field.title}</Form.Label>
-                                        <Form.Control required type={field.type}
-                                            placeholder={field.placeholder}
-                                            onChange={(e) => handleInputChange(e, index)} />
-                                    </Form.Group>;
-                                })}
-                                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
-                                    <Button variant="primary" type="submit">
-                                        Submit for approval
-                                    </Button>
-                                    <Col>
-                                        {loadSpinnerForSubmit()}
-                                    </Col>
-                                    <CAlert color={colorAlert} visible={visibleModal}>
-                                        {toast}
-                                    </CAlert>
-                                </Form.Group>
-                            </Tab.Pane>
-                        </Tab.Content>
-                    </Col>
-                    <Col sm={3} />
-                </Row>
-            </Tab.Container>
-        </Card>
-        <br/>
-        <Footer /></>
+            </div>
+            <Card>
+                <Tab.Container id="list-group-tabs" >
+                    <Row>
+                        <Col sm={3} />
+                        <Col sm={3} className='Template-text'>
+                            <h6 className='Text-display'>AVAILABLE FORMS</h6>
+                            {/* for types */}
+                            <ListGroup>
+                                {types.map((templateType) => (
+                                    <ListGroupItem action variant='dark' className='Hover-box'  eventKey={templateType}  onClick={() => fetchUserData(templateType)}>
+                                        {templateType}
+                                    </ListGroupItem>
+
+                                ))}
+                            </ListGroup>
+                        </Col>
+                        <Col sm={4} className='Template-text'>
+                            <Tab.Content>
+                                {loadSpinner()}
+                                <Tab.Pane  eventKey={selectedTemplateType}>
+                                    {/* for forms */}
+                                    {fields.map((field, index) => {
+                                        if (field.field == "format") {
+                                            field.type = "file";
+                                        } else if (field.field == "date") {
+                                            field.type = "date";
+                                        }
+                                        else {
+                                            field.type = "text";
+                                        }
+                                        return <Form.Group className="mb-3" controlId="title" key={index}>
+                                            <Form.Label>{field.title}</Form.Label>
+                                            <Form.Control required type={field.type}
+                                                placeholder={field.placeholder}
+                                                onChange={(e) => handleInputChange(e, index)} />
+                                        </Form.Group>;
+                                    })}
+                                    <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
+                                        <Button variant="secondary" type="submit">
+                                            {submit}
+                                        </Button>
+                                        <Col>
+                                            {loadSpinnerForSubmit()}
+                                        </Col>
+                                        <CAlert color={colorAlert} visible={visibleModal}>
+                                            {toast}
+                                        </CAlert>
+                                    </Form.Group>
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Col>
+                        <Col sm={3} />
+                    </Row>
+                </Tab.Container>
+            </Card>
+            <br />
+            <Footer /></>
     );
 }

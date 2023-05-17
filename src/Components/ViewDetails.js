@@ -53,9 +53,11 @@ function ViewDetails() {
     }, []
     );
 
-
-    const handleCancel = async (stat) => {
-        // navigate(-1);
+    /**
+     *Go to home page 
+     */
+    const handleClose = async () => {
+        navigate("/home");
     }
 
     return (
@@ -95,8 +97,17 @@ function ViewDetails() {
                         </div>
                     </Form.Group>
                 </Col>
-
                 <Col sm={3} />
+                <Row>
+                    <Col className='Close-button'>
+                        {/* for Approval */}
+                        <Form.Group className="mb-3" controlId="formApproveJournal" >
+                            <Button variant="secondary" type="submit" onClick={() => handleClose()} >
+                                Close
+                            </Button>
+                        </Form.Group>
+                    </Col>
+                </Row>
             </Row>
 
         </Card><Footer /></>
