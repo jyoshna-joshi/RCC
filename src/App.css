@@ -17,6 +17,11 @@
   cursor: pointer;
 }
 
+.Center-Image
+{
+ text-align:center;
+ display:block;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

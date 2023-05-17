@@ -13,20 +13,12 @@ import CIcon from '@coreui/icons-react'
 import {
   cilLibrary,
   cilBellExclamation,
-  cibCcMastercard,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifUs,
-  cibTwitter,
   cilUser,
   cilUserFemale,
 } from '@coreui/icons'
 import {
   CChartPie,
 } from '@coreui/react-chartjs'
-
-import avatar1 from '../../assets/images/avatars/1.jpg'
 
 const Dashboard = () => {
   const [widgetData, setData] = useState([
@@ -45,10 +37,10 @@ const Dashboard = () => {
         allCount = data.length;
 
         for (var i in data) {
-          if (data[i].creator === 'admin') {
+          if (data[i].uploadby === 'admin') {
             adminCount++;
           }
-          if (data[i].creator === 'public') {
+          if (data[i].uploadby === 'public') {
             userCount++;
           }
           if (data[i].status === 'Pending') {
@@ -61,10 +53,7 @@ const Dashboard = () => {
         var arrayTmp = Array.from(sortedTypeMap).slice(0, 5);
         
         setData({ all: allCount, pending: pendingCount, admin: adminCount, user: userCount });
-        console.log(data);
         setChartData(arrayTmp);
-
-        console.log(arrayTmp);
     }
 
     // Call the function
@@ -76,16 +65,16 @@ const Dashboard = () => {
   function showDetails(source) {
     switch (source) {
       case 'all':
-        navigate("/content/all");
+        navigate("/admin/content/all");
         return;
       case 'pending':
-        navigate("/content/pending");
+        navigate("/admin/content/pending");
         return;
       case 'user':
-        navigate("/content/list-by-creator?creator=public");
+        navigate("/admin/content/list-by-uploadby?uploadby=public");
         return;
       case 'admin':
-        navigate("/content/list-by-creator?creator=admin");
+        navigate("/admin/content/list-by-uploadby?uploadby=admin");
         return;
       default:
         navigate('/admin/dashboard');
@@ -151,18 +140,23 @@ const Dashboard = () => {
           <CCard className="mb-4">
             <CCardHeader>Content Uploads by Type</CCardHeader>
             <CCardBody>
-              <CChartPie
-                data={{
-                  //labels: [chartData[0][0], chartData[1][0], chartData[2][0], chartData[3][0], chartData[4][0]],
+            {chartData 
+            ?
+              <CChartPie              
+                data={{                
+                 labels: [chartData[0][0], chartData[1][0], chartData[2][0], chartData[3][0], chartData[4][0]],
                   datasets: [
                     {
-                      //data: [chartData[0][1], chartData[1][1], chartData[2][1], chartData[3][1], chartData[4][1]],
+                     data: [chartData[0][1], chartData[1][1], chartData[2][1], chartData[3][1], chartData[4][1]],
                       backgroundColor: ['#072F5F', '#1261A0', '#3895D3', '#58CCED', '#DFE9F3'],
                       hoverBackgroundColor: ['#072F5F', '#1261A0', '#3895D3', '#58CCED', '#DFE9F3'],
                     },
                   ],
-                }}
+                }}                
               />
+              :
+                null
+              }
             </CCardBody>
           </CCard>
         </CCol>

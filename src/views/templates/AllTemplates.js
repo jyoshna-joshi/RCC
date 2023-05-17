@@ -27,7 +27,7 @@ export default function AdvancedFilterDemo() {
     }, []);
 
     const newTemplate = () => {
-        navigate("/template/new");
+        navigate("/admin/template/new");
         return;
     };
 
@@ -46,11 +46,11 @@ export default function AdvancedFilterDemo() {
     };    
 
     const viewDetailsTemplate = (rowData) => {
-        return <Button type="button" icon="pi pi-external-link" onClick={() => {navigate('/template/view?type='+ rowData.type)}} rounded outlined/>
+        return <Button type="button" icon="pi pi-external-link" onClick={() => {navigate('/admin/template/view?type='+ rowData.type)}} rounded outlined/>
     };
 
     const editDetailsTemplate = (rowData) => {
-        return <Button type="button" icon="pi pi-pencil" onClick={() => {navigate('/template/edit?type='+ rowData.type)}} rounded outlined/>
+        return <Button type="button" icon="pi pi-pencil" onClick={() => {navigate('/admin/template/edit?type='+ rowData.type)}} rounded outlined/>
     };
 
     const activeTemplate = (rowData) => {

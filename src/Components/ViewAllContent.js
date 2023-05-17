@@ -12,39 +12,13 @@ export default function AdvancedFilterDemo() {
     const [content, setContent] = useState(null);
     const [filters, setFilters] = useState(null);
     const [formats, setFormats] = useState();
-    const [statuses] = useState(['Approved', 'Rejected', 'Pending']);
-
-    const getSeverity = (status) => {
-        switch (status) {
-            case 'Rejected':
-                return 'danger';
-
-            case 'Approved':
-                return 'success';
-
-            case 'Pending':
-                return 'warning';
-        }
-    };
-
     useEffect(() => {
         const fetchData = async () => {
             
             const params = new URLSearchParams(window.location.search);
             const creator = params.get("creator");
             const status = params.get("status");
-            var url = 'http://44.202.58.84:3000/content/list-by-status';
-
-            if (creator == 'admin') {
-                url = 'http://44.202.58.84:3000/content/list-by-creator?creator=admin';
-            }
-            else if (creator == 'public') {
-                url = 'http://44.202.58.84:3000/content/list-by-creator?creator=public'
-            }
-
-            if (status != null ) {
-                url = 'http://44.202.58.84:3000/content/list-by-status?status=' + status;
-            }            
+            var url = 'http://44.202.58.84:3000/content/list-by-status?status=Approved';
 
             const response = await fetch(url);
             const data = await response.json();
@@ -92,7 +66,6 @@ export default function AdvancedFilterDemo() {
             identifier: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             type: { value: null, matchMode: FilterMatchMode.IN },
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-            status: { value: null, matchMode: FilterMatchMode.IN },
         });
     };
 
@@ -132,27 +105,6 @@ export default function AdvancedFilterDemo() {
         return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     };
 
-    const statusBodyTemplate = (rowData) => {
-        return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
-    };
-
-    const statusFilterTemplate = (options) => {
-        return <MultiSelect value={options.value} 
-        options={statuses} 
-        itemTemplate={statusItemTemplate} 
-        onChange={(e) => options.filterCallback(e.value)} 
-        placeholder="Any" 
-        className="p-column-filter" />;
-    };
-
-    const statusItemTemplate = (option) => {
-        return (
-            <div className="flex align-items-center gap-2">
-                <span>{option}</span>
-            </div>
-        );
-    };
-
     const header = renderHeader();
 
     return (
@@ -166,7 +118,6 @@ export default function AdvancedFilterDemo() {
                 <Column field="description" header="Description" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
                 <Column field="identifier" header="Identifier" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
                 <Column field="publisher" header="Publisher" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
-                <Column filterField="status" header="Status" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                 <Column header="Type" filterField="type" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />                
             </DataTable>

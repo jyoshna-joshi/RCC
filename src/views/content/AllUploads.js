@@ -63,19 +63,21 @@ export default function AllContent() {
 
     const getContent = (data) => {
         return [...(data || [])].map((d) => {
-            d.date = new Date(d.date) || null;
+            d.date = d.date ? new Date(d.date) : '';
 
             return d;
         });
     };
 
     const formatDate = (value) => {
-        var date = new Date(value);
-        return date.toLocaleDateString('en-US', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+        if (value) {
+            return value.toLocaleDateString('en-US', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+        return null;        
     };
 
     const clearFilter = () => {

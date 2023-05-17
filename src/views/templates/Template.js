@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useRef } from 'react';
+import React,{ useState, useEffect } from 'react';
 import {
     CFormSelect,
     CCard,
@@ -24,16 +24,13 @@ export default function FormControl() {
 
     const [templateName, setTemplateName] = useState(null);
     const [action, setAction] = useState(null);
-    const [toast, addToast] = useState(0)
-    const toaster = useRef()
-
+    const [toast, addToast] = useState()
     const path = window.location.pathname;
     const searchPath = new URLSearchParams(window.location.search);
     const templateType = searchPath.get("type");
     const urlAction = path.substring(path.lastIndexOf('/') + 1);
     const [visibleModal, setVisibleModal] = useState(false)
     const [colorAlert, setColorAlert] = useState()
-
     const [inputFields, setInputFields] = useState([
         { title: '', field: '', placeholder: '', type: '' }
     ])
@@ -106,7 +103,7 @@ export default function FormControl() {
                     '"field": "' + inputFields[i].field + '",' +
                     '"title": "' + inputFields[i].title + '",' +
                     '"placeholder": "' + inputFields[i].placeholder + '",' +
-                    '"type": "' + inputFields[i].type + '"' +
+                    '"type": "' + inputFields[i].type === "Text" ? "String" : inputFields[i].type + '"' +
                     '}';
                 data = data + field;
             }
@@ -140,9 +137,9 @@ export default function FormControl() {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <CButton onClick={() => {navigate('/template/all')}} variant="outline">All Templates</CButton>
+                        <CButton onClick={() => {navigate('/admin/template/all')}} variant="outline">All Templates</CButton>
                         {action === 'view' 
-                        ? <CButton onClick={() => {navigate('/template/edit?type='+ templateName); window.location.reload(false);}} variant="outline">
+                        ? <CButton onClick={() => {navigate('/admin/template/edit?type='+ templateName); window.location.reload(false);}} variant="outline">
                             <CIcon icon={cilPencil} className="me-2" />
                           </CButton>
                         : null
@@ -158,6 +155,7 @@ export default function FormControl() {
                                         id="templateName"
                                         placeholder="Sample Template"
                                         onChange={event => handleTemplateChange(event)}
+                                        required
                                     /> 
                                     : <CFormInput
                                         type="text"

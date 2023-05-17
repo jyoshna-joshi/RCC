@@ -38,3 +38,38 @@ content: "";
 display: table;
 clear: both;
 }
+
+.searchContainer {
+  background-color:black;
+  padding: 1%;
+}
+
+.searchResults {
+  padding: 1%;
+}
+
+#searchTitle:hover{
+  color:#626161;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#searchTitle {
+  color: black;
+  text-decoration: none;
+}
+
+.carousel {
+  width:1000px;
+  height:500px;
+  margin: auto;
+}
+
+.cimg {
+  width: 1000px;
+  height: 500px;
+}
+
+CRow {
+  margin: auto;
+}

@@ -3,6 +3,7 @@ import CIcon from '@coreui/icons-react';
 import {
   cilLibrary,
   cilSpeedometer,
+  cilFlipToFront
 } from '@coreui/icons';
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react';
 
@@ -16,46 +17,41 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Content Management',
-    to: '/content',
+    to: '/admin/content',
     icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'All Content',
-        to: '/content/all',
+        to: '/admin/content/all',
       },
       {
         component: CNavItem,
         name: 'Pending Approvals',
-        to: '/content/pending'
+        to: '/admin/content/pending'
       },
       {
         component: CNavItem,
         name: 'Upload Content',
-        to: '/content/upload',
-      },
-      {
-        component: CNavItem,
-        name: 'Approve/Reject',
-        to: '/content/approve',
+        to: '/admin/content/upload',
       },
     ]
   },
   {
     component: CNavGroup,
     name: 'Template Management',
-    to: '/template',
-    icon: <CIcon icon={cilLibrary} customClassName="nav-icon" />,
+    to: '/admin/template',
+    icon: <CIcon icon={cilFlipToFront} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'All Templates',
-        to: '/template/all',
+        to: '/admin/template/all',
       },
       {
         component: CNavItem,
         name: 'New Template',
-        to: '/template/new',
+        to: '/admin/template/new',
       }
     ]
   },

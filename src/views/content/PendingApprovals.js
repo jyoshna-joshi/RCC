@@ -6,7 +6,6 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { MultiSelect } from 'primereact/multiselect';
 import { Tag } from 'primereact/tag';
-import ApprovalPDF from '../../components/ApprovalPDF';
 import { useNavigate } from "react-router-dom";
 
 export default function PendingApproval() {
@@ -44,19 +43,21 @@ export default function PendingApproval() {
 
     const getContent = (data) => {
         return [...(data || [])].map((d) => {
-            d.date = new Date(d.date) || null;
+            d.date = d.date? new Date(d.date) : null;
 
             return d;
         });
     };
 
     const formatDate = (value) => {
-        var date = new Date(value);
-        return date.toLocaleDateString('en-US', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+        if (value) {
+            return value.toLocaleDateString('en-US', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+        return null; 
     };
 
     const clearFilter = () => {
@@ -134,8 +135,7 @@ export default function PendingApproval() {
         console.log(rowData.date);
         return <Button type="button"
             icon="pi pi-external-link"
-             link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id, date: rowData.date,title: rowData.title} })} />
-            //link onClick={() => navigate("/selectAdminApprovalForm", { state: { id: rowData._id, date: rowData.date, title: rowData.title } })} />
+             link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id} })} />
     };
 
     const header = renderHeader();

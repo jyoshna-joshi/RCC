@@ -239,6 +239,7 @@ var functions = {
   },
   home: async function (req, res) {
     try {
+<<<<<<< HEAD
       // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
       let imageContents = await Content.aggregate([
         { $match: { formatType: { $regex: "image", $options: "i" } } },
@@ -256,6 +257,25 @@ var functions = {
       return res.status(500).send(err);
     }
   },
+=======
+        // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
+        let imageContents = await Content.aggregate([
+            { $match: { formatType: { $regex: 'image', $options: 'i' } } },
+            { $sort: { timestamp: -1 } },
+            { $limit: 6 },
+        ]);
+        let pdfContents = await Content.aggregate([
+            { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
+            { $sort: { timestamp: -1 } },
+            { $limit: 6 },
+        ])
+        return res.status(200).json(imageContents.concat(pdfContents));
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send(err);
+      }
+  }
+>>>>>>> 93a91b5026a36dad3548cbb36f2d3017fef3aba7
 };
 
 module.exports = functions;
