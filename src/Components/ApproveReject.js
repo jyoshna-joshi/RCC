@@ -61,7 +61,7 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-        alert("Content " + stat + " Successfully.");
+        alert("Content " + stat + "Successfully.");
         navigate("/admin/content/pending")
     }
 
