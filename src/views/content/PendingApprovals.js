@@ -32,7 +32,7 @@ export default function PendingApproval() {
             const formatData = await formatResponse.json();
 
             setContent(getContent(data));
-            setFormats(formatData);
+            setFormats(getFormatData(formatData));
 
             initFilters();
         }
@@ -43,8 +43,17 @@ export default function PendingApproval() {
 
     const getContent = (data) => {
         return [...(data || [])].map((d) => {
-            d.date = d.date? new Date(d.date) : null;
+            d.timestamp = d.timestamp ? new Date(d.timestamp) : null;
+            d.type = d.type.replace(/([A-Z])/g, ' $1').trim();
+            var json = '{"type":"' + d.type + '"}';
+            d.type = JSON.parse(json);
+            return d;
+        });
+    };
 
+    const getFormatData = (data) => {
+        return [...(data || [])].map((d) => {
+            d.type = d.type.replace(/([A-Z])/g, ' $1').trim();
             return d;
         });
     };
@@ -57,7 +66,7 @@ export default function PendingApproval() {
                 year: 'numeric'
             });
         }
-        return null; 
+        return null;
     };
 
     const clearFilter = () => {
@@ -69,7 +78,7 @@ export default function PendingApproval() {
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             title: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             type: { value: null, matchMode: FilterMatchMode.IN },
-            date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
+            timestamp: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             status: { value: null, matchMode: FilterMatchMode.IN },
         });
     };
@@ -86,7 +95,7 @@ export default function PendingApproval() {
         const type = rowData.type;
 
         return (
-            <span>{type}</span>
+            <span>{type.type}</span>
         );
     };
 
@@ -103,7 +112,7 @@ export default function PendingApproval() {
     };
 
     const dateBodyTemplate = (rowData) => {
-        return formatDate(rowData.date);
+        return formatDate(rowData.timestamp);
     };
 
     const dateFilterTemplate = (options) => {
@@ -132,10 +141,10 @@ export default function PendingApproval() {
     };
 
     const viewDetailsTemplate = (rowData) => {
-        console.log(rowData.date);
+        console.log(rowData.timestamp);
         return <Button type="button"
             icon="pi pi-external-link"
-             link onClick={()=> navigate("/selectApproveReject", { state: { id: rowData._id} })} />
+            link onClick={() => navigate("/admin/approve", { state: { id: rowData._id } })} />
     };
 
     const header = renderHeader();
@@ -145,11 +154,11 @@ export default function PendingApproval() {
             <DataTable value={content} paginator rows={10} dataKey="_id"
                 filters={filters} header={header}
                 emptyMessage="No content found.">
-                <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-                <Column field="title" header="Title" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
-                <Column filterField="status" header="Status" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                <Column header="Date" filterField="timestamp" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
                 <Column header="Type" filterField="type" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
+                <Column field="title" header="Title" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
+                <Column filterField="status" header="Status" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                 <Column body={viewDetailsTemplate} header="">
                 </Column>
             </DataTable>
