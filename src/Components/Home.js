@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Images from "./Images";
+import Images from "./HomeContent";
 import Footer from "./Footer";
 import { useState, useEffect } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -202,7 +202,8 @@ const Home = () => {
             </Collapse>
           </Container>
         </div>
-        <div class="searchResults"><Container>
+        <div class="searchResults">
+          <Container>
           <Row>
             <Col>
               {data.map(item => (

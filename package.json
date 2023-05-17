@@ -14,6 +14,7 @@
     "@logicamente.info/react-pdf-viewer": "^1.0.4",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf-viewer/thumbnail": "^3.12.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -34,6 +35,7 @@
     "react-native-pdf": "^6.6.2",
     "react-native-pdf-view": "^0.3.2",
     "react-pdf": "^6.2.2",
+    "react-pdf-js": "^5.1.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
@@ -69,5 +71,8 @@
   },
   "devDependencies": {
     "sass": "^1.62.1"
+  },
+  "resolutions": {
+    "@types/react": "17.0.43"
   }
 }

@@ -5,10 +5,11 @@ import Home from "./components/Home";
 import {Login} from "./components/Login";
 import './scss/style.scss';
 import SaveTempleteContent from './components/SaveTempleteContent';
-import Images from './components/Images';
+import Images from './components/HomeContent';
 import ViewDetails from './components/ViewDetails'
 import Navbar from './components/Navbar'
 import Search from './components/Search';
+import Pdf from './components/PdfThumbnails';
 
 const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
 // const Home = React.lazy(() => import('./layout/AdminLayout'))
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="/selectViewAllContent" element={<Search />} />
           <Route path="/viewDetails" element={<ViewDetails />} />   
           <Route exact path="*" name="Admin Dashboard" element={<AdminLayout />} />
+          <Route path="/pdf" element={<Pdf />} />
         </Routes>
       </BrowserRouter>
     </div>
