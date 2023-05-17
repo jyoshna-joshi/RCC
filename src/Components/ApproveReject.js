@@ -62,7 +62,7 @@ function ApproveReject() {
             },
         })
         alert("Admin review Success")
-        navigate("/content/pending")
+        navigate("/admin/content/pending")
     }
 
     return (
