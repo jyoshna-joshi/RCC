@@ -94,16 +94,6 @@ function ViewDetails() {
                                 (<iframe width="100%" height="600" frameborder="0" src={`https://docs.google.com/gview?url=${data.format}&embedded=true`}></iframe>)}
                         </div>
                     </Form.Group>
-                    <Row>
-                        <Col sm={11} className='Template-text'>
-                            {/* for Approval */}
-                            <Form.Group className="mb-3" controlId="cancel" >
-                                <Button variant="primary" type="submit" onClick={() => handleCancel('Cancel')}>
-                                    Approve
-                                </Button>
-                            </Form.Group>
-                        </Col>
-                    </Row>
                 </Col>
 
                 <Col sm={3} />
