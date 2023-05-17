@@ -113,7 +113,7 @@ function ApproveReject() {
                         <Col sm={11} className='Template-text'>
                             {/* for Approval */}
                             <Form.Group className="mb-3" controlId="formApproveJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Approved') } >
+                                <Button variant="secondary" type="submit" onClick={() => handleApprove('Approved') } >
                                     Approve
                                 </Button>
                             </Form.Group>
@@ -121,7 +121,7 @@ function ApproveReject() {
                         <Col sm={1} className='Template-text'>
                             {/* for Decline */}
                             <Form.Group className="mb-3" controlId="formDeclineJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Rejected')}>
+                                <Button variant="secondary" type="submit" onClick={() => handleApprove('Rejected')}>
                                     Reject
                                 </Button>
                             </Form.Group>

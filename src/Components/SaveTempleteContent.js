@@ -162,7 +162,7 @@ export default function SaveTempleteContent() {
     return (
         <>
             <div class="searchContainer">
-            <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content?</h5>
+            <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content ?</h5>
 
             </div>
             <Card>

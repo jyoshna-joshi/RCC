@@ -63,9 +63,7 @@ function UncontrolledExample() {
 
     return (
         <>
-            <div className={styles.heading}>
-                <h3>Latest Images</h3>
-            </div>
+            <h6 className='Text-display'>LATEST IMAGES</h6>
             <br />
             <Carousel class="carousel">
                 {images ?
@@ -87,7 +85,7 @@ function UncontrolledExample() {
             <br />
             <br/>
             <div className={styles.heading}>
-                <h3>Latest Documents</h3>
+            <h6 className='Text-display'>LATEST DOCUMENTS</h6>
             </div>
             <br/>
             <CCard className="mb-4">
