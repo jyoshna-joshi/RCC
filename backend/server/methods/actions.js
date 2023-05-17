@@ -43,7 +43,8 @@ var functions = {
                 title: req?.body?.title,
                 publisher: req?.body?.publisher,
                 type: req?.body?.type,
-                status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
+                status:
+                  req?.body?.uploadby === "admin" ? "Approved" : "Pending",
                 timestamp: Date.now(),
               });
               console.log(content);
@@ -70,7 +71,7 @@ var functions = {
             type: req?.body?.type,
             uploadby: req?.body?.uploadby,
             status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
-            timestamp: Date.now()
+            timestamp: Date.now(),
           });
           await content.save();
           return res.status(200).send("Saved!!!");
@@ -120,7 +121,10 @@ var functions = {
       if (!req.params.id) {
         return res.status(500).send("Could not find id");
       } else {
-        const log =await Content.updateOne({ _id: req.params.id },{ status: req.body.status })
+        const log = await Content.updateOne(
+          { _id: req.params.id },
+          { status: req.body.status }
+        );
         console.log(log);
         return res.status(200).send("Status updated");
       }
@@ -208,12 +212,13 @@ var functions = {
   searchContent: async function (req, res) {
     try {
       if (req.query.templateType === "AllCategories") {
-        let query = null;
+        let query = {};
+        if (req.query.publisher) query["publisher"] = req.query.publisher;
         if (req.query.subject)
           query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
-        if (req.query.publisher) query["publisher"] = req.query.publisher;
         if (req.query.searchText)
           query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
+        console.log(query);
         let contents = await Content.find(query);
         return res.status(200).json(contents);
       } else {
@@ -223,6 +228,7 @@ var functions = {
           query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
         if (req.query.searchText)
           query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
+        console.log(query);
         let contents = await Content.find(query);
         return res.status(200).json(contents);
       }
@@ -233,23 +239,23 @@ var functions = {
   },
   home: async function (req, res) {
     try {
-         // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
-         let imageContents = await Content.aggregate([
-            { $match: { formatType: { $regex: 'image', $options: 'i' } } },
-            { $sort: { timestamp: -1 } },
-            { $limit: 5 },
-        ]);
-        let pdfContents = await Content.aggregate([
-            { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
-            { $sort: { timestamp: -1 } },
-            { $limit: 5 },
-        ])
-        return res.status(200).json(imageContents.concat(pdfContents));
-      } catch (err) {
-        console.error(err);
-        return res.status(500).send(err);
-      }
-  }
+      // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
+      let imageContents = await Content.aggregate([
+        { $match: { formatType: { $regex: "image", $options: "i" } } },
+        { $sort: { timestamp: -1 } },
+        { $limit: 6 },
+      ]);
+      let pdfContents = await Content.aggregate([
+        { $match: { formatType: { $regex: /(pdf|document)/, $options: "i" } } },
+        { $sort: { timestamp: -1 } },
+        { $limit: 6 },
+      ]);
+      return res.status(200).json(imageContents.concat(pdfContents));
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+  },
 };
 
 module.exports = functions;
