@@ -77,7 +77,8 @@ export default function SaveTempleteContent() {
             .then(response => {
                 setIsLoading(true);
                 return (response.data).map((item) => {
-                    return item.type;
+                    item = item.type.replace(/([A-Z])/g, ' $1').trim();
+                    return item;
                 });
             })
             .then(data => {
@@ -98,7 +99,7 @@ export default function SaveTempleteContent() {
         setVisibleModal(false);
         setFields([]);
         setIsLoading(true);
-        fetch(URL_FIELD_TYPE + templateType)
+        fetch(URL_FIELD_TYPE + templateType.replace(/ +/g, ""))
             .then(response => {
                 return response.json();
             })
@@ -216,7 +217,7 @@ export default function SaveTempleteContent() {
                 </Row>
             </Tab.Container>
         </Card>
-        <br/>
-        <Footer /></>
+            <br />
+            <Footer /></>
     );
 }
