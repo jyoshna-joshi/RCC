@@ -13,17 +13,19 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
 
 function ApproveReject() {
     const { state } = useLocation();
-    const { id} = state;
+    const { id } = state;
     const navigate = useNavigate();
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
     //for dynamic fields
     const [data, setData] = useState([]);
     const [IsJpg, setIsJPG] = useState(false);
-
-
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     //const [_id, setID] = useState();
     /**
      * Fetch pending list by status
@@ -53,6 +55,7 @@ function ApproveReject() {
 
 
     const handleApprove = async (stat) => {
+
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
         const res = await fetch(url, {
             method: 'POST',
@@ -61,8 +64,9 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-        alert("Content " + stat + " Successfully.");
-        navigate("/admin/content/pending")
+        setShow(true)
+        //  alert("Admin review Success")
+        
     }
 
     return (
@@ -110,13 +114,16 @@ function ApproveReject() {
                         </div>
                     </Form.Group>
                     <Row>
+
                         <Col sm={11} className='Template-text'>
                             {/* for Approval */}
                             <Form.Group className="mb-3" controlId="formApproveJournal" >
                                 <Button variant="secondary" type="submit" onClick={() => handleApprove('Approved') } >
                                     Approve
                                 </Button>
+
                             </Form.Group>
+
                         </Col>
                         <Col sm={1} className='Template-text'>
                             {/* for Decline */}
@@ -124,9 +131,24 @@ function ApproveReject() {
                                 <Button variant="secondary" type="submit" onClick={() => handleApprove('Rejected')}>
                                     Reject
                                 </Button>
+
                             </Form.Group>
                         </Col>
+                        <Modal show={show} onHide={handleClose} animation={false} >
+                            <Modal.Header >
+                                <Modal.Title >Admin Review</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Article reviewed successfully!</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={()=> navigate("/admin/content/pending")} >
+                                    OK
+                                </Button>
+                                
+                            </Modal.Footer>
+                        </Modal>
+
                     </Row>
+
                 </Col>
 
                 <Col sm={3} />
