@@ -241,12 +241,26 @@ var functions = {
     try {
       // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
       let imageContents = await Content.aggregate([
-        { $match: { formatType: { $regex: 'image', $options: 'i' } } },
+        {
+          $match: {
+            $and: [
+              { formatType: { $regex: "image", $options: "i" } },
+              { status: "Approved" },
+            ],
+          },
+        },
         { $sort: { timestamp: -1 } },
         { $limit: 6 },
       ]);
       let pdfContents = await Content.aggregate([
-        { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
+        {
+          $match: {
+            $and: [
+              { formatType: { $regex: /(pdf|document)/, $options: "i" } },
+              { status: "Approved" },
+            ],
+          },
+        },
         { $sort: { timestamp: -1 } },
         { $limit: 6 },
       ]);
