@@ -24,11 +24,14 @@ import {
     CCol,
     CRow,
 } from '@coreui/react'
+import { Document, Page, pdfjs } from 'react-pdf';
+import "react-pdf/dist/esm/Page/TextLayer.css";
 
 function UncontrolledExample() {
     const [images, setImages] = useState();
     const [documents, setDocs] = useState();
     const navigate = useNavigate();
+    const [pageNumber, setPageNumber] = useState(1);
 
     useEffect(() => {
         const fetchData = () => {
@@ -59,6 +62,8 @@ function UncontrolledExample() {
         }
 
         fetchData();
+        pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
     }, []);
 
     return (
@@ -83,29 +88,31 @@ function UncontrolledExample() {
                     : <div />}
             </Carousel>
             <br />
-            <br/>
+            <br />
             <div className={styles.heading}>
-            <h6 className='Text-display'>LATEST DOCUMENTS</h6>
+                <h6 className='Text-display'>LATEST DOCUMENTS</h6>
             </div>
-            <br/>
+            <br />
             <CCard className="mb-4">
-          <CCardBody>
-              <CRow>
-              {documents ?
-                    documents.map(item => (
-                        <CCol lg={2}>
-                            <CCard style={{ width: '18rem' }}>
-                                <CCardImage class="box" orientation="top" src="https://media.istockphoto.com/id/1156672386/vector/pdf-vector-icon-isolated-on-white-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=bTjfw6GUzGTXegf2YdaO09t-BUMmnpnk7q0cWpY8T7A=" onClick={() => {navigate("/viewDetails", { state: { id: item._id } }); window.location.reload();}}/>
-                                <CCardBody>
-                                    <CCardText>{item.title}</CCardText>
-                                </CCardBody>
-                            </CCard>
-                        </CCol>
-                    ))
-                    : <div />}
-              </CRow>
-          </CCardBody>
-        </CCard>
+                <CCardBody>
+                    <CRow>
+                        {documents ?
+                            documents.map(item => (
+                                <CCol lg={2}>
+                                    <CCard style={{ width: '18rem' }}>
+                                        <CCardBody class="box" onClick={() => navigate("/viewDetails", { state: { id: item._id } })}>
+                                            <Document file={item.format}>
+                                                <Page pageNumber={pageNumber} />
+                                            </Document>
+                                            <CCardText>{item.title}</CCardText>
+                                        </CCardBody>
+                                    </CCard>
+                                </CCol>
+                            ))
+                            : <div />}
+                    </CRow>
+                </CCardBody>
+            </CCard>
         </>
 
     );

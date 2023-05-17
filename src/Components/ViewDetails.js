@@ -57,7 +57,7 @@ function ViewDetails() {
      *Go to home page 
      */
     const handleClose = async () => {
-        navigate("/home");
+        navigate("/");
     }
 
     return (

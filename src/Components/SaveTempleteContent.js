@@ -157,7 +157,6 @@ export default function SaveTempleteContent() {
                 setVisibleModal(true);
                 setColorAlert('success');
                 addToast("File Upload success");
-                // navigate(-1);
             })
             .catch((err) => {
                 setIsFileLoading(false);
@@ -168,67 +167,64 @@ export default function SaveTempleteContent() {
     };
 
     return (
-        <>
-            <div class="searchContainer">
-            <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content ?</h5>
+        <><Card style={{height: "1000px"}}>
+            <Tab.Container id="list-group-tabs">
+                <h4 className='Upload-form' style={{ color: 'blueviolet' }}>Are you ready to upload your content?</h4>
+                <Row>
+                    <Col sm={3} />
+                    <Col sm={3} className='Template-text'>
+                        <h6>Please choose content type to upload </h6>
+                        {/* for types */}
+                        <ListGroup>
+                            {types.map((templateType) => (
+                                <ListGroupItem className='Hover-box' eventKey={templateType} onClick={() => fetchUserData(templateType)}>
+                                    {templateType}
+                                </ListGroupItem>
 
-            </div>
-            <Card>
-                <Tab.Container id="list-group-tabs" >
-                    <Row>
-                        <Col sm={3} />
-                        <Col sm={3} className='Template-text'>
-                            <h6 className='Text-display'>AVAILABLE FORMS</h6>
-                            {/* for types */}
-                            <ListGroup>
-                                {types.map((templateType) => (
-                                    <ListGroupItem action variant='dark' className='Hover-box'  eventKey={templateType}  onClick={() => fetchUserData(templateType)}>
-                                        {templateType}
-                                    </ListGroupItem>
-
-                                ))}
-                            </ListGroup>
-                        </Col>
-                        <Col sm={4} className='Template-text'>
-                            <Tab.Content>
-                                {loadSpinner()}
-                                <Tab.Pane  eventKey={selectedTemplateType}>
-                                    {/* for forms */}
-                                    {fields.map((field, index) => {
-                                        if (field.field == "format") {
-                                            field.type = "file";
-                                        } else if (field.field == "date") {
-                                            field.type = "date";
-                                        }
-                                        else {
-                                            field.type = "text";
-                                        }
-                                        return <Form.Group className="mb-3" controlId="title" key={index}>
-                                            <Form.Label>{field.title}</Form.Label>
-                                            <Form.Control required type={field.type}
-                                                placeholder={field.placeholder}
-                                                onChange={(e) => handleInputChange(e, index)} />
-                                        </Form.Group>;
-                                    })}
-                                    <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
-                                        <Button variant="secondary" type="submit">
-                                            {submit}
-                                        </Button>
-                                        <Col>
-                                            {loadSpinnerForSubmit()}
-                                        </Col>
-                                        <CAlert color={colorAlert} visible={visibleModal}>
-                                            {toast}
-                                        </CAlert>
-                                    </Form.Group>
-                                </Tab.Pane>
-                            </Tab.Content>
-                        </Col>
-                        <Col sm={3} />
-                    </Row>
-                </Tab.Container>
-            </Card>
-            <br />
-            <Footer /></>
+                            ))}
+                            <pre>You choose: {selectedTemplateType}</pre>
+                        </ListGroup>
+                    </Col>
+                    <Col sm={4} className='Template-text'>
+                        <Tab.Content>
+                            {loadSpinner()}
+                            <Tab.Pane eventKey={selectedTemplateType}>
+                                {/* for forms */}
+                                {fields.map((field, index) => {
+                                    if (field.field == "format") {
+                                        field.type = "file";
+                                    } else if (field.field == "date") {
+                                        field.type = "date";
+                                    }
+                                    else {
+                                        field.type = "text";
+                                    }
+                                    return <Form.Group className="mb-3" controlId="title" key={index}>
+                                        <Form.Label>{field.title}</Form.Label>
+                                        <Form.Control required type={field.type}
+                                            placeholder={field.placeholder}
+                                            onChange={(e) => handleInputChange(e, index)} />
+                                    </Form.Group>;
+                                })}
+                                <Form.Group className="mb-3" controlId="formSubmitForApproval" onClick={handleSubmit}>
+                                    <Button variant="primary" type="submit">
+                                        Submit for approval
+                                    </Button>
+                                    <Col>
+                                        {loadSpinnerForSubmit()}
+                                    </Col>
+                                    <CAlert color={colorAlert} visible={visibleModal}>
+                                        {toast}
+                                    </CAlert>
+                                </Form.Group>
+                            </Tab.Pane>
+                        </Tab.Content>
+                    </Col>
+                    <Col sm={3} />
+                </Row>
+            </Tab.Container>
+        </Card>
+        <br/>
+        <Footer /></>
     );
 }

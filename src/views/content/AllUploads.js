@@ -29,7 +29,7 @@ export default function AllContent() {
 
     useEffect(() => {
         const fetchData = async () => {
-            
+
             const params = new URLSearchParams(window.location.search);
             const creator = params.get("creator");
             const status = params.get("status");
@@ -42,18 +42,18 @@ export default function AllContent() {
                 url = 'http://44.202.58.84:3000/content/list-by-creator?creator=public'
             }
 
-            if (status != null ) {
+            if (status != null) {
                 url = 'http://44.202.58.84:3000/content/list-by-status?status=' + status;
-            }            
+            }
 
             const response = await fetch(url);
             const data = await response.json();
 
             const formatResponse = await fetch('http://44.202.58.84:3000/template/types');
             const formatData = await formatResponse.json();
-            
-            setContent(getContent(data));            
-            setFormats(formatData);
+
+            setContent(getContent(data));
+            setFormats(getFormatData(formatData));
             initFilters();
         }
 
@@ -63,8 +63,17 @@ export default function AllContent() {
 
     const getContent = (data) => {
         return [...(data || [])].map((d) => {
-            d.date = d.date ? new Date(d.date) : '';
+            d.timestamp = d.timestamp ? new Date(d.timestamp) : '';
+            d.type = d.type.replace(/([A-Z])/g, ' $1').trim();
+            var json = '{"type":"' + d.type + '"}';
+            d.type = JSON.parse(json);
+            return d;
+        });
+    };
 
+    const getFormatData = (data) => {
+        return [...(data || [])].map((d) => {
+            d.type = d.type.replace(/([A-Z])/g, ' $1').trim();
             return d;
         });
     };
@@ -77,7 +86,7 @@ export default function AllContent() {
                 year: 'numeric'
             });
         }
-        return null;        
+        return null;
     };
 
     const clearFilter = () => {
@@ -89,7 +98,7 @@ export default function AllContent() {
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             title: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             type: { value: null, matchMode: FilterMatchMode.IN },
-            date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
+            timestamp: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             status: { value: null, matchMode: FilterMatchMode.IN },
         });
     };
@@ -100,18 +109,18 @@ export default function AllContent() {
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
             </div>
         );
-    };    
+    };
 
     const typeBodyTemplate = (rowData) => {
         const type = rowData.type;
 
         return (
-            <span>{type}</span>
+            <span>{type.type}</span>
         );
     };
 
     const typeFilterTemplate = (options) => {
-        return <MultiSelect value={options.value} options={formats} itemTemplate={typesItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" optionLabel="type"/>;
+        return <MultiSelect value={options.value} options={formats} itemTemplate={typesItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" optionLabel="type" />;
     };
 
     const typesItemTemplate = (option) => {
@@ -123,11 +132,11 @@ export default function AllContent() {
     };
 
     const dateBodyTemplate = (rowData) => {
-        return formatDate(rowData.date);
+        return formatDate(rowData.timestamp);
     };
 
     const dateFilterTemplate = (options) => {
-        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" mask="99/99/9999" />;
     };
 
     const statusBodyTemplate = (rowData) => {
@@ -135,12 +144,12 @@ export default function AllContent() {
     };
 
     const statusFilterTemplate = (options) => {
-        return <MultiSelect value={options.value} 
-        options={statuses} 
-        itemTemplate={statusItemTemplate} 
-        onChange={(e) => options.filterCallback(e.value)} 
-        placeholder="Any" 
-        className="p-column-filter" />;
+        return <MultiSelect value={options.value}
+            options={statuses}
+            itemTemplate={statusItemTemplate}
+            onChange={(e) => options.filterCallback(e.value)}
+            placeholder="Any"
+            className="p-column-filter" />;
     };
 
     const statusItemTemplate = (option) => {
@@ -158,11 +167,11 @@ export default function AllContent() {
             <DataTable value={content} paginator rows={10} dataKey="_id"
                 filters={filters} header={header}
                 emptyMessage="No content found.">
-                <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+                <Column header="Uploaded Date" filterField="timestamp" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+                <Column header="Type" filterField="type" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
                 <Column field="title" header="Title" filter filterPlaceholder="Search by title" style={{ minWidth: '12rem' }} />
                 <Column filterField="status" header="Status" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                <Column header="Type" filterField="type" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />                
             </DataTable>
         </div>
     );

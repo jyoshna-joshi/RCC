@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Images from "./Images";
+import Images from "./HomeContent";
 import Footer from "./Footer";
 import { useState, useEffect } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -19,7 +19,7 @@ import Card from 'react-bootstrap/Card';
 import '../scss/style.scss';
 import Collapse from 'react-bootstrap/Collapse';
 
-const Home = (props) => {
+const Home = () => {
   const navigate = useNavigate();
   const [nav, setNav] = useState(false);
   const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
@@ -38,12 +38,12 @@ const Home = (props) => {
 
   const [searched, setSearched] = useState(false);
 
-  var params = '';
   var url = URL_SEARCH + categoriesValue.replace(/ +/g, "");
   /**
    * fetch data from server for search
    */
   const fetchSearch = () => {
+    var params = '';
     if (searchText) {
       params = params + "&searchText=" + searchText;
     }
@@ -167,7 +167,7 @@ const Home = (props) => {
                       </Dropdown.Item>
                     ))}
                   </DropdownButton>
-                  <Form.Control aria-label="Text input with dropdown button" variant="light" onChange={handleInputChange("title")} />
+                  <Form.Control aria-label="Text input with dropdown button" variant="light" onChange={(e) => handleInputChange("title", e)} />
                   <Button icon="search" variant="light" id="button-advanced" onClick={(e) => displayAdvanced()}>
                     <BsFillCaretDownFill />
                   </Button>
@@ -184,13 +184,13 @@ const Home = (props) => {
                     <Col>
                       <Form.Group className="mb-1">
                         <Form.Label size="sm">Subject</Form.Label>
-                        <Form.Control type="text" placeholder="Subject" size="sm" onChange={handleInputChange("subject")} />
+                        <Form.Control type="text" placeholder="Subject" size="sm" onChange={(e) => handleInputChange("subject", e)} />
                       </Form.Group>
                     </Col>
                     <Col>
                       <Form.Group className="mb-1">
                         <Form.Label size="sm" style={{ align: "left" }}>Publisher</Form.Label>
-                        <Form.Control type="text" placeholder="Publisher" size="sm" onChange={handleInputChange("publisher")} />
+                        <Form.Control type="text" placeholder="Publisher" size="sm" onChange={(e) => handleInputChange("publisher", e)} />
                       </Form.Group>
                     </Col>
                     <Col></Col>
@@ -202,7 +202,8 @@ const Home = (props) => {
             </Collapse>
           </Container>
         </div>
-        <div class="searchResults"><Container>
+        <div class="searchResults">
+          <Container>
           <Row>
             <Col>
               {data.map(item => (

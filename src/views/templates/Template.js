@@ -1,23 +1,22 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     CFormSelect,
     CCard,
     CCardBody,
     CCardHeader,
     CCol,
-    CForm,
     CFormInput,
     CFormLabel,
     CButton,
     CRow,
-    CAlert
 } from '@coreui/react';
 import { cilTrash, cilPencil } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
-
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 export default function FormControl() {
     const URL_SAVE_TEMPLATE = "http://44.202.58.84:3000/template/add-update";
@@ -34,25 +33,26 @@ export default function FormControl() {
     const [inputFields, setInputFields] = useState([
         { title: '', field: '', placeholder: '', type: '' }
     ])
+    const handleClose = () => setVisibleModal(false);
 
     let navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {   
-            setAction(urlAction);         
-            if (['edit','view'].includes(urlAction)) {        
+        const fetchData = async () => {
+            setAction(urlAction);
+            if (['edit', 'view'].includes(urlAction)) {
                 const URL_GET_TEMPLATE = "http://44.202.58.84:3000/template/fields?type=" + templateType;
-        
+
                 axios.get(URL_GET_TEMPLATE)
                     .then(res => {
                         const data = res.data;
-                        setInputFields(getFields(data.fields));  
-                        setTemplateName(data.type);                        
+                        setInputFields(getFields(data.fields));
+                        setTemplateName(data.type);
                         console.log(data);
                         console.log(data.type);
                     })
                     .catch((err) =>
-                        alert(err));        
+                        alert(err));
             }
         }
 
@@ -91,7 +91,7 @@ export default function FormControl() {
     const submit = (e) => {
         e.preventDefault();
         var data;
-        
+
         if (inputFields.length > 0) {
             data = '{"type": "' + templateName + '", "fields": [';
             for (var i = 0; i < inputFields.length; i++) {
@@ -99,18 +99,19 @@ export default function FormControl() {
                 if (i > 0) {
                     field = field + ",";
                 }
+                var type = inputFields[i].type === "Text" ? "String" : inputFields[i].type;
                 field = field + '{                                       ' +
                     '"field": "' + inputFields[i].field + '",' +
                     '"title": "' + inputFields[i].title + '",' +
                     '"placeholder": "' + inputFields[i].placeholder + '",' +
-                    '"type": "' + inputFields[i].type === "Text" ? "String" : inputFields[i].type + '"' +
-                    '}';
+                    '"type": "' + type + '"' +
+                '}';
                 data = data + field;
             }
             data = data + ']}';
         }
         data = JSON.parse(data);
-    
+
         axios
             .post(URL_SAVE_TEMPLATE, data)
             .then((res) => {
@@ -121,15 +122,13 @@ export default function FormControl() {
                 else if (action === 'new') {
                     addToast("Template " + templateName + " created successfully!");
                     setColorAlert('success');
-                }            
+                }
             })
             .catch((err) => {
                 alert("Error Occurred. Please try again!");
                 setColorAlert('danger');
             });
-            setVisibleModal(true);
-            //navigate("/template/all");
-            //return;    
+        setVisibleModal(true); 
     }
 
     return (
@@ -137,33 +136,33 @@ export default function FormControl() {
             <CCol xs={12}>
                 <CCard className="mb-4">
                     <CCardHeader>
-                        <CButton onClick={() => {navigate('/admin/template/all')}} variant="outline">All Templates</CButton>
-                        {action === 'view' 
-                        ? <CButton onClick={() => {navigate('/admin/template/edit?type='+ templateName); window.location.reload(false);}} variant="outline">
-                            <CIcon icon={cilPencil} className="me-2" />
-                          </CButton>
-                        : null
+                        <CButton onClick={() => { navigate('/admin/template/all') }} variant="outline">All Templates</CButton>
+                        {action === 'view'
+                            ? <CButton onClick={() => { navigate('/admin/template/edit?type=' + templateName); window.location.reload(false); }} variant="outline">
+                                <CIcon icon={cilPencil} className="me-2" />
+                            </CButton>
+                            : null
                         }
-                    </CCardHeader> 
+                    </CCardHeader>
                     <CCardBody>
                         <Card>
                             <div className="mb-3">
                                 <CFormLabel htmlFor="templateName">Template Name</CFormLabel>
-                                {action === 'new' 
+                                {action === 'new'
                                     ? <CFormInput
                                         type="text"
                                         id="templateName"
                                         placeholder="Sample Template"
                                         onChange={event => handleTemplateChange(event)}
                                         required
-                                    /> 
+                                    />
                                     : <CFormInput
                                         type="text"
                                         id="templateName"
                                         value={templateName}
                                         readOnly
                                     />}
-                                
+
                             </div>
                             <CCard className="mb-4">
                                 <CCardHeader>
@@ -176,67 +175,75 @@ export default function FormControl() {
                                                 <CRow className="g-5">
                                                     <CCol sm={3}>
                                                         <CFormLabel htmlFor="field">Field</CFormLabel>
-                                                        {action === 'view' 
-                                                            ? <CFormInput id="field" value={input.field} readOnly/>
+                                                        {action === 'view'
+                                                            ? <CFormInput id="field" value={input.field} readOnly />
                                                             : <CFormInput id="field" placeholder="Field" value={input.field} onChange={event => handleFormChange(index, event)} />
                                                         }
                                                     </CCol>
                                                     <CCol sm={3}>
                                                         <CFormLabel htmlFor="title">Title</CFormLabel>
-                                                        {action === 'view' 
-                                                            ? <CFormInput id="title" value={input.title} readOnly/>
+                                                        {action === 'view'
+                                                            ? <CFormInput id="title" value={input.title} readOnly />
                                                             : <CFormInput id="title" placeholder="Title" value={input.title} onChange={event => handleFormChange(index, event)} />
                                                         }
                                                     </CCol>
                                                     <CCol sm={3}>
                                                         <CFormLabel htmlFor="placeholder">Placeholder</CFormLabel>
-                                                        {action === 'view' 
-                                                            ? <CFormInput id="placeholder" value={input.placeholder} readOnly/>
+                                                        {action === 'view'
+                                                            ? <CFormInput id="placeholder" value={input.placeholder} readOnly />
                                                             : <CFormInput id="placeholder" placeholder="Placeholder" value={input.placeholder} onChange={event => handleFormChange(index, event)} />
                                                         }
                                                     </CCol>
                                                     <CCol sm={2}>
                                                         <CFormLabel htmlFor="type">Datatype</CFormLabel>
-                                                        {action === 'view' 
-                                                            ? <CFormInput id="type" value={input.type} readOnly/>
+                                                        {action === 'view'
+                                                            ? <CFormInput id="type" value={input.type} readOnly />
                                                             : <CFormSelect id="type" value={input.type} onChange={event => handleFormChange(index, event)}>
-                                                                    <option>Choose...</option>
-                                                                    <option value="Text">Text</option>
-                                                                    <option value="Number">Number</option>
-                                                                    <option value="Date">Date</option>
-                                                              </CFormSelect>
+                                                                <option>Choose...</option>
+                                                                <option value="Text">Text</option>
+                                                                <option value="Number">Number</option>
+                                                                <option value="Date">Date</option>
+                                                            </CFormSelect>
                                                         }
                                                     </CCol>
-                                                    {action === 'view' 
-                                                    ? <div></div>
-                                                    : <CCol sm={1}>
+                                                    {action === 'view'
+                                                        ? <div></div>
+                                                        : <CCol sm={1}>
                                                             <div style={{ height: "30px" }}></div>
                                                             <CButton onClick={() => removeField(index)} color="danger" variant="outline">
                                                                 <CIcon icon={cilTrash} className="me-2" />
                                                             </CButton>
-                                                      </CCol>
+                                                        </CCol>
                                                     }
                                                 </CRow>
                                             </div>
                                         )
                                     })}
                                     <div style={{ height: "20px" }}></div>
-                                    {action === 'view' 
-                                    ? <div></div>
-                                    : <CCol xs={12}>
+                                    {action === 'view'
+                                        ? <div></div>
+                                        : <CCol xs={12}>
                                             <CButton onClick={addFields} color="success" variant="outline">Add Field</CButton>
-                                      </CCol>
+                                        </CCol>
                                     }
                                 </CCardBody>
                             </CCard>
-                            {action === 'view' 
-                            ? <div></div>
-                            : <CCol xs={12}>
-                                <CButton type="submit" onClick={submit}>Submit</CButton>   
-                                <CAlert color={colorAlert} visible={visibleModal}>
-                                    {toast}
-                                </CAlert>
-                              </CCol>
+                            {action === 'view'
+                                ? <div></div>
+                                : <CCol xs={12}>
+                                    <CButton type="submit" onClick={submit}>Submit</CButton>
+                                    <Modal show={visibleModal} onHide={handleClose} animation={false} >
+                                        <Modal.Header >
+                                            <Modal.Title >Template Management</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>{toast}</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="primary" onClick={() => navigate("/admin/template/all")} >
+                                                OK
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </CCol>
                             }
                         </Card>
 
