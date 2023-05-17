@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Footer from "./Footer";
 
 import Card from 'react-bootstrap/Card';
 
@@ -58,7 +59,7 @@ function ViewDetails() {
     }
 
     return (
-        <Card >
+        <><Card>
             <Row>
                 <Col sm={3} />
                 <Col sm={6} className='Template-text'>
@@ -108,7 +109,7 @@ function ViewDetails() {
                 <Col sm={3} />
             </Row>
 
-        </Card >
+        </Card><Footer /></>
     );
 
 }

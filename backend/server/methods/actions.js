@@ -214,12 +214,12 @@ var functions = {
         let imageContents = await Content.aggregate([
             { $match: { formatType: { $regex: 'image', $options: 'i' } } },
             { $sort: { timestamp: -1 } },
-            { $limit: 5 },
+            { $limit: 6 },
         ]);
         let pdfContents = await Content.aggregate([
             { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
             { $sort: { timestamp: -1 } },
-            { $limit: 5 },
+            { $limit: 6 },
         ])
         return res.status(200).json(imageContents.concat(pdfContents));
       } catch (err) {

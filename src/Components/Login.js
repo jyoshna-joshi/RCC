@@ -31,7 +31,7 @@ export const Login = (props) => {
                     <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="*************" id="password" name="password" />
                 </Col>
                 <Form.Group className="mb-3" controlId="formSubmitForApproval" >
-                    <Button variant="primary" onClick={() => navigate("/Admin Dashboard")}>Log In
+                    <Button variant="primary" onClick={() => {navigate("/admin/dashboard"); window.location.reload()}}>Log In
                     </Button>
                 </Form.Group>
 
