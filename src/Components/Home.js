@@ -18,6 +18,9 @@ import { BsFillCaretDownFill } from 'react-icons/bs'
 import Card from 'react-bootstrap/Card';
 import '../scss/style.scss';
 import Collapse from 'react-bootstrap/Collapse';
+import pdf from '../assets/images/pdf.png';
+import doc from '../assets/images/doc.png';
+import img from '../assets/images/img.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -62,14 +65,16 @@ const Home = () => {
       })
       .then(data => {
         data.map((item) => {
-          console.log(item._id + item.format);
           if (item.format) {
             var icon = (item.format).substring(item.format.lastIndexOf('.') + 1);
             if (icon === "pdf") {
-              data.push("icon", "pdf");
+              item.icon = pdf;
+            }
+            else if (icon.includes("doc")){
+              item.icon = doc;
             }
             else {
-              data.push("icon", "doc");
+              item.icon = img;
             }
           }
         });
@@ -211,7 +216,7 @@ const Home = () => {
                   <Card style={{ border: "none" }}>
                     <div key={item._id}>
                       <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <img src="https://w7.pngwing.com/pngs/491/951/png-transparent-red-adobe-pdf-logo-pdf-computer-icons-adobe-acrobat-encapsulated-postscript-pdf-miscellaneous-angle-text.png" style={{ width: '5%', height: '5%' }} class="box"/>
+                        <img src={item.icon} style={{ width: '5%', height: '5%' }} class="box"/>
                         <div>
                           <a onClick={() => {navigate("/viewDetails", { state: { id: item._id } }); window.location.reload();}} id="searchTitle"><h5>{item.title}</h5></a><br />
                           <h6>{item.description}</h6><br />
