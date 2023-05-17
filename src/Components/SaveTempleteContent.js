@@ -133,7 +133,11 @@ export default function SaveTempleteContent() {
         setIsFileLoading(true);
         event.preventDefault();
         const formdData = new FormData();
-        fields.map((field, index) => {
+    
+        fields.map((field) => {
+            if(field.value == null){
+                field.value = "";
+            }
             formdData.append(field.field, field.value);
             console.log(field.value);
 
