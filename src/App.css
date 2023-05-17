@@ -6,6 +6,10 @@
   text-align: left;
 }
 
+.Close-button {
+  text-align: center;
+}
+
 .Upload-form {
   text-align: center;
   color: "white";
@@ -20,6 +24,7 @@
 }
 
 .Text-display {
+  font-size: 20px;
   text-align: center;
   color: rgb(156, 21, 21);
   padding: "10px";
