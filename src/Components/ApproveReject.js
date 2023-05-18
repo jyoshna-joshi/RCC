@@ -26,7 +26,7 @@ function ApproveReject() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    //const [_id, setID] = useState();
+    const [status, setStatus] = useState();
     /**
      * Fetch pending list by status
      */
@@ -64,9 +64,8 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-
+        setStatus(stat);
         setShow(true)
-        //  alert("Admin review Success")
         
     }
 
@@ -137,11 +136,11 @@ function ApproveReject() {
                         </Col>
                         <Modal show={show} onHide={handleClose} animation={false} >
                             <Modal.Header >
-                                <Modal.Title >Admin Review</Modal.Title>
+                                <Modal.Title >Review</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body>Article reviewed successfully!</Modal.Body>
+                            <Modal.Body>Content  {status} Successfully!</Modal.Body>
                             <Modal.Footer>
-                                <Button variant="primary" onClick={()=> navigate("/admin/content/pending")} >
+                                <Button variant="secondary" onClick={()=> navigate("/admin/content/pending")} >
                                     OK
                                 </Button>
                                 
