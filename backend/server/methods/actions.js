@@ -210,23 +210,138 @@ var functions = {
   },
   home: async function (req, res) {
     try {
-        // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
-        let imageContents = await Content.aggregate([
-            { $match: { formatType: { $regex: 'image', $options: 'i' } } },
-            { $sort: { timestamp: -1 } },
-            { $limit: 6 },
-        ]);
-        let pdfContents = await Content.aggregate([
-            { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
-            { $sort: { timestamp: -1 } },
-            { $limit: 6 },
-        ])
-        return res.status(200).json(imageContents.concat(pdfContents));
-      } catch (err) {
-        console.error(err);
-        return res.status(500).send(err);
+      // let contents = await Content.find({ formatType: /^image$/, status: 'Approved' })
+      let imageContents = await Content.aggregate([
+        { $match: { formatType: { $regex: 'image', $options: 'i' } } },
+        { $sort: { timestamp: -1 } },
+        { $limit: 6 },
+      ]);
+      let pdfContents = await Content.aggregate([
+        { $match: { formatType: { $regex: /(pdf|document)/, $options: 'i' } } },
+        { $sort: { timestamp: -1 } },
+        { $limit: 6 },
+      ])
+      return res.status(200).json(imageContents.concat(pdfContents));
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+  },
+  searchContentPdf: async function (req, res) {
+    try {
+      const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
+
+      function extractText(pdfUrl) {
+        var pdf = pdfjsLib.getDocument(pdfUrl);
+        return pdf.promise.then(function (pdf) {
+          var totalPageCount = pdf.numPages;
+          var countPromises = [];
+          for (
+            var currentPage = 1;
+            currentPage <= totalPageCount;
+            currentPage++
+          ) {
+            var page = pdf.getPage(currentPage);
+            countPromises.push(
+              page.then(function (page) {
+                var textContent = page.getTextContent();
+                return textContent.then(function (text) {
+                  return text.items
+                    .map(function (s) {
+                      return s.str;
+                    })
+                    .join('');
+                });
+              }),
+            );
+          }
+
+          return Promise.all(countPromises).then(function (texts) {
+            return texts.join('');
+          });
+        });
       }
-  }
+
+      if (req.query.templateType === "AllCategories") {
+        let query = {};
+        if (req.query.subject)
+          query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
+        if (req.query.publisher) query["publisher"] = req.query.publisher;
+        if (req.query.searchText)
+          query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
+        let contents = await Content.find(query);
+
+        let pdfQuery = {};
+        let pdfContents;
+        let promises = [];
+        if (req.query.pdf) {
+          pdfQuery["format"] = new RegExp("pdf", "i");
+          pdfContents = await Content.find(pdfQuery);
+          pdfContents.forEach(obj => {
+            promises.push(
+            extractText(obj.format).then(
+              function (text) {
+                if (text.includes(req.query.searchText)) {
+                  contents.push(obj);
+                  return contents;
+                }
+              },
+              function (reason) {
+                console.error(reason);
+              },
+            ));
+          }); 
+          Promise.all(promises).then(() =>{
+            return res.status(200).json(contents);      
+        });
+             
+        }
+        else {
+          return res.status(200).json(contents);
+        }       
+      } else {
+        let query = { type: req.query.templateType };
+        if (req.query.publisher) query["publisher"] = req.query.publisher;
+        if (req.query.subject)
+          query["subject"] = new RegExp(req.query.subject.toLowerCase(), "i");
+        if (req.query.searchText)
+          query["title"] = new RegExp(req.query.searchText.toLowerCase(), "i");
+        let contents = await Content.find(query);
+        
+        let pdfQuery = {};
+        let pdfContents;
+        let promises = [];
+        if (req.query.pdf) {
+          pdfQuery["format"] = new RegExp("pdf", "i");
+          pdfContents = await Content.find(pdfQuery);
+          pdfContents.forEach(obj => {
+            promises.push(
+            extractText(obj.format).then(
+              function (text) {
+                if (text.includes(req.query.searchText)) {
+                  contents.push(obj);
+                  return contents;
+                }
+              },
+              function (reason) {
+                console.error(reason);
+              },
+            ));
+          }); 
+          Promise.all(promises).then(() =>{
+            return res.status(200).json(contents);      
+        });
+             
+        }
+        else {
+          return res.status(200).json(contents);
+        }   
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+  },
 };
 
 module.exports = functions;
