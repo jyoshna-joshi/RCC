@@ -1,6 +1,7 @@
 const Content = require("../models/content");
 const TemplateType = require("../models/templateType");
 const aws = require("../config/awsconfig");
+const pdfjsLib = require('pdfjs-dist');
 
 var functions = {
   saveTemplate: async function (req, res) {
@@ -258,7 +259,7 @@ var functions = {
   },
   searchContentPdf: async function (req, res) {
     try {
-      const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
+      
 
       function extractText(pdfUrl) {
         var pdf = pdfjsLib.getDocument(pdfUrl);
