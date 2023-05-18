@@ -26,7 +26,7 @@ function ApproveReject() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    //const [_id, setID] = useState();
+    const [status, setStatus] = useState();
     /**
      * Fetch pending list by status
      */
@@ -55,7 +55,6 @@ function ApproveReject() {
 
 
     const handleApprove = async (stat) => {
-
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
         const res = await fetch(url, {
             method: 'POST',
@@ -64,9 +63,8 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-        setShow(true)
-        //  alert("Admin review Success")
-        
+        setStatus(stat);
+        setShow(true);
     }
 
     return (
@@ -94,7 +92,7 @@ function ApproveReject() {
                         {/* for description*/}
                         <Form.Group className="mb-3" controlId="description">
                             <Form.Label>Description </Form.Label>
-                            <Form.Control required type="text" placeholder={data.description} readOnly />
+                            <Form.Control required type="text" placeholder={data.description} as="textarea" rows="3" readOnly />
                         </Form.Group>
                         <Form.Label>Pending Article</Form.Label>
                         {/* <Form.Control required type="file" onChange={handleChange} /> */}
@@ -136,11 +134,11 @@ function ApproveReject() {
                         </Col>
                         <Modal show={show} onHide={handleClose} animation={false} >
                             <Modal.Header >
-                                <Modal.Title >Admin Review</Modal.Title>
+                                <Modal.Title >Review</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body>Article reviewed successfully!</Modal.Body>
+                            <Modal.Body>Content  {status} Successfully!</Modal.Body>
                             <Modal.Footer>
-                                <Button variant="primary" onClick={()=> navigate("/admin/content/pending")} >
+                                <Button variant="secondary" onClick={()=> navigate("/admin/content/pending")} >
                                     OK
                                 </Button>
                                 
