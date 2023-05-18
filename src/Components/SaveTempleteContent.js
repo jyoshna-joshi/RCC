@@ -32,11 +32,10 @@ export default function SaveTempleteContent() {
     //for spinner
     const [isLoading, setIsLoading] = useState(false);
     //for alert
-    const [visibleModal, setVisibleModal] = useState(false)
+    const [home, setHome] = useState(false)
     const [message, addMessage] = useState()
     const [uploadby, setUploadBy] = useState()
     const [submit, setSubmit] = useState()
-
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     /**
@@ -72,10 +71,14 @@ export default function SaveTempleteContent() {
         if (path === "upload") {
             setUploadBy("admin");
             setSubmit("Upload Content");
+            setHome('/admin/dashboard');
+
         }
         else {
             setUploadBy("public");
             setSubmit("Submit for approval");
+            setHome('/');
+
         }
 
         axios(URL_TEMPLATE_TYPES)
@@ -101,7 +104,6 @@ export default function SaveTempleteContent() {
      * @param {type of template} templateType 
      */
     function fetchUserData(templateType) {
-        setVisibleModal(false);
         setFields([]);
         setIsLoading(true);
         fetch(URL_FIELD_TYPE + templateType.replace(/ +/g, ""))
@@ -212,20 +214,18 @@ export default function SaveTempleteContent() {
                                         <Col>
                                             {loadSpinnerForSubmit()}
                                         </Col>
+                                    </Form.Group><Modal show={show} onHide={handleClose} animation={false} >
+                                        <Modal.Header >
+                                            <Modal.Title >Upload Content</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>{message}</Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={() => navigate(home)} >
+                                                OK
+                                            </Button>
 
-                                        <Modal show={show} onHide={handleClose} animation={false} >
-                                            <Modal.Header >
-                                                <Modal.Title >Upload Content</Modal.Title>
-                                            </Modal.Header>
-                                            <Modal.Body>{message}</Modal.Body>
-                                            <Modal.Footer>
-                                                <Button variant="secondary" onClick={() => navigate('/')} >
-                                                    OK
-                                                </Button>
-
-                                            </Modal.Footer>
-                                        </Modal>
-                                    </Form.Group>
+                                        </Modal.Footer>
+                                    </Modal>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Col>

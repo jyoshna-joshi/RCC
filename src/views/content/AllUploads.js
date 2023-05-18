@@ -132,7 +132,7 @@ export default function AllContent() {
     };
 
     const dateBodyTemplate = (rowData) => {
-        return formatDate(rowData.timestamp);
+        return formatDate(rowData.timestamp ? rowData.timestamp : null);
     };
 
     const dateFilterTemplate = (options) => {

@@ -99,7 +99,7 @@ export default function FormControl() {
                 if (i > 0) {
                     field = field + ",";
                 }
-                var type = inputFields[i].type === "Text" ? "String" : inputFields[i].type;
+                var type = inputFields[i].type === "Text" ? "string" : inputFields[i].type;
                 field = field + '{                                       ' +
                     '"field": "' + inputFields[i].field + '",' +
                     '"title": "' + inputFields[i].title + '",' +
