@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Images from "./Images";
+import Images from "./HomeContent";
 import Footer from "./Footer";
 import { useState, useEffect } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -18,8 +18,11 @@ import { BsFillCaretDownFill } from 'react-icons/bs'
 import Card from 'react-bootstrap/Card';
 import '../scss/style.scss';
 import Collapse from 'react-bootstrap/Collapse';
+import pdf from '../assets/images/pdf.png';
+import doc from '../assets/images/doc.png';
+import img from '../assets/images/img.png';
 
-const Home = (props) => {
+const Home = () => {
   const navigate = useNavigate();
   const [nav, setNav] = useState(false);
   const URL_TEMPLATE_TYPES = "http://44.202.58.84:3000/template/types";
@@ -34,16 +37,17 @@ const Home = (props) => {
   const [searchText, setSearchText] = useState();
   const [searchSubject, setSearchSubject] = useState();
   const [searchPublisher, setSearchPublisher] = useState();
+  const [searchPdf, setSearchPdf] = useState();
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const [searched, setSearched] = useState(false);
 
-  var params = '';
   var url = URL_SEARCH + categoriesValue.replace(/ +/g, "");
   /**
    * fetch data from server for search
    */
   const fetchSearch = () => {
+    var params = '';
     if (searchText) {
       params = params + "&searchText=" + searchText;
     }
@@ -52,6 +56,10 @@ const Home = (props) => {
     }
     if (searchSubject) {
       params = params + "&subject=" + searchSubject;
+    }
+    if (searchPdf === "yes" && searchText) {
+      params = params + "&pdf=" + searchPdf;
+      url = "http://44.202.58.84:3000/content/search-pdf?templateType=" + categoriesValue.replace(/ +/g, "");
     }
     if (params) {
       url = url + params;
@@ -62,14 +70,16 @@ const Home = (props) => {
       })
       .then(data => {
         data.map((item) => {
-          console.log(item._id + item.format);
           if (item.format) {
             var icon = (item.format).substring(item.format.lastIndexOf('.') + 1);
             if (icon === "pdf") {
-              data.push("icon", "pdf");
+              item.icon = pdf;
+            }
+            else if (icon.includes("doc")){
+              item.icon = doc;
             }
             else {
-              data.push("icon", "doc");
+              item.icon = img;
             }
           }
         });
@@ -131,6 +141,11 @@ const Home = (props) => {
             setSearchPublisher(e.target.value);
           }
           return;
+          case 'pdf':
+            if (e) {
+              setSearchPdf(e.target.checked ? "yes" : "no");
+            }
+            return;
         default:
           return;
       };
@@ -167,7 +182,7 @@ const Home = (props) => {
                       </Dropdown.Item>
                     ))}
                   </DropdownButton>
-                  <Form.Control aria-label="Text input with dropdown button" variant="light" onChange={handleInputChange("title")} />
+                  <Form.Control aria-label="Text input with dropdown button" variant="light" onChange={(e) => handleInputChange("title", e)} />
                   <Button icon="search" variant="light" id="button-advanced" onClick={(e) => displayAdvanced()}>
                     <BsFillCaretDownFill />
                   </Button>
@@ -184,16 +199,21 @@ const Home = (props) => {
                     <Col>
                       <Form.Group className="mb-1">
                         <Form.Label size="sm">Subject</Form.Label>
-                        <Form.Control type="text" placeholder="Subject" size="sm" onChange={handleInputChange("subject")} />
+                        <Form.Control type="text" placeholder="Subject" size="sm" onChange={(e) => handleInputChange("subject", e)} />
                       </Form.Group>
                     </Col>
                     <Col>
                       <Form.Group className="mb-1">
                         <Form.Label size="sm" style={{ align: "left" }}>Publisher</Form.Label>
-                        <Form.Control type="text" placeholder="Publisher" size="sm" onChange={handleInputChange("publisher")} />
+                        <Form.Control type="text" placeholder="Publisher" size="sm" onChange={(e) => handleInputChange("publisher", e)} />
                       </Form.Group>
                     </Col>
-                    <Col></Col>
+                    <Col>
+                      <Form.Group className="mb-1">
+                        <br/>
+                        <Form.Check inline label="PDF" type='checkbox' id='pdf' onChange={(e) => handleInputChange("pdf", e)}/>
+                      </Form.Group>
+                    </Col>
                     <Col></Col>
                     <Col></Col>
                   </Row>
@@ -202,28 +222,29 @@ const Home = (props) => {
             </Collapse>
           </Container>
         </div>
-        <div class="searchResults"><Container>
-          <Row>
-            <Col>
-              {data.map(item => (
-                <><br />
-                  <Card style={{ border: "none" }}>
-                    <div key={item._id}>
-                      <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <img src="https://w7.pngwing.com/pngs/491/951/png-transparent-red-adobe-pdf-logo-pdf-computer-icons-adobe-acrobat-encapsulated-postscript-pdf-miscellaneous-angle-text.png" style={{ width: '5%', height: '5%' }} class="box"/>
-                        <div>
-                          <a onClick={() => {navigate("/viewDetails", { state: { id: item._id } }); window.location.reload();}} id="searchTitle"><h5>{item.title}</h5></a><br />
-                          <h6>{item.description}</h6><br />
+        <div class="searchResults">
+          <Container>
+            <Row>
+              <Col>
+                {data.map(item => (
+                  <><br />
+                    <Card style={{ border: "none" }}>
+                      <div key={item._id}>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          <img src={item.icon} style={{ width: '5%', height: '5%' }} class="box" />
+                          <div>
+                            <a onClick={() => { navigate("/viewDetails", { state: { id: item._id } }); window.location.reload(); }} id="searchTitle"><h5>{item.title}</h5></a>
+                            <h6>{item.description}</h6><br />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Card></>
-              ))
-              }
-            </Col>
-          </Row>
+                    </Card></>
+                ))
+                }
+              </Col>
+            </Row>
 
-        </Container></div></>
+          </Container></div></>
       {!searched ? <><Images /><Footer /></> : <div />}
     </>
   );

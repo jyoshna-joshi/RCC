@@ -13,18 +13,20 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
 
 function ApproveReject() {
     const { state } = useLocation();
-    const { id} = state;
+    const { id } = state;
     const navigate = useNavigate();
     const URL_ListByStatus = "http://44.202.58.84:3000/content/list-by-status?status=Pending";
     //for dynamic fields
     const [data, setData] = useState([]);
     const [IsJpg, setIsJPG] = useState(false);
-
-
-    //const [_id, setID] = useState();
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const [status, setStatus] = useState();
     /**
      * Fetch pending list by status
      */
@@ -61,8 +63,8 @@ function ApproveReject() {
                 'Content-Type': 'application/json'
             },
         })
-        alert("Admin review Success")
-        navigate("/admin/content/pending")
+        setStatus(stat);
+        setShow(true);
     }
 
     return (
@@ -87,6 +89,11 @@ function ApproveReject() {
                             <Form.Label>Publisher </Form.Label>
                             <Form.Control required type="text" placeholder={data.publisher} readOnly />
                         </Form.Group>
+                        {/* for description*/}
+                        <Form.Group className="mb-3" controlId="description">
+                            <Form.Label>Description </Form.Label>
+                            <Form.Control required type="text" placeholder={data.description} as="textarea" rows="3" readOnly />
+                        </Form.Group>
                         <Form.Label>Pending Article</Form.Label>
                         {/* <Form.Control required type="file" onChange={handleChange} /> */}
                         <Form.Control required type="label" placeholder={data.format} as="textarea" rows="3" readOnly />
@@ -105,23 +112,41 @@ function ApproveReject() {
                         </div>
                     </Form.Group>
                     <Row>
+
                         <Col sm={11} className='Template-text'>
                             {/* for Approval */}
                             <Form.Group className="mb-3" controlId="formApproveJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Approved') } >
+                                <Button variant="secondary" type="submit" onClick={() => handleApprove('Approved') } >
                                     Approve
                                 </Button>
+
                             </Form.Group>
+
                         </Col>
                         <Col sm={1} className='Template-text'>
                             {/* for Decline */}
                             <Form.Group className="mb-3" controlId="formDeclineJournal" >
-                                <Button variant="primary" type="submit" onClick={() => handleApprove('Rejected')}>
+                                <Button variant="secondary" type="submit" onClick={() => handleApprove('Rejected')}>
                                     Reject
                                 </Button>
+
                             </Form.Group>
                         </Col>
+                        <Modal show={show} onHide={handleClose} animation={false} >
+                            <Modal.Header >
+                                <Modal.Title >Review</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Content  {status} Successfully!</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={()=> navigate("/admin/content/pending")} >
+                                    OK
+                                </Button>
+                                
+                            </Modal.Footer>
+                        </Modal>
+
                     </Row>
+
                 </Col>
 
                 <Col sm={3} />

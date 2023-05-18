@@ -108,7 +108,6 @@ export default function AdvancedFilterDemo() {
                 filters={filters} header={header}
                 emptyMessage="No content found.">
                 <Column field="type" header="Template Type" filter filterPlaceholder="Search by type" style={{ minWidth: '12rem' }} />
-                <Column size="sm" body={activeTemplate} header="Active"></Column>
                 <Column size="sm" body={viewDetailsTemplate} header=""></Column>
                 <Column size="sm" body={editDetailsTemplate} header=""></Column>
             </DataTable>

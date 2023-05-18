@@ -35,10 +35,10 @@ const Navbar = () => {
         </CHeaderNav>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
-            <CNavLink to="/" component={NavLink}>Home</CNavLink>
+            <CNavLink to="/" component={NavLink}>HOME</CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="/selectSaveTemplateContent">Upload</CNavLink>
+            <CNavLink href="/selectSaveTemplateContent">UPLOAD</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav>
