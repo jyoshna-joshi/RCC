@@ -45,7 +45,7 @@ var functions = {
                 type: req?.body?.type,
                 status:
                   req?.body?.uploadby === "admin" ? "Approved" : "Pending",
-                timestamp: Date(),
+                timestamp: Date.now(),
               });
               console.log(content);
               await content.save();
@@ -71,7 +71,7 @@ var functions = {
             type: req?.body?.type,
             uploadby: req?.body?.uploadby,
             status: req?.body?.uploadby === "admin" ? "Approved" : "Pending",
-            timestamp: Date(),
+            timestamp: Date.now(),
           });
           await content.save();
           return res.status(200).send("Saved!!!");
