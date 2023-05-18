@@ -26,6 +26,7 @@ import {
 } from '@coreui/react'
 import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
+import { height } from 'dom7';
 
 function UncontrolledExample() {
     const [images, setImages] = useState();
@@ -99,7 +100,7 @@ function UncontrolledExample() {
                         {documents ?
                             documents.map(item => (
                                 <CCol lg={2}>
-                                    <CCard style={{ width: '18rem' }}>
+                                    <CCard style={{ width: '24rem' }}>
                                         <CCardBody class="box" onClick={() => navigate("/viewDetails", { state: { id: item._id } })}>
                                             <Document file={item.format}>
                                                 <Page pageNumber={pageNumber} />

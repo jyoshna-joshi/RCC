@@ -82,6 +82,11 @@ function ViewDetails() {
                             <Form.Label>Publisher </Form.Label>
                             <Form.Control required type="text" placeholder={data.publisher} readOnly />
                         </Form.Group>
+                        {/* for description*/}
+                        <Form.Group className="mb-3" controlId="description">
+                            <Form.Label>Description </Form.Label>
+                            <Form.Control required type="text" placeholder={data.description} as="textarea" rows="3" readOnly />
+                        </Form.Group>
                         <Form.Label>Pending Article</Form.Label>
                         {/* <Form.Control required type="file" onChange={handleChange} /> */}
                         <Form.Control required type="label" placeholder={data.format} as="textarea" rows="3" readOnly />
