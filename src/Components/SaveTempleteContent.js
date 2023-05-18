@@ -7,11 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
-import { CAlert } from '@coreui/react';
-import { clear } from '@testing-library/user-event/dist/clear';
-import { styles } from 'dom7';
 import Footer from "./Footer";
 import Modal from 'react-bootstrap/Modal';
 
@@ -148,7 +144,7 @@ export default function SaveTempleteContent() {
             console.log(field.value);
 
         })
-        formdData.append("type", selectedTemplateType);
+        formdData.append("type", selectedTemplateType.replace(/ +/g, ""));
         formdData.append("uploadby", uploadby);
         axios
             .post(URL_SAVE_CONTENT, formdData)
