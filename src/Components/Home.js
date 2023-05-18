@@ -213,12 +213,12 @@ const Home = () => {
             <Col>
               {data.map(item => (
                 <><br />
-                  <Card style={{ border: "none" }}>
+                  <Card  style={{ border: "none" }}>
                     <div key={item._id}>
                       <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <img src={item.icon} style={{ width: '5%', height: '5%' }} class="box"/>
                         <div>
-                          <a onClick={() => {navigate("/viewDetails", { state: { id: item._id } }); window.location.reload();}} id="searchTitle"><h5>{item.title}</h5></a><br />
+                          <a onClick={() => {navigate("/viewDetails", { state: { id: item._id } }); window.location.reload();}} id="searchTitle"><h5>{item.title}</h5></a>
                           <h6>{item.description}</h6><br />
                         </div>
                       </div>

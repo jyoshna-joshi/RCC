@@ -55,7 +55,6 @@ function ApproveReject() {
 
 
     const handleApprove = async (stat) => {
-
         var url = 'http://44.202.58.84:3000/content/update-status/' + id;
         const res = await fetch(url, {
             method: 'POST',
@@ -66,7 +65,6 @@ function ApproveReject() {
         })
         setStatus(stat);
         setShow(true);
-        
     }
 
     return (
@@ -94,7 +92,7 @@ function ApproveReject() {
                         {/* for description*/}
                         <Form.Group className="mb-3" controlId="description">
                             <Form.Label>Description </Form.Label>
-                            <Form.Control required type="text" placeholder={data.description} readOnly />
+                            <Form.Control required type="text" placeholder={data.description} as="textarea" rows="3" readOnly />
                         </Form.Group>
                         <Form.Label>Pending Article</Form.Label>
                         {/* <Form.Control required type="file" onChange={handleChange} /> */}
