@@ -170,7 +170,7 @@ export default function SaveTempleteContent() {
                 <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content ?</h5>
 
             </div>
-            <Card>
+            <Card style={{height: "1000px"}}>
                 <Tab.Container id="list-group-tabs" >
                     <Row>
                         <Col sm={3} />
