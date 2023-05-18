@@ -238,7 +238,7 @@ export default function FormControl() {
                                         </Modal.Header>
                                         <Modal.Body>{toast}</Modal.Body>
                                         <Modal.Footer>
-                                            <Button variant="primary" onClick={() => navigate("/admin/template/all")} >
+                                            <Button variant="secondary" onClick={() => navigate("/admin/template/all")} >
                                                 OK
                                             </Button>
                                         </Modal.Footer>
