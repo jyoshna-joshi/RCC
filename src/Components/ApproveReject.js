@@ -65,7 +65,7 @@ function ApproveReject() {
             },
         })
         setStatus(stat);
-        setShow(true)
+        setShow(true);
         
     }
 

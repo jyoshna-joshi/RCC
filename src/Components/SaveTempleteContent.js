@@ -13,6 +13,7 @@ import { CAlert } from '@coreui/react';
 import { clear } from '@testing-library/user-event/dist/clear';
 import { styles } from 'dom7';
 import Footer from "./Footer";
+import Modal from 'react-bootstrap/Modal';
 
 export default function SaveTempleteContent() {
     const navigate = useNavigate();
@@ -32,12 +33,12 @@ export default function SaveTempleteContent() {
     const [isLoading, setIsLoading] = useState(false);
     //for alert
     const [visibleModal, setVisibleModal] = useState(false)
-    const [toast, addToast] = useState(0)
-    const [colorAlert, setColorAlert] = useState()
+    const [message, addMessage] = useState()
     const [uploadby, setUploadBy] = useState()
     const [submit, setSubmit] = useState()
 
-
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
     /**
      * load spinner
      * @returns spinner
@@ -137,9 +138,8 @@ export default function SaveTempleteContent() {
         setIsFileLoading(true);
         event.preventDefault();
         const formdData = new FormData();
-    
         fields.map((field) => {
-            if(field.value == null){
+            if (field.value == null) {
                 field.value = "";
             }
             formdData.append(field.field, field.value);
@@ -148,28 +148,24 @@ export default function SaveTempleteContent() {
         })
         formdData.append("type", selectedTemplateType);
         formdData.append("uploadby", uploadby);
-        console.log(formdData.get("date"));
-
         axios
             .post(URL_SAVE_CONTENT, formdData)
             .then((res) => {
                 setIsFileLoading(false);
-                setVisibleModal(true);
-                setColorAlert('success');
-                addToast("File Upload success");
+                setShow(true);
+                addMessage("File Upload Success");
             })
             .catch((err) => {
                 setIsFileLoading(false);
-                setColorAlert('danger');
-                alert("File Upload Error");
+                setShow(true);
+                addMessage("File Upload Error");
             })
-
     };
 
     return (
         <>
             <div class="searchContainer">
-            <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content ?</h5>
+                <h5 className='Upload-form' style={{ color: 'white' }}>Are you ready to upload your content ?</h5>
 
             </div>
             <Card>
@@ -181,7 +177,7 @@ export default function SaveTempleteContent() {
                             {/* for types */}
                             <ListGroup>
                                 {types.map((templateType) => (
-                                    <ListGroupItem action variant='dark' className='Hover-box'  eventKey={templateType}  onClick={() => fetchUserData(templateType)}>
+                                    <ListGroupItem action variant='dark' className='Hover-box' eventKey={templateType} onClick={() => fetchUserData(templateType)}>
                                         {templateType}
                                     </ListGroupItem>
 
@@ -191,7 +187,7 @@ export default function SaveTempleteContent() {
                         <Col sm={4} className='Template-text'>
                             <Tab.Content>
                                 {loadSpinner()}
-                                <Tab.Pane  eventKey={selectedTemplateType}>
+                                <Tab.Pane eventKey={selectedTemplateType}>
                                     {/* for forms */}
                                     {fields.map((field, index) => {
                                         if (field.field == "format") {
@@ -216,9 +212,19 @@ export default function SaveTempleteContent() {
                                         <Col>
                                             {loadSpinnerForSubmit()}
                                         </Col>
-                                        <CAlert color={colorAlert} visible={visibleModal}>
-                                            {toast}
-                                        </CAlert>
+
+                                        <Modal show={show} onHide={handleClose} animation={false} >
+                                            <Modal.Header >
+                                                <Modal.Title >Upload Content</Modal.Title>
+                                            </Modal.Header>
+                                            <Modal.Body>{message}</Modal.Body>
+                                            <Modal.Footer>
+                                                <Button variant="secondary" onClick={() => navigate('/')} >
+                                                    OK
+                                                </Button>
+
+                                            </Modal.Footer>
+                                        </Modal>
                                     </Form.Group>
                                 </Tab.Pane>
                             </Tab.Content>
