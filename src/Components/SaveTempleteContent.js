@@ -212,8 +212,8 @@ export default function SaveTempleteContent() {
                                             {submit}
                                         </Button>
                                         <Col>
-                                            {loadSpinnerForSubmit()}                                        </Col>
-
+                                            {loadSpinnerForSubmit()}
+                                        </Col>
                                     </Form.Group><Modal show={show} onHide={handleClose} animation={false} >
                                         <Modal.Header >
                                             <Modal.Title >Upload Content</Modal.Title>
