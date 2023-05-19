@@ -43,7 +43,7 @@ export default function PendingApproval() {
 
     const getContent = (data) => {
         return [...(data || [])].map((d) => {
-            d.timestamp = d.timestamp ? new Date(d.timestamp) : null;
+            d.timestamp = d.timestamp ? new Date(new Date(parseInt(d.timestamp)).toISOString().split('T')[0]) : '';
             d.type = d.type.replace(/([A-Z])/g, ' $1').trim();
             var json = '{"type":"' + d.type + '"}';
             d.type = JSON.parse(json);
