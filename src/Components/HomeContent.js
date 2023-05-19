@@ -100,7 +100,7 @@ function UncontrolledExample() {
                         {documents ?
                             documents.map(item => (
                                 <CCol lg={2}>
-                                    <CCard style={{ width: '24rem' }}>
+                                    <CCard style={{ width: '18rem' }}>
                                         <CCardBody class="box" onClick={() => navigate("/viewDetails", { state: { id: item._id } })}>
                                             <Document file={item.format}>
                                                 <Page pageNumber={pageNumber} />
